@@ -1,0 +1,444 @@
+/* ArtBreeze Styles - 艺息ArtBreeze */
+
+/* 艺术作品容器 - 恢复白色卡片背景和阴影 */
+#artbreeze-artwork-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+  pointer-events: none;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 320px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#artbreeze-artwork-container.artbreeze-show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#artbreeze-artwork-container.artbreeze-hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* 艺术作品画框 */
+.artbreeze-artwork-frame {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 关闭按钮 */
+.artbreeze-close-button {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  z-index: 10;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.artbreeze-close-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.artbreeze-close-button:active {
+  transform: scale(0.95);
+}
+
+/* 图片容器 - 移除圆角 */
+.artbreeze-artwork-image-container {
+  position: relative;
+  margin-bottom: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  width: 100%;
+}
+
+/* 艺术作品图片 */
+.artbreeze-artwork-image-container .artbreeze-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: artbreeze-spin 1s linear infinite;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes artbreeze-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* 艺术作品图片 - 移除圆角背景，保持原图显示 */
+.artbreeze-artwork-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.4s ease-in-out;
+}
+
+
+/* 艺术作品信息 - 确保完全居中 */
+.artbreeze-artwork-info {
+  text-align: center;
+  color: #333;
+  margin: 8px 0 0 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.artbreeze-artwork-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: #222;
+  text-align: center;
+  width: 100%;
+}
+
+.artbreeze-artwork-title a {
+  color: #2c1810;
+  text-decoration: underline;
+  text-decoration-color: rgba(44, 24, 16, 0.3);
+  transition: all 0.3s ease;
+}
+
+.artbreeze-artwork-title a:hover {
+  color: #4a3728;
+  text-decoration-color: #4a3728;
+}
+
+.artbreeze-artwork-artist {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0 0 2px 0;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+}
+
+.artbreeze-artwork-year {
+  font-size: 11px;
+  margin: 0 0 2px 0;
+  color: #888;
+  opacity: 0.8;
+  text-align: center;
+  width: 100%;
+}
+
+.artbreeze-artwork-attribution {
+  font-size: 10px;
+  margin: 0;
+  color: #999;
+  opacity: 0.7;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+}
+
+/* 圆形图标 - 缩小尺寸，往上移动 */
+#artbreeze-circular-icon {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff, #f5f5f5);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  z-index: 9998;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#artbreeze-circular-icon.artbreeze-show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+#artbreeze-circular-icon.artbreeze-hide {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+}
+
+#artbreeze-circular-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 12px 25px rgba(0, 0, 0, 0.2),
+    0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+#artbreeze-circular-icon:active {
+  transform: scale(0.95);
+}
+
+/* 图标内容 */
+.artbreeze-icon-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 30%, transparent 70%);
+}
+
+.artbreeze-icon-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  user-select: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #artbreeze-artwork-container {
+    max-width: 90vw;
+    max-height: 80vh;
+    padding: 15px;
+  }
+  
+  .artbreeze-artwork-frame {
+    border-width: 8px;
+    padding: 15px;
+    max-width: none;
+  }
+  
+  .artbreeze-artwork-image {
+    max-height: 250px;
+  }
+  
+  .artbreeze-artwork-title {
+    font-size: 14px;
+  }
+  
+  .artbreeze-artwork-artist {
+    font-size: 12px;
+  }
+  
+  .artbreeze-artwork-year {
+    font-size: 10px;
+  }
+  
+  #artbreeze-circular-icon {
+    width: 45px;
+    height: 45px;
+    bottom: 70px;
+    right: 15px;
+  }
+  
+  .artbreeze-icon-image {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  #artbreeze-artwork-container {
+    padding: 10px;
+  }
+  
+  .artbreeze-artwork-frame {
+    border-width: 6px;
+    padding: 10px;
+  }
+  
+  .artbreeze-artwork-image {
+    max-height: 200px;
+  }
+  
+  #artbreeze-circular-icon {
+    width: 40px;
+    height: 40px;
+    bottom: 60px;
+    right: 10px;
+  }
+  
+  .artbreeze-icon-image {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* 高分辨率屏幕优化 */
+@media (min-width: 1920px) {
+  .artbreeze-artwork-frame {
+    max-width: 500px;
+    border-width: 16px;
+    padding: 24px;
+  }
+  
+  .artbreeze-artwork-image {
+    max-height: 400px;
+  }
+  
+  .artbreeze-artwork-title {
+    font-size: 18px;
+  }
+  
+  .artbreeze-artwork-artist {
+    font-size: 16px;
+  }
+  
+  .artbreeze-artwork-year {
+    font-size: 14px;
+  }
+  
+  #artbreeze-circular-icon {
+    width: 55px;
+    height: 55px;
+    bottom: 90px;
+    right: 25px;
+  }
+  
+  .artbreeze-icon-image {
+    width: 33px;
+    height: 33px;
+  }
+}
+
+/* 动画效果 */
+@keyframes artbreeze-fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes artbreeze-fade-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+@keyframes artbreeze-icon-bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* 加载动画 */
+.artbreeze-loading {
+  animation: artbreeze-icon-bounce 1s infinite;
+}
+
+/* 可访问性 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  #artbreeze-artwork-container {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .artbreeze-artwork-frame {
+    background: #1a1a1a;
+    border-color: #3a3a3a;
+  }
+  
+  .artbreeze-artwork-title {
+    color: #e0e0e0;
+  }
+  
+  .artbreeze-artwork-artist {
+    color: #b0b0b0;
+  }
+  
+  .artbreeze-artwork-year {
+    color: #888888;
+  }
+  
+  #artbreeze-circular-icon {
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    border-color: #4a4a4a;
+  }
+  
+  .artbreeze-icon-text {
+    color: #e0e0e0;
+  }
+}

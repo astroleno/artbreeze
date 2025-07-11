@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "艺息ArtBreeze",
+  "version": "1.0.4",
+  "description": "在AI对话期间展示美丽的名画，为您的思考时光增添艺术气息",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://claude.ai/*",
+    "https://bard.google.com/*",
+    "https://gemini.google.com/*",
+    "https://www.bing.com/*",
+    "https://copilot.microsoft.com/*",
+    "https://chat.deepseek.com/*",
+    "https://grok.x.ai/*",
+    "https://x.ai/*",
+    "https://yuanbao.tencent.com/*",
+    "https://kimi.ai/*",
+    "https://kimi.moonshot.cn/*",
+    "https://doubao.com/*",
+    "https://volcengine.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/*.png"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/logo16.png",
+    "32": "icons/logo32.png",
+    "48": "icons/logo48.png",
+    "128": "icons/logo128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/logo16.png",
+      "32": "icons/logo32.png",
+      "48": "icons/logo48.png",
+      "128": "icons/logo128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

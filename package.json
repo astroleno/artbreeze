@@ -1,0 +1,38 @@
+{
+  "name": "artbreeze",
+  "version": "1.0.0",
+  "description": "艺息ArtBreeze - 在AI对话期间展示美丽的名画，为您的思考时光增添艺术气息",
+  "main": "content.js",
+  "scripts": {
+    "build": "echo 'Building ArtBreeze extension...' && echo 'Build complete!'",
+    "dev": "echo 'Development mode for ArtBreeze'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'Linting ArtBreeze code...'",
+    "package": "zip -r artbreeze-v1.0.0.zip . -x '*.git*' 'node_modules/*' 'package-lock.json' '*.zip'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "ai",
+    "art",
+    "artwork",
+    "chatgpt",
+    "claude",
+    "gemini",
+    "productivity",
+    "visual",
+    "painting"
+  ],
+  "author": "2025LessLand",
+  "license": "MIT",
+  "homepage": "https://github.com/2025LessLand/artbreeze",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2025LessLand/artbreeze.git"
+  },
+  "bugs": {
+    "url": "https://github.com/2025LessLand/artbreeze/issues"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}
