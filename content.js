@@ -80,8 +80,8 @@ class ArtBreeze {
     // 加载全局缓存
     await this.loadGlobalCache();
     
-    // 图标在所有网站都显示
-    this.showCircularIcon();
+    // 根据设置决定是否显示图标
+    this.applySettings();
     
     // 在所有网站都设置通用Enter键监听
     this.setupUniversalEnterListener();
@@ -423,11 +423,21 @@ class ArtBreeze {
       this.isShowingArtwork ? this.hideArtwork() : this.showArtwork(true);
     });
 
+    // 监听存储变更
     chrome.storage.onChanged.addListener((changes) => {
       Object.keys(changes).forEach(key => {
         if (this.settings.hasOwnProperty(key)) this.settings[key] = changes[key].newValue;
       });
       this.applySettings();
+    });
+    
+    // 监听来自popup的消息
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action === 'settingsChanged') {
+        console.log('ArtBreeze: Settings changed via message:', request.settings);
+        this.settings = { ...this.settings, ...request.settings };
+        this.applySettings();
+      }
     });
   }
   

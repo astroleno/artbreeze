@@ -20,6 +20,18 @@ function saveSettings() {
   
   chrome.storage.sync.set(settings, () => {
     console.log('Settings saved');
+    
+    // 通知所有标签页的设置变更
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, { 
+          action: 'settingsChanged', 
+          settings: settings 
+        }).catch(() => {
+          // 忽略错误，某些标签页可能没有content script
+        });
+      });
+    });
   });
 }
 
