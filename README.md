@@ -4,7 +4,11 @@
 
 ## 简介
 
+<<<<<<< Updated upstream
 艺息ArtBreeze是一个Chrome扩展程序，在您与AI模型对话时展示精美的艺术作品。支持Enter键触发和手动点击，当您按下Enter键发送消息或AI生成回复时，扩展会展示经典名画，为您的等待时光增添艺术气息。对话结束后，艺术作品会优雅地折叠为右下角的圆形图标。
+=======
+艺息ArtBreeze是一个Chrome扩展程序，仅在AI对话网站（如ChatGPT、Claude、Gemini等）右下角展示圆形图标，点击可弹出艺术作品窗口，并支持Enter键自动弹窗（20秒后自动折叠）。其他网站无常驻图标。
+>>>>>>> Stashed changes
 
 ## 功能特性
 
@@ -161,4 +165,13 @@ https://artsandculture.google.com/
 
 ## 许可证
 
+<<<<<<< Updated upstream
 MIT License - 详见 LICENSE 文件
+=======
+MIT License - 详见 LICENSE 文件
+
+### 权限与安全说明
+- content_scripts 仅用于在AI对话网站插入右下角图标和弹窗组件，不收集、不分析、不上传任何用户数据。
+- 仅在AI对话网站监听Enter键自动弹窗，其他网站无任何注入和监听。
+- 详见[隐私声明](./privacy.md)
+>>>>>>> Stashed changes
