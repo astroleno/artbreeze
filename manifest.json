@@ -25,7 +25,22 @@
   ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://claude.ai/*",
+        "https://bard.google.com/*",
+        "https://gemini.google.com/*",
+        "https://www.bing.com/*",
+        "https://copilot.microsoft.com/*",
+        "https://chat.deepseek.com/*",
+        "https://grok.x.ai/*",
+        "https://x.ai/*",
+        "https://yuanbao.tencent.com/*",
+        "https://kimi.ai/*",
+        "https://kimi.moonshot.cn/*",
+        "https://doubao.com/*",
+        "https://volcengine.com/*"
+      ],
       "js": ["content.js"],
       "css": ["styles.css"]
     }
@@ -35,7 +50,22 @@
       "resources": [
         "icons/*.png"
       ],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://claude.ai/*",
+        "https://bard.google.com/*",
+        "https://gemini.google.com/*",
+        "https://www.bing.com/*",
+        "https://copilot.microsoft.com/*",
+        "https://chat.deepseek.com/*",
+        "https://grok.x.ai/*",
+        "https://x.ai/*",
+        "https://yuanbao.tencent.com/*",
+        "https://kimi.ai/*",
+        "https://kimi.moonshot.cn/*",
+        "https://doubao.com/*",
+        "https://volcengine.com/*"
+      ]
     }
   ],
   "icons": {

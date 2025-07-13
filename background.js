@@ -83,10 +83,18 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
-// 处理扩展图标点击
+// background.js
+// 监听扩展图标点击事件，在所有网站注入 popup.js
 chrome.action.onClicked.addListener((tab) => {
-  // 打开popup而不是执行动作
-  chrome.action.openPopup();
+  try {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['popup.js']
+    });
+    console.log('ArtBreeze: 已注入 popup.js 到当前页面');
+  } catch (e) {
+    console.error('ArtBreeze: 注入 popup.js 失败', e);
+  }
 });
 
 // 检查权限
