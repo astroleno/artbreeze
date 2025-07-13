@@ -4,11 +4,7 @@
 
 ## 简介
 
-<<<<<<< Updated upstream
-艺息ArtBreeze是一个Chrome扩展程序，在您与AI模型对话时展示精美的艺术作品。支持Enter键触发和手动点击，当您按下Enter键发送消息或AI生成回复时，扩展会展示经典名画，为您的等待时光增添艺术气息。对话结束后，艺术作品会优雅地折叠为右下角的圆形图标。
-=======
-艺息ArtBreeze是一个Chrome扩展程序，仅在AI对话网站（如ChatGPT、Claude、Gemini等）右下角展示圆形图标，点击可弹出艺术作品窗口，并支持Enter键自动弹窗（20秒后自动折叠）。其他网站无常驻图标。
->>>>>>> Stashed changes
+艺息ArtBreeze是一个Chrome扩展程序，仅在AI对话网站（如ChatGPT、Claude、Gemini等）右下角展示圆形图标，点击可弹出艺术作品窗口，并支持Enter键自动弹窗（20秒后自动折叠）。其他网站不会注入任何内容，确保最小权限和安全合规。
 
 ## 功能特性
 
@@ -22,7 +18,7 @@
 
 ## 核心技术特性
 
-- **通用Enter键检测**：在所有网站都能检测Enter键按下，适配各种输入框
+- **通用Enter键检测**：在主流LLM网站都能检测Enter键按下，适配各种输入框
 - **智能图片缓存**：使用Base64编码存储图片，解决跨域问题
 - **跨站点缓存共享**：通过chrome.storage.local实现全局缓存池
 - **按需加载策略**：每次触发预加载一张新图片，避免网络拥塞
@@ -110,7 +106,7 @@
 
 - **项目名称**：艺息ArtBreeze
 - **创建者**：2025LessLand
-- **版本**：1.0.4
+- **版本**：1.0.5
 - **许可证**：MIT
 
 ## 更新日志
@@ -165,13 +161,9 @@ https://artsandculture.google.com/
 
 ## 许可证
 
-<<<<<<< Updated upstream
-MIT License - 详见 LICENSE 文件
-=======
 MIT License - 详见 LICENSE 文件
 
 ### 权限与安全说明
 - content_scripts 仅用于在AI对话网站插入右下角图标和弹窗组件，不收集、不分析、不上传任何用户数据。
-- 仅在AI对话网站监听Enter键自动弹窗，其他网站无任何注入和监听。
+- 仅在AI对话网站监听Enter键自动弹窗，其他网站无任何内容注入。
 - 详见[隐私声明](./privacy.md)
->>>>>>> Stashed changes
