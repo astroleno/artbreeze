@@ -9,6 +9,9 @@ chrome.runtime.onInstalled.addListener(() => {
     enabled: true,
     artworkChangeInterval: 'auto', // auto, 30s, 1m, 5m
     showArtworkInfo: true,
+    showIcon: true,
+    darkMode: false,
+    artworkSize: 'medium',
     position: 'center', // center, top-left, top-right, bottom-left, bottom-right
     opacity: 0.9,
     autoHideDelay: 1000
@@ -22,6 +25,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       'enabled',
       'artworkChangeInterval',
       'showArtworkInfo',
+      'showIcon',
+      'darkMode',
+      'artworkSize',
       'position',
       'opacity',
       'autoHideDelay'

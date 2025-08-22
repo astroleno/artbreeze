@@ -1,6 +1,6 @@
 /* ArtBreeze Styles - 艺息ArtBreeze */
 
-/* 艺术作品容器 - 恢复白色卡片背景和阴影 */
+/* 艺术作品容器 - 根据大小设置调整尺寸 */
 #artbreeze-artwork-container {
   position: fixed;
   top: 20px;
@@ -22,7 +22,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: auto;
+  min-width: 200px;
+  min-height: 150px;
 }
+
+/* 画板大小变体 */
+#artbreeze-artwork-container.artbreeze-small {
+  max-width: 280px;
+  padding: 12px;
+}
+
+#artbreeze-artwork-container.artbreeze-medium {
+  max-width: 320px;
+  padding: 16px;
+}
+
+#artbreeze-artwork-container.artbreeze-large {
+  max-width: 400px;
+  padding: 20px;
+}
+
 
 #artbreeze-artwork-container.artbreeze-show {
   opacity: 1;
@@ -84,7 +104,7 @@
   transform: scale(0.95);
 }
 
-/* 图片容器 - 移除圆角 */
+/* 图片容器 - 增强自适应能力 */
 .artbreeze-artwork-image-container {
   position: relative;
   margin-bottom: 12px;
@@ -93,7 +113,10 @@
   align-items: center;
   justify-content: center;
   min-height: 150px;
+  max-height: 400px;
   width: 100%;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
 }
 
 /* 艺术作品图片 */
@@ -119,12 +142,21 @@
   }
 }
 
-/* 艺术作品图片 - 移除圆角背景，保持原图显示 */
+/* 艺术作品图片 - 改进自适应逻辑 */
 .artbreeze-artwork-image {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 350px;
   object-fit: contain;
-  transition: opacity 0.4s ease-in-out;
+  object-position: center;
+  transition: opacity 0.4s ease-in-out, transform 0.3s ease;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.artbreeze-artwork-image:hover {
+  transform: scale(1.02);
 }
 
 
@@ -410,10 +442,18 @@
   }
 }
 
-/* 深色模式支持 */
+/* 深色模式支持 - 增强版本 */
 @media (prefers-color-scheme: dark) {
   #artbreeze-artwork-container {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .artbreeze-artwork-image-container {
+    background: rgba(255, 255, 255, 0.05);
   }
   
   .artbreeze-artwork-frame {
@@ -421,8 +461,22 @@
     border-color: #3a3a3a;
   }
   
-  .artbreeze-artwork-title {
+  .artbreeze-artwork-info {
     color: #e0e0e0;
+  }
+  
+  .artbreeze-artwork-title {
+    color: #f0f0f0;
+  }
+  
+  .artbreeze-artwork-title a {
+    color: #d4a574;
+    text-decoration-color: rgba(212, 165, 116, 0.3);
+  }
+  
+  .artbreeze-artwork-title a:hover {
+    color: #e6b885;
+    text-decoration-color: #e6b885;
   }
   
   .artbreeze-artwork-artist {
@@ -433,12 +487,86 @@
     color: #888888;
   }
   
-  #artbreeze-circular-icon {
-    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-    border-color: #4a4a4a;
+  .artbreeze-artwork-attribution {
+    color: #666666;
   }
   
-  .artbreeze-icon-text {
-    color: #e0e0e0;
+  #artbreeze-circular-icon {
+    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 6px 16px rgba(0, 0, 0, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.3);
   }
+  
+  .artbreeze-close-button {
+    background: rgba(255, 255, 255, 0.8);
+    color: #1a1a1a;
+  }
+  
+  .artbreeze-close-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* 手动暗夜模式类支持 - 更新画板和图标样式 */
+.artbreeze-dark-mode #artbreeze-artwork-container,
+body.dark-theme #artbreeze-artwork-container {
+  background: rgba(30, 30, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+.artbreeze-dark-mode .artbreeze-artwork-image-container,
+body.dark-theme .artbreeze-artwork-image-container {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.artbreeze-dark-mode .artbreeze-artwork-info,
+body.dark-theme .artbreeze-artwork-info {
+  color: #e0e0e0;
+}
+
+.artbreeze-dark-mode .artbreeze-artwork-title,
+body.dark-theme .artbreeze-artwork-title {
+  color: #f0f0f0;
+}
+
+.artbreeze-dark-mode .artbreeze-artwork-title a,
+body.dark-theme .artbreeze-artwork-title a {
+  color: #d4a574;
+  text-decoration-color: rgba(212, 165, 116, 0.3);
+}
+
+.artbreeze-dark-mode .artbreeze-artwork-title a:hover,
+body.dark-theme .artbreeze-artwork-title a:hover {
+  color: #e6b885;
+  text-decoration-color: #e6b885;
+}
+
+.artbreeze-dark-mode .artbreeze-artwork-artist,
+body.dark-theme .artbreeze-artwork-artist {
+  color: #b0b0b0;
+}
+
+.artbreeze-dark-mode .artbreeze-artwork-year,
+body.dark-theme .artbreeze-artwork-year {
+  color: #888888;
+}
+
+.artbreeze-dark-mode #artbreeze-circular-icon,
+body.dark-theme #artbreeze-circular-icon {
+  background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.artbreeze-dark-mode #artbreeze-circular-icon:hover,
+body.dark-theme #artbreeze-circular-icon:hover {
+  background: linear-gradient(135deg, #4a4a4a, #3a3a3a);
 }

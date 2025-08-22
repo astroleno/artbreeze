@@ -4,12 +4,35 @@
 class ArtBreeze {
   constructor() {
     this.isShowingArtwork = false;
+    this.isArtworkLoading = false; // 防止重复加载状态
     this.conversationState = 'idle'; // 'idle' | 'generating'
     this.artworks = [];
     this.lastArtworkIndex = -1;
-    this.settings = { enabled: true, showArtworkInfo: true };
+    this.settings = { enabled: true, showArtworkInfo: true, showIcon: true, darkMode: false, artworkSize: 'medium', displayDuration: '10' };
     this.activeSubObservers = new Set();
     this.ui = {}; // Will be populated by createUI
+    
+    // 重试机制配置
+    this.retryConfig = {
+      maxAttempts: 3,
+      baseDelay: 1000,
+      maxDelay: 30000,
+      backoffFactor: 2,
+      jitter: true
+    };
+    
+    // 失败URL记录
+    this.failedUrls = new Map();
+    
+    // 错误类型枚举
+    this.ErrorTypes = {
+      NETWORK: 'network',
+      TIMEOUT: 'timeout',
+      HTTP_404: 'http_404',
+      HTTP_OTHER: 'http_other',
+      CORS: 'cors',
+      UNKNOWN: 'unknown'
+    };
     
     // 全局跨站点图片缓存池 - 使用chrome.storage持久化
     this.globalCacheKey = 'artbreeze_global_cache_v1';
@@ -80,6 +103,9 @@ class ArtBreeze {
     // 加载全局缓存
     await this.loadGlobalCache();
     
+    // 加载展示时长设置
+    await this.loadDisplayDuration();
+    
     // 根据设置决定是否显示图标
     this.applySettings();
     
@@ -93,8 +119,7 @@ class ArtBreeze {
     
     const platform = this.detectPlatform();
     await this.loadArtworksFromAPI();
-    console.log(`ArtBreeze V8.4 Initialized on ${platform || 'a non-LLM page'} with global cache (${this.cachedImages.size} images cached).`);
-  }
+      }
 
   detectPlatform() {
     const H = window.location.hostname;
@@ -114,9 +139,18 @@ class ArtBreeze {
   }
 
   async loadSettings() {
-    const data = await chrome.storage.sync.get(['enabled', 'showArtworkInfo']);
+    const data = await chrome.storage.sync.get(['enabled', 'showArtworkInfo', 'showIcon', 'darkMode', 'artworkSize']);
     this.settings.enabled = data.enabled !== false;
     this.settings.showArtworkInfo = data.showArtworkInfo !== false;
+    this.settings.showIcon = data.showIcon !== false;
+    this.settings.darkMode = data.darkMode === true;
+    this.settings.artworkSize = data.artworkSize || 'medium';
+  }
+
+  async loadDisplayDuration() {
+    const data = await chrome.storage.sync.get(['displayDuration']);
+    this.settings.displayDuration = data.displayDuration || '10';
+    
   }
 
   // 加载全局缓存
@@ -124,7 +158,7 @@ class ArtBreeze {
     try {
       const result = await chrome.storage.local.get([this.globalCacheKey]);
       const cacheData = result[this.globalCacheKey] || {};
-      console.log(`ArtBreeze: Loading global cache with ${Object.keys(cacheData).length} entries`);
+      
       
       // 恢复内存缓存
       for (const [url, base64] of Object.entries(cacheData)) {
@@ -134,9 +168,8 @@ class ArtBreeze {
         this.preloadedImageUrls.add(url);
       }
       
-      console.log(`ArtBreeze: Global cache loaded, ${this.cachedImages.size} images ready`);
+      
     } catch (error) {
-      console.warn('ArtBreeze: Failed to load global cache:', error);
     }
   }
 
@@ -158,14 +191,13 @@ class ArtBreeze {
       }
       
       await chrome.storage.local.set({ [this.globalCacheKey]: cacheData });
-      console.log(`ArtBreeze: Global cache saved, ${savedCount} images stored`);
+      
     } catch (error) {
-      console.warn('ArtBreeze: Failed to save global cache:', error);
     }
   }
 
   setupUniversalEnterListener() {
-    console.log('ArtBreeze: Setting up universal Enter key detection');
+    
     
     // 添加更多的事件监听器来捕获ChatGPT的输入
     document.addEventListener('keydown', (e) => {
@@ -180,36 +212,23 @@ class ArtBreeze {
       }
       
       const target = e.target;
-      console.log(`ArtBreeze: Enter key pressed on element:`, {
-        tagName: target.tagName,
-        contentEditable: target.contentEditable,
-        className: target.className,
-        id: target.id,
-        placeholder: target.placeholder,
-        role: target.getAttribute('role'),
-        spellcheck: target.getAttribute('spellcheck'),
-        isContentEditable: target.isContentEditable,
-        closest_prosemirror: !!target.closest('.ProseMirror'),
-        closest_prompt_textarea: !!target.closest('[data-testid="prompt-textarea"]'),
-        closest_contenteditable: !!target.closest('[contenteditable="true"]')
-      });
       
       // 确保目标元素处于焦点状态且是活动元素
       if (target !== document.activeElement) {
-        console.log('ArtBreeze: Target is not active element, but checking anyway');
+        
         // 不直接返回，继续检查
       }
       
       // 更全面的输入框检测
       const isTextInput = this.isTextInputElement(target);
       
-      console.log(`ArtBreeze: Is text input: ${isTextInput}`);
+      
       
       if (isTextInput) {
         const platform = this.detectPlatform();
-        console.log(`ArtBreeze: Platform detected: ${platform}`);
+        
         if (platform) {
-          console.log(`ArtBreeze: Enter detected in active input on ${platform}, showing popup`);
+          
           this.showPopup();
         }
       }
@@ -221,26 +240,19 @@ class ArtBreeze {
         const platform = this.detectPlatform();
         if (platform === 'chatgpt') {
           const target = e.target;
-          console.log(`ArtBreeze: ChatGPT keyup Enter detected on:`, {
-            tagName: target.tagName,
-            contentEditable: target.contentEditable,
-            className: target.className,
-            closest_prosemirror: !!target.closest('.ProseMirror'),
-            closest_prompt: !!target.closest('[data-testid="prompt-textarea"]')
-          });
           
           // 特别检查ChatGPT的编辑器
           if (target.closest('.ProseMirror') || 
               target.closest('[data-testid="prompt-textarea"]') ||
               target.isContentEditable) {
-            console.log('ArtBreeze: ChatGPT editor detected via keyup, showing popup');
+            
             this.showPopup();
           }
         }
       }
     }, true);
     
-    console.log('ArtBreeze: Universal Enter listener ready');
+    
   }
   
   isTextInputElement(element) {
@@ -315,38 +327,59 @@ class ArtBreeze {
   }
 
   showPopup() {
-    console.log("ArtBreeze: Showing popup immediately");
+    
     this.onConversationStart();
     
     // 每次显示popup时，预加载一张新图片到缓存
     this.preloadOneMoreImage();
     
-    // 20秒后自动隐藏
-    setTimeout(() => {
-      console.log("ArtBreeze: Auto-hiding popup");
-      this.onConversationEnd(null);
-    }, 20000);
+    // 根据设置决定是否自动隐藏
+    if (this.settings.displayDuration !== 'always') {
+      const duration = parseInt(this.settings.displayDuration) * 1000;
+      
+      setTimeout(() => {
+        
+        this.onConversationEnd(null);
+      }, duration);
+    } else {
+      
+    }
   }
 
   // 每次触发时预加载一张新图片
-  preloadOneMoreImage() {
-    const uncachedArtworks = this.artworks.filter(artwork => 
-      !this.preloadedImageUrls.has(artwork.image)
-    );
+  async preloadOneMoreImage() {
+    // 获取未缓存且未失败的图片
+    const uncachedArtworks = this.artworks.filter(artwork => {
+      const isCached = this.preloadedImageUrls.has(artwork.image);
+      const isFailed = this.failedUrls.has(artwork.image);
+      return !isCached && !isFailed;
+    });
     
     if (uncachedArtworks.length > 0) {
       const randomArtwork = uncachedArtworks[Math.floor(Math.random() * uncachedArtworks.length)];
-      console.log(`ArtBreeze: Preloading new image: ${randomArtwork.title}`);
       
-      this.preloadImageWithBase64(randomArtwork.image, randomArtwork.title)
-        .then(() => {
-          console.log(`ArtBreeze: Successfully preloaded: ${randomArtwork.title}`);
-        })
-        .catch(error => {
-          console.warn(`ArtBreeze: Failed to preload: ${randomArtwork.title}`, error);
-        });
+      try {
+        await this.preloadImageWithBase64(randomArtwork.image, randomArtwork.title);
+        
+      } catch (error) {
+        // 重试机制已经处理了，这里可以记录日志或进行其他处理
+        const errorType = this.classifyError(error);
+        
+      }
     } else {
-      console.log('ArtBreeze: All images already cached');
+      // 如果没有可用的图片，可以尝试清理一些旧的失败记录
+      this.cleanupFailedUrls();
+    }
+  }
+  
+  // 清理旧的失败URL记录（超过24小时）
+  cleanupFailedUrls() {
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    
+    for (const [url, record] of this.failedUrls.entries()) {
+      if (record.lastAttempt < oneDayAgo) {
+        this.failedUrls.delete(url);
+      }
     }
   }
 
@@ -413,13 +446,13 @@ class ArtBreeze {
 
   setupEventListeners() {
     this.ui.icon.addEventListener('click', (e) => {
-      console.log('ArtBreeze: Icon clicked');
+      
       e.stopPropagation();
       if (!this.settings.enabled) {
-        console.log('ArtBreeze: Plugin disabled, ignoring click');
+        
         return;
       }
-      console.log(`ArtBreeze: Icon click - currently showing: ${this.isShowingArtwork}`);
+      
       this.isShowingArtwork ? this.hideArtwork() : this.showArtwork(true);
     });
 
@@ -434,9 +467,17 @@ class ArtBreeze {
     // 监听来自popup的消息
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.action === 'settingsChanged') {
-        console.log('ArtBreeze: Settings changed via message:', request.settings);
+        
         this.settings = { ...this.settings, ...request.settings };
         this.applySettings();
+      }
+    });
+    
+    // 监听存储变更以更新展示时长设置
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.displayDuration) {
+        this.settings.displayDuration = changes.displayDuration.newValue || '10';
+        
       }
     });
   }
@@ -446,24 +487,30 @@ class ArtBreeze {
       this.hideArtwork();
       this.hideCircularIcon();
     } else {
-      this.showCircularIcon();
+      if (this.settings.showIcon) {
+        this.showCircularIcon();
+      } else {
+        this.hideCircularIcon();
+      }
     }
     this.updateArtworkInfoVisibility();
+    this.applyDarkMode();
+    this.applyArtworkSize();
   }
 
   setupActionListeners(platform) {
     const config = this.platformConfig[platform];
-    console.log(`ArtBreeze: Setting up auto-popup listeners for ${platform}`);
-    console.log(`ArtBreeze: Send button: ${config.sendButton}`);
-    console.log(`ArtBreeze: Input area: ${config.inputArea}`);
-    console.log(`ArtBreeze: Response container: ${config.responseContainer}`);
+    
+    
+    
+    
     
     const handler = () => {
       if (!this.settings.enabled) {
-        console.log('ArtBreeze: Auto-popup disabled in settings');
+        
         return;
       }
-      console.log(`ArtBreeze: Send action detected on ${platform}`);
+      
       this.waitForResponse(config);
     };
 
@@ -473,19 +520,18 @@ class ArtBreeze {
         const target = e.target;
         // 检查直接匹配
         if (target.matches && target.matches(config.sendButton)) {
-          console.log(`ArtBreeze: Direct send button match on ${platform}`);
+          
           handler();
           return;
         }
         // 检查父元素匹配
         const sendButton = target.closest(config.sendButton);
         if (sendButton) {
-          console.log(`ArtBreeze: Parent send button match on ${platform}`);
+          
           handler();
           return;
         }
       } catch (err) {
-        console.warn('ArtBreeze: Click handler error:', err);
       }
     }, true);
 
@@ -495,40 +541,45 @@ class ArtBreeze {
         if (e.key === 'Enter' && !e.shiftKey) {
           const target = e.target;
           if (target.matches && target.matches(config.inputArea)) {
-            console.log(`ArtBreeze: Direct input Enter on ${platform}`);
+            
             handler();
             return;
           }
           const inputArea = target.closest(config.inputArea);
           if (inputArea) {
-            console.log(`ArtBreeze: Parent input Enter on ${platform}`);
+            
             handler();
             return;
           }
         }
       } catch (err) {
-        console.warn('ArtBreeze: Keydown handler error:', err);
       }
     }, true);
 
-    console.log(`ArtBreeze: Auto-popup listeners ready for ${platform}`);
+    
   }
 
   waitForResponse(config) {
-    console.log("ArtBreeze: Starting artwork display");
+    
     
     // 立即显示艺术作品
     this.onConversationStart();
     
-    // 简单的定时器隐藏，不再过度检测
-    setTimeout(() => {
-      console.log("ArtBreeze: Auto-hiding artwork after delay");
-      this.onConversationEnd(null);
-    }, 12000); // 12秒后隐藏
+    // 根据设置决定是否自动隐藏
+    if (this.settings.displayDuration !== 'always') {
+      const duration = parseInt(this.settings.displayDuration) * 1000;
+      
+      setTimeout(() => {
+        
+        this.onConversationEnd(null);
+      }, duration);
+    } else {
+      
+    }
   }
 
   monitorResponse(targetNode, config) {
-    console.log("ArtBreeze: Starting to monitor response for AI output");
+    
     
     let typingTimer;
     let hasStarted = false;
@@ -538,13 +589,13 @@ class ArtBreeze {
 
     const checkForTextGrowth = () => {
       const currentTextLength = targetNode.textContent.length;
-      console.log(`ArtBreeze: Text length check - Current: ${currentTextLength}, Last: ${lastTextLength}`);
+      
       
       // 检查文本是否在增长（AI正在输出）
       if (currentTextLength > lastTextLength && currentTextLength > 5) {
         if (!hasStarted) {
           hasStarted = true;
-          console.log("ArtBreeze: AI output detected, showing artwork!");
+          
           this.onConversationStart();
         }
         
@@ -552,19 +603,19 @@ class ArtBreeze {
         lastTextLength = currentTextLength;
         clearTimeout(typingTimer);
         typingTimer = setTimeout(() => {
-          console.log("ArtBreeze: No text growth detected, checking generation indicator");
+          
           const isGenerating = document.querySelector(config.generatingIndicator);
           if (!isGenerating) {
-            console.log("ArtBreeze: Generation complete, hiding artwork after delay");
+            
             this.onConversationEnd(subObserver);
           }
         }, timeout);
       } else if (currentTextLength === lastTextLength && hasStarted) {
         // 文本不再增长，检查生成指示器
         const isGenerating = document.querySelector(config.generatingIndicator);
-        console.log(`ArtBreeze: Text stopped growing, generation indicator: ${!!isGenerating}`);
+        
         if (!isGenerating) {
-          console.log("ArtBreeze: Generation complete, hiding artwork after delay");
+          
           this.onConversationEnd(subObserver);
         }
       }
@@ -583,7 +634,7 @@ class ArtBreeze {
     // 备用超时，如果30秒后还没有检测到输出
     setTimeout(() => {
       if (!hasStarted) {
-        console.log("ArtBreeze: Fallback timeout, no output detected");
+        
         this.onConversationEnd(subObserver);
       }
     }, 30000);
@@ -602,34 +653,47 @@ class ArtBreeze {
     }
     if (this.conversationState === 'generating') {
       this.conversationState = 'idle';
-      console.log("ArtBreeze: Hiding artwork");
+      
       this.hideArtwork();
     }
   }
 
   showArtwork(forceNew = false) {
-    console.log(`ArtBreeze: showArtwork called, enabled: ${this.settings.enabled}, forceNew: ${forceNew}`);
+    
     if (!this.settings.enabled) {
-      console.log('ArtBreeze: Plugin disabled, not showing artwork');
+      
+      return;
+    }
+    
+    // 防止重复显示：如果已经在显示或正在加载，直接返回
+    if (this.isShowingArtwork || this.isArtworkLoading) {
+      
       return;
     }
     
     // 预选择艺术作品
     if (forceNew || !this.currentArtwork) {
-      console.log('ArtBreeze: Selecting new artwork');
+      
       this.selectRandomArtwork();
     }
     
     if (!this.currentArtwork) {
-      console.log('ArtBreeze: No artwork selected, aborting');
+      
       return;
     }
     
-    console.log(`ArtBreeze: Showing artwork: ${this.currentArtwork.title}`);
+    // 标记正在加载
+    this.isArtworkLoading = true;
     
     // 使用全局缓存池加载图片
     this.getImage(this.currentArtwork.image).then((cachedImg) => {
-      console.log('ArtBreeze: Image loaded, updating UI');
+      
+      // 再次检查是否已经显示（防止异步竞态）
+      if (this.isShowingArtwork) {
+        this.isArtworkLoading = false;
+        return;
+      }
+      
       // 图片加载完成，更新UI内容
       this.ui.image.src = cachedImg.src;
       this.ui.title.innerHTML = this.currentArtwork.link ? 
@@ -644,28 +708,45 @@ class ArtBreeze {
       
       // 一次完整显示popup
       this.isShowingArtwork = true;
+      this.isArtworkLoading = false;
       this.hideCircularIcon();
       this.ui.container.classList.add('artbreeze-show');
-      console.log('ArtBreeze: Artwork display activated');
-      document.addEventListener('click', this.handleOutsideClick.bind(this), { once: true });
+      
+      // 只绑定一次点击事件
+      this.bindOutsideClickHandler();
     }).catch((error) => {
-      console.warn('ArtBreeze: Failed to load artwork image:', error);
+      
+      this.isArtworkLoading = false;
     });
   }
 
   hideArtwork() {
-    console.log('ArtBreeze: hideArtwork called');
+    
     this.isShowingArtwork = false;
+    this.isArtworkLoading = false;
     this.ui.container.classList.remove('artbreeze-show');
-    if (this.settings.enabled) {
-      console.log('ArtBreeze: Showing circular icon after hiding artwork');
+    if (this.settings.enabled && this.settings.showIcon) {
+      
       this.showCircularIcon();
     }
   }
 
+  // 绑定外部点击事件处理器（防止重复绑定）
+  bindOutsideClickHandler() {
+    // 先移除已存在的事件监听器
+    document.removeEventListener('click', this.boundOutsideClickHandler);
+    
+    // 创建绑定的处理器
+    this.boundOutsideClickHandler = this.handleOutsideClick.bind(this);
+    
+    // 添加新的事件监听器
+    document.addEventListener('click', this.boundOutsideClickHandler, { once: true });
+  }
+
   handleOutsideClick(event) {
     if (this.ui.container.contains(event.target) || this.ui.icon.contains(event.target)) {
-      setTimeout(() => document.addEventListener('click', this.handleOutsideClick.bind(this), { once: true }), 0);
+      // 点击在画板或图标上，重新绑定事件监听器
+      setTimeout(() => this.bindOutsideClickHandler(), 0);
       return;
     }
     this.hideArtwork();
@@ -674,13 +755,13 @@ class ArtBreeze {
   showCircularIcon() { 
     if (this.ui.icon) {
       this.ui.icon.style.display = 'flex';
-      console.log('ArtBreeze: Circular icon shown');
+      
     }
   }
   hideCircularIcon() { 
     if (this.ui.icon) {
       this.ui.icon.style.display = 'none'; 
-      console.log('ArtBreeze: Circular icon hidden');
+      
     }
   }
 
@@ -694,60 +775,124 @@ class ArtBreeze {
         image: item.image, 
         link: this.composeLink(item.link || '')
       })));
-      console.log(`ArtBreeze: Loaded ${this.artworks.length} artworks`);
+      
       
       // 如果缓存中图片不足10张，开始预加载
       if (this.cachedImages.size < 10) {
         this.startSmartPreload();
       }
     } catch (e) {
-      console.warn('ArtBreeze: Failed to load artworks from API, using fallback');
       this.artworks = this.getFallbackArtworks();
     }
   }
   
   // 智能预加载策略 - 只在后台逐步加载
-  startSmartPreload() {
-    console.log('ArtBreeze: Starting smart preload for cache');
-    
-    // 获取未缓存的图片URL
-    const uncachedArtworks = this.artworks.filter(artwork => 
-      !this.preloadedImageUrls.has(artwork.image)
-    );
+  async startSmartPreload() {
+    // 获取未缓存且未失败的图片
+    const uncachedArtworks = this.artworks.filter(artwork => {
+      const isCached = this.preloadedImageUrls.has(artwork.image);
+      const isFailed = this.failedUrls.has(artwork.image);
+      return !isCached && !isFailed;
+    });
     
     if (uncachedArtworks.length === 0) {
-      console.log('ArtBreeze: All images already cached');
+      
       return;
     }
     
     // 每次只预加载一张图片，间隔更长时间
     let loadIndex = 0;
-    const loadNext = () => {
+    const loadNext = async () => {
       if (loadIndex >= uncachedArtworks.length || loadIndex >= 10) {
-        console.log(`ArtBreeze: Smart preload completed, loaded ${loadIndex} images`);
+        
         return;
       }
       
       const artwork = uncachedArtworks[loadIndex];
-      this.preloadImageWithBase64(artwork.image, artwork.title)
-        .then(() => {
-          loadIndex++;
-          // 成功后等待更长时间再加载下一张
-          setTimeout(loadNext, 2000);
-        })
-        .catch(() => {
-          loadIndex++;
-          // 失败后也继续加载下一张
-          setTimeout(loadNext, 1000);
-        });
+      
+      try {
+        await this.preloadImageWithBase64(artwork.image, artwork.title);
+        loadIndex++;
+        // 成功后等待更长时间再加载下一张
+        setTimeout(loadNext, 2000);
+      } catch (error) {
+        loadIndex++;
+        // 失败后也继续加载下一张，但间隔更短
+        setTimeout(loadNext, 1000);
+      }
     };
     
     // 开始预加载
     loadNext();
   }
   
-  // 使用Canvas将图片转换为Base64并缓存
-  async preloadImageWithBase64(imageUrl, title) {
+  // 错误分类
+  classifyError(error) {
+    if (!error) return this.ErrorTypes.UNKNOWN;
+    
+    if (error instanceof TypeError && error.message.includes('NetworkError')) {
+      return this.ErrorTypes.NETWORK;
+    }
+    
+    if (error instanceof Error && error.message.includes('timeout')) {
+      return this.ErrorTypes.TIMEOUT;
+    }
+    
+    if (error.message && error.message.includes('404')) {
+      return this.ErrorTypes.HTTP_404;
+    }
+    
+    if (error.message && error.message.includes('Failed to fetch')) {
+      return this.ErrorTypes.NETWORK;
+    }
+    
+    return this.ErrorTypes.UNKNOWN;
+  }
+  
+  // 计算重试延迟（指数退避 + 随机抖动）
+  calculateRetryDelay(attempt) {
+    const delay = Math.min(
+      this.retryConfig.baseDelay * Math.pow(this.retryConfig.backoffFactor, attempt - 1),
+      this.retryConfig.maxDelay
+    );
+    
+    // 添加随机抖动，避免 thundering herd 问题
+    if (this.retryConfig.jitter) {
+      return delay + Math.random() * 1000;
+    }
+    
+    return delay;
+  }
+  
+  // 检查是否应该重试
+  shouldRetry(url, attempt, error) {
+    const errorType = this.classifyError(error);
+    
+    // 404错误不重试
+    if (errorType === this.ErrorTypes.HTTP_404) {
+      this.failedUrls.set(url, {
+        count: this.retryConfig.maxAttempts,
+        lastAttempt: Date.now(),
+        errorType: errorType
+      });
+      return false;
+    }
+    
+    // 超过最大重试次数
+    if (attempt >= this.retryConfig.maxAttempts) {
+      this.failedUrls.set(url, {
+        count: attempt,
+        lastAttempt: Date.now(),
+        errorType: errorType
+      });
+      return false;
+    }
+    
+    return true;
+  }
+  
+  // 带重试机制的图片加载
+  async preloadImageWithBase64(imageUrl, title, attempt = 1) {
     if (this.preloadedImageUrls.has(imageUrl)) {
       return Promise.resolve();
     }
@@ -756,7 +901,16 @@ class ArtBreeze {
       const img = new Image();
       img.crossOrigin = 'anonymous';
       
+      // 设置超时
+      const timeoutId = setTimeout(() => {
+        img.onload = null;
+        img.onerror = null;
+        const timeoutError = new Error(`Image load timeout: ${imageUrl}`);
+        this.handleImageLoadError(imageUrl, timeoutError, attempt, resolve, reject);
+      }, 10000); // 10秒超时
+      
       img.onload = () => {
+        clearTimeout(timeoutId);
         try {
           // 创建canvas将图片转换为base64
           const canvas = document.createElement('canvas');
@@ -780,7 +934,8 @@ class ArtBreeze {
           this.cachedImages.set(imageUrl, cachedImg);
           this.preloadedImageUrls.add(imageUrl);
           
-          console.log(`ArtBreeze: Cached image: ${title}`);
+          // 成功后清除失败记录
+          this.failedUrls.delete(imageUrl);
           
           // 每缓存5张图片保存一次
           if (this.cachedImages.size % 5 === 0) {
@@ -789,30 +944,48 @@ class ArtBreeze {
           
           resolve();
         } catch (error) {
-          console.warn(`ArtBreeze: Failed to convert image to base64: ${title}`, error);
-          reject(error);
+          this.handleImageLoadError(imageUrl, error, attempt, resolve, reject);
         }
       };
       
       img.onerror = (error) => {
-        console.warn(`ArtBreeze: Failed to load image: ${title}`, error);
-        reject(error);
+        clearTimeout(timeoutId);
+        this.handleImageLoadError(imageUrl, error, attempt, resolve, reject);
       };
       
       img.src = imageUrl;
     });
   }
   
+  // 处理图片加载错误
+  async handleImageLoadError(imageUrl, error, attempt, resolve, reject) {
+    const errorType = this.classifyError(error);
+    
+    if (this.shouldRetry(imageUrl, attempt, error)) {
+      const delay = this.calculateRetryDelay(attempt);
+      
+      setTimeout(() => {
+        this.preloadImageWithBase64(imageUrl, `Retry-${attempt}`, attempt + 1)
+          .then(resolve)
+          .catch(reject);
+      }, delay);
+    } else {
+      // 记录失败统计
+      this.cacheStats.failures++;
+      reject(error);
+    }
+  }
+  
   // 获取缓存的图片或加载新图片
   async getImage(imageUrl) {
     // 检查内存缓存
     if (this.cachedImages.has(imageUrl)) {
-      console.log('ArtBreeze: Using cached image');
+      
       this.cacheStats.hits++;
       return this.cachedImages.get(imageUrl);
     }
     
-    console.log('ArtBreeze: Loading new image on demand');
+    
     this.cacheStats.misses++;
     
     try {
@@ -861,6 +1034,9 @@ class ArtBreeze {
     preloader.src = this.currentArtwork.image;
 
     preloader.onload = () => {
+      // 检查是否应该继续显示（防止异步竞态）
+      if (!this.isShowingArtwork) return;
+      
       this.ui.image.src = this.currentArtwork.image;
       this.ui.title.innerHTML = this.currentArtwork.link ? `<a href="${this.currentArtwork.link}" target="_blank">${this.currentArtwork.title}</a>` : this.currentArtwork.title;
       this.ui.artist.textContent = this.currentArtwork.artist;
@@ -868,11 +1044,37 @@ class ArtBreeze {
       this.ui.loader.style.opacity = '0';
       this.ui.image.style.opacity = '1';
     };
-    preloader.onerror = () => this.hideArtwork();
+    preloader.onerror = () => {
+      if (!this.isShowingArtwork) return;
+      this.hideArtwork();
+    };
   }
   
   updateArtworkInfoVisibility() {
     if (this.ui.info) this.ui.info.style.display = this.settings.showArtworkInfo ? 'block' : 'none';
+  }
+
+  applyDarkMode() {
+    if (this.settings.darkMode) {
+      document.body.classList.add('artbreeze-dark-mode');
+    } else {
+      document.body.classList.remove('artbreeze-dark-mode');
+    }
+    
+    // 重新应用图标显示状态，确保在模式切换后图标正确显示
+    if (this.settings.enabled && this.settings.showIcon && !this.isShowingArtwork) {
+      this.showCircularIcon();
+    }
+    
+    
+  }
+
+  applyArtworkSize() {
+    if (this.ui.container) {
+      this.ui.container.className = this.ui.container.className.replace(/\bartbreeze-(small|medium|large)\b/g, '');
+      this.ui.container.classList.add(`artbreeze-${this.settings.artworkSize}`);
+      
+    }
   }
 
   shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
