@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "label": "artbreeze: regenerated catalogue is product-specific v2"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: regeneration removes stale scenes"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: failed regeneration preserves previous target"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: repeated sync is identical"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: source hash failure leaves target intact"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: regenerated catalogue is product-specific v2"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: regeneration removes stale scenes"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: failed regeneration preserves previous target"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: repeated sync is identical"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: source hash failure leaves target intact"
+    }
+  ]
+}

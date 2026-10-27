@@ -1,5 +1,7 @@
 # ArtDuo 场景升级验证 · 2026-10-27
 
+> 历史记录：本页对应 1.1.0 / 1.3.0 的早期升级。当前 1.2.0 / 1.4.0（WaitWiki 单一 bg-027、无白色卡片）请见 [最新同步验证](2026-10-27-extension-sync-verification.md)。
+
 ## 交付范围
 
 ArtBreeze 1.1.0 默认开启展厅；WaitWiki 1.3.0 默认纯色阅读、可选展厅。两端保留独立仓库与现有网页等待触发，共用同版本 `gallery/` 副本，不依赖 InIsle、ArtDuo 服务端或新增 CDN。

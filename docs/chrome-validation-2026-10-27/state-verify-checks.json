@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "label": "art: favorites survive full browser restart"
+    },
+    {
+      "pass": true,
+      "label": "art: preferences survive full browser restart"
+    },
+    {
+      "pass": true,
+      "label": "art: new tab restores last product content and scene after restart"
+    },
+    {
+      "pass": true,
+      "label": "reading: favorites survive full browser restart"
+    },
+    {
+      "pass": true,
+      "label": "reading: preferences survive full browser restart"
+    },
+    {
+      "pass": true,
+      "label": "reading: new tab restores last product content and scene after restart"
+    }
+  ]
+}

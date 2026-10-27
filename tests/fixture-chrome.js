@@ -1,63 +1,35 @@
-/* Development only: in-memory Chrome APIs and deterministic content, never packaged. */
+/* Explicit developer-only substitute for Chrome APIs and public content. Never packaged. */
 (function () {
   const kind = document.title.includes('WaitWiki') ? 'reading' : 'art';
+  const base = new URL('../', location.href), changes = [];
   const query = new URLSearchParams(location.search);
-  const base = new URL('../', location.href);
-  const storageKey = `gallery-fixture-${kind}`;
-  const initial = {
-    enabled: true, showArtworkInfo: true, showSourceInfo: true, showIcon: true,
-    contentTypes: ['wikipedia', 'quotes', 'facts', 'advice', 'catfacts', 'trivia', 'cocktails', 'datafacts', 'gathas'],
-    cardSize: 'medium', displayDuration: '10'
-  };
-  let sync = { ...initial, ...JSON.parse(sessionStorage.getItem(storageKey) || '{}') };
-  if (query.has('gallery')) sync.galleryEnabled = query.get('gallery') === 'true';
-  if (query.has('scene')) sync.sceneSelection = query.get('scene');
-  if (query.has('appearance')) sync.appearance = query.get('appearance');
-  const local = {};
-  const changes = [];
-  const messages = [];
-  const resultFor = (store, keys) => keys === null ? { ...store }
-    : Object.fromEntries((Array.isArray(keys) ? keys : [keys]).filter(key => store[key] !== undefined).map(key => [key, store[key]]));
+  let state = { version: 2, current: null, recent: [], favorites: [], positions: {} };
+  let sync = { enabled: true, galleryEnabled: query.get('gallery') !== 'false', appearance: query.get('appearance') || 'light', sceneSelection: query.get('scene') || (kind === 'reading' ? 'bg-027' : 'auto'), autoHideEnabled: false };
+  const local = {}, session = {};
   const area = (store, name) => ({
-    get(keys, callback) { const value = resultFor(store, keys); if (callback) callback(value); return Promise.resolve(value); },
-    set(value, callback) {
-      const event = Object.fromEntries(Object.entries(value).map(([key, newValue]) => [key, { oldValue: store[key], newValue }]));
-      Object.assign(store, value);
-      if (name === 'sync') sessionStorage.setItem(storageKey, JSON.stringify(store));
-      changes.forEach(listener => listener(event, name));
-      if (callback) callback();
-      return Promise.resolve();
-    }
+    async get(keys) { return keys === null ? { ...store } : Object.fromEntries((Array.isArray(keys) ? keys : [keys]).filter(k => store[k] !== undefined).map(k => [k,store[k]])); },
+    async set(values) { const events = {}; for (const [k,v] of Object.entries(values)) { events[k] = { oldValue: store[k], newValue: v }; store[k] = v; } for (const fn of changes) fn(events,name); },
+    async remove(keys) { for (const k of Array.isArray(keys) ? keys : [keys]) delete store[k]; }, async clear() { for (const k of Object.keys(store)) delete store[k]; }
   });
+  const works = ['landscape','portrait','square'].map((name,i) => ({ id:'fixture-'+i, type:'art', title: ['山间的光（测试画作）','静物（测试画作）','水面（测试画作）'][i], artist:'本地排版夹具', image:new URL('tests/fixtures/'+name+'.svg',base).href, url:'https://example.org/', source:'测试夹具' }));
+  window.fixtureErrors = []; window.addEventListener('error',e=>fixtureErrors.push(e.message)); window.addEventListener('unhandledrejection',e=>fixtureErrors.push(String(e.reason)));
   window.chrome = {
-    storage: { sync: area(sync, 'sync'), local: area(local, 'local'), onChanged: { addListener: fn => changes.push(fn) } },
-    runtime: {
-      id: 'local-gallery-fixture', lastError: null,
-      getURL: path => new URL(path, base).href,
-      getManifest: () => ({ version: kind === 'reading' ? '1.3.0' : '1.1.0' }),
-      onMessage: { addListener: fn => messages.push(fn) },
-      sendMessage: async () => ({ success: true })
-    },
-    tabs: { query: async () => [], sendMessage: async () => {} }
-  };
-  const nativeFetch = window.fetch.bind(window);
-  const works = [
-    { title: '山间的光（测试画作）', creator: '横幅排版夹具', image: new URL('tests/fixtures/landscape.svg', base).href },
-    { title: '静物（测试画作）', creator: '竖幅排版夹具', image: new URL('tests/fixtures/portrait.svg', base).href },
-    { title: '水面（测试画作）', creator: '方幅排版夹具', image: new URL('tests/fixtures/square.svg', base).href }
-  ];
-  window.fixtureWorks = works;
-  window.fixtureErrors = [];
-  window.addEventListener('error', event => { if (event.error) window.fixtureErrors.push(event.error.message); });
-  window.addEventListener('unhandledrejection', event => window.fixtureErrors.push(String(event.reason)));
-  window.fetch = async function (input, init) {
-    const url = new URL(typeof input === 'string' ? input : input.url, location.href);
-    if (url.origin === location.origin) return nativeFetch(input, init);
-    if (url.hostname === 'www.gstatic.com') return new Response(JSON.stringify(works.map(work => ({ ...work, link: 'https://example.org/art' }))));
-    if (url.hostname.endsWith('wikipedia.org')) return new Response(JSON.stringify({
-      title: '光与空间', extract: '展厅中的留白让观看有了节奏。画作周围的空间、柔和的光线与恰当的观看距离，会共同影响我们停留的时间。这是用于检查阅读排版的本地测试内容。',
-      content_urls: { desktop: { page: 'https://zh.wikipedia.org/wiki/光' } }
-    }));
-    return new Response('{}', { status: 503 });
+    storage: { sync:area(sync,'sync'), local:area(local,'local'), session:area(session,'session'), onChanged:{ addListener:fn=>changes.push(fn) } },
+    runtime:{
+      id:'local-fixture',getURL:p=>new URL(p,base).href,getManifest:()=>({name:kind==='art'?'ArtBreeze':'WaitWiki',version:kind==='art'?'1.2.0':'1.4.0'}),openOptionsPage:()=>window.open(new URL('tests/options.html',base)),
+      async sendMessage(request) {
+        try {
+          if(request.action==='reading') {
+            if(request.operation!=='load')state=GalleryReading.reduce(state,request);
+            return {ok:true,value:structuredClone(state)};
+          }
+          if(request.operation==='catalogue')return {ok:true,value:works};
+          if(request.operation==='image') {const text=await(await fetch(works.find(w=>w.id===request.id).image)).text();return {ok:true,value:'data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(text)))};}
+          if(request.operation==='knowledge')return {ok:true,value:{id:'reading-fixture',type:'wikipedia',title:'留白与阅读（测试内容）',content:'这是用于开发检查的本地排版样本。\n\n'.repeat(25),source:'本地夹具',url:'https://example.org/'}};
+          if(request.action==='openOptions')window.open(new URL('tests/options.html',base));
+          return {ok:true,value:true};
+        }catch(e){return {ok:false,error:e.message};}
+      }
+    }
   };
 })();

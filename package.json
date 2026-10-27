@@ -1,11 +1,11 @@
 {
   "name": "artbreeze",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "艺息ArtBreeze - 在AI对话期间展示美丽的名画，为您的思考时光增添艺术气息",
   "main": "content.js",
   "scripts": {
     "check": "node scripts/check.js",
-    "test": "node --test tests/gallery.test.js",
+    "test": "node --test tests/*.test.js",
     "build": "node scripts/check.js && python3 scripts/package.py",
     "package": "python3 scripts/package.py",
     "preview": "python3 scripts/serve-preview.py"

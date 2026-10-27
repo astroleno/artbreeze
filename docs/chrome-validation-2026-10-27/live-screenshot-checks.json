@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "kind": "art",
+      "pass": true,
+      "sceneID": "bg-012",
+      "file": "art-store-1280x800.png",
+      "site": "https://www.kimi.com/",
+      "trigger": "Entry button only; no AI message was sent."
+    },
+    {
+      "kind": "reading",
+      "pass": true,
+      "sceneID": "bg-027",
+      "file": "reading-store-1280x800.png",
+      "site": "https://www.kimi.com/",
+      "trigger": "Entry button only; no AI message was sent."
+    }
+  ]
+}

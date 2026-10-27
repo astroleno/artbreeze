@@ -1,0 +1,147 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "label": "artbreeze: old settings are persisted before update"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: upgrade retains extension ID"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: native update preserves disabled and dark appearance choices"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: effective legacy duration migrates correctly"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: fixed scene migration"
+    },
+    {
+      "pass": true,
+      "label": "artbreeze: final ZIP version loaded"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: old settings are persisted before update"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: upgrade retains extension ID"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: native update preserves disabled and dark appearance choices"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: effective legacy duration migrates correctly"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: fixed scene migration"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: legacy small reading card and types retained"
+    },
+    {
+      "pass": true,
+      "label": "waitwiki: final ZIP version loaded"
+    }
+  ],
+  "migrations": [
+    {
+      "product": "artbreeze",
+      "from": "1.1.0",
+      "to": "1.2.0",
+      "before": {
+        "enabled": false,
+        "galleryEnabled": false,
+        "darkMode": true,
+        "appearance": "dark",
+        "showIcon": false,
+        "showArtworkInfo": false,
+        "sceneSelection": "bg-004",
+        "gallerySize": "small",
+        "cardSize": "small",
+        "contentTypes": [
+          "gathas"
+        ],
+        "autoHideDelay": 1000
+      },
+      "after": {
+        "appearance": "dark",
+        "artworkScale": 0.92,
+        "autoHideDelay": 2,
+        "autoHideEnabled": true,
+        "cardSize": "small",
+        "contentTypes": [
+          "gathas"
+        ],
+        "darkMode": true,
+        "enabled": false,
+        "galleryEnabled": false,
+        "gallerySize": "small",
+        "hoverToOpen": true,
+        "language": "zh",
+        "panelWidth": 360,
+        "randomContentOnNewWait": true,
+        "roomLightEffects": true,
+        "sceneSelection": "bg-004",
+        "settingsVersion": 2,
+        "showArtworkInfo": false,
+        "showIcon": false,
+        "showSourceInfo": true
+      }
+    },
+    {
+      "product": "waitwiki",
+      "from": "1.3.0",
+      "to": "1.4.0",
+      "before": {
+        "enabled": false,
+        "galleryEnabled": false,
+        "darkMode": true,
+        "appearance": "dark",
+        "showIcon": false,
+        "showArtworkInfo": false,
+        "sceneSelection": "bg-004",
+        "gallerySize": "small",
+        "cardSize": "small",
+        "contentTypes": [
+          "gathas"
+        ],
+        "displayDuration": "always"
+      },
+      "after": {
+        "appearance": "dark",
+        "artworkScale": 0.92,
+        "autoHideDelay": 2,
+        "autoHideEnabled": false,
+        "cardSize": "small",
+        "contentTypes": [
+          "gathas"
+        ],
+        "darkMode": true,
+        "displayDuration": "always",
+        "enabled": false,
+        "galleryEnabled": false,
+        "gallerySize": "small",
+        "hoverToOpen": true,
+        "language": "zh",
+        "panelWidth": 280,
+        "randomContentOnNewWait": true,
+        "roomLightEffects": true,
+        "sceneSelection": "bg-027",
+        "settingsVersion": 2,
+        "showArtworkInfo": false,
+        "showIcon": false,
+        "showSourceInfo": true
+      }
+    }
+  ]
+}

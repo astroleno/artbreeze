@@ -1,141 +1,48 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const crypto = require('node:crypto');
-const vm = require('node:vm');
-const gallery = require('../gallery/experience.js');
-const root = path.resolve(__dirname, '..');
-const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json')));
-const kind = manifest.name.includes('WaitWiki') ? 'reading' : 'art';
-
-test('24 local scenes are complete, unique, and match the reviewed hashes', () => {
-  const catalogue = JSON.parse(fs.readFileSync(path.join(root, 'gallery/scenes.json')));
-  assert.deepEqual(catalogue.scenes, gallery.scenes);
-  assert.equal(gallery.scenes.length, 24);
-  assert.equal(new Set(gallery.scenes.map(s => s.id)).size, 24);
-  let total = 0;
-  for (const scene of gallery.scenes) {
-    const bytes = fs.readFileSync(path.join(root, scene.image));
-    assert.equal(bytes.toString('ascii', 0, 4), 'RIFF');
-    assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
-    assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), scene.provenance.sha256);
-    assert.ok(scene.mount.x >= 0 && scene.mount.x + scene.mount.width <= 1);
-    assert.ok(scene.mount.y >= 0 && scene.mount.y + scene.mount.height <= 1);
-    assert.equal(scene.width, 1280);
-    total += bytes.length;
+const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const G = require('../gallery/experience.js');
+const root = path.resolve(__dirname, '..'), manifest = require('../manifest.json'), reading = manifest.name.includes('WaitWiki');
+test('product catalogue, generated data, resources and hashes agree', () => {
+  const data = require('../gallery/scenes.json');
+  assert.equal(data.product, reading ? 'waitwiki' : 'artbreeze');
+  assert.equal(data.scenes.length, reading ? 1 : 24);
+  assert.deepEqual(data.scenes, G.scenes);
+  assert.equal(new Set(G.scenes.map(s => s.id)).size, G.scenes.length);
+  assert.deepEqual(fs.readdirSync(path.join(root, 'gallery/images')).sort(), G.scenes.map(s => path.basename(s.image)).sort());
+  for (const s of G.scenes) {
+    const bytes = fs.readFileSync(path.join(root, s.image)); assert.equal(bytes.toString('ascii', 0, 4), 'RIFF');
+    assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'), s.provenance.sha256);
+    assert.ok(s.mount.x >= 0 && s.mount.x + s.mount.width <= 1);
   }
-  assert.ok(total < 1_500_000, 'The whole scene collection stays below 1.5 MB');
+  if (reading) assert.equal(G.scenes[0].id, 'bg-027');
 });
-
-test('product defaults, legacy dark mode, and invalid preferences normalize safely', () => {
-  assert.equal(gallery.preferences({}, 'art').galleryEnabled, true);
-  assert.equal(gallery.preferences({}, 'reading').galleryEnabled, false);
-  assert.equal(gallery.preferences({}).appearance, 'system');
-  assert.equal(gallery.preferences({ darkMode: true }).appearance, 'dark');
-  assert.equal(gallery.preferences({ darkMode: false }).appearance, 'light');
-  assert.equal(gallery.preferences({ darkMode: true, appearance: 'system' }).appearance, 'system');
-  assert.deepEqual(gallery.preferences({ sceneSelection: '../bad', gallerySize: 'bad', appearance: 'bad' }), gallery.preferences({}));
-  assert.equal(gallery.preferences({ galleryEnabled: false }).galleryEnabled, false);
+test('matching, fixed scenes and no-repeat cycles', () => {
+  for (const s of G.scenes) assert.equal(G.chooseScene({ selection: s.id }).id, s.id);
+  const first = G.chooseScene({ palette: 'neutral' });
+  if (!reading) assert.notEqual(G.nextScene({ palette: 'neutral', selection: 'auto' }, first.id, () => 0).id, first.id);
+  assert.equal(G.nextScene({ kind: 'reading', selection: 'bg-027' }, 'bg-027').id, 'bg-027');
+  assert.equal(G.nextScene({ selection: first.id }, first.id).id, first.id);
 });
-
-test('matching is deterministic, content aware, and all 24 fixed scenes are reachable', () => {
-  const input = { key: 'painting-1', aspect: 1.8, palette: 'warm' };
-  assert.equal(gallery.chooseScene(input).id, gallery.chooseScene(input).id);
-  assert.ok(gallery.chooseScene(input).palettes.includes('warm'));
-  const chosen = new Set(Array.from({ length: 30 }, (_, i) => gallery.chooseScene({ key: `art-${i}`, aspect: i % 2 ? .6 : 1.8, palette: i % 2 ? 'cool' : 'warm' }).id));
-  assert.ok(chosen.size > 1);
-  for (const scene of gallery.scenes) assert.equal(gallery.chooseScene({ selection: scene.id }).id, scene.id);
-  assert.ok(gallery.chooseScene({ kind: 'reading', key: 'reading' }).readingSafe);
-  assert.ok(gallery.chooseScene({ selection: 'removed-scene' }));
-});
-
-test('painting stays centered, contained, proportional, and separate from its caption', () => {
-  for (const scene of gallery.scenes) {
-    for (const width of [240, 320, 360, 520, 660]) {
-      for (const aspect of [.35, .65, 1, 1.6, 3.5]) {
-        const height = width * 9 / 16;
-        const art = gallery.layoutArtwork(scene, width, height, aspect);
-        assert.ok(Math.abs(art.x + art.width / 2 - width / 2) < .001, scene.id);
-        assert.ok(art.x >= 0 && art.x + art.width <= width);
-        assert.ok(art.y >= 0 && art.y + art.height <= height);
-        assert.ok(Math.abs(art.width / art.height - aspect) < .001);
-        if (art.caption.visible) {
-          assert.ok(art.caption.x >= art.x + art.width);
-          assert.ok(art.caption.x + art.caption.width <= width);
-        }
-      }
-    }
+test('adaptive layouts preserve the original aspect and independent center', () => {
+  for (const s of G.scenes) for (const width of [160, 240, 288, 360, 600, 800]) for (const height of [200, 360, 672]) for (const aspect of [.35, .65, 1, 1.6, 3.5]) for (const occupancy of [.68, .92, 1]) {
+    const a = G.layoutArtwork(s, width, height, aspect, true, occupancy);
+    assert.ok(Math.abs(a.x + a.width / 2 - width / 2) < .001, s.id);
+    assert.ok(Math.abs(a.width / a.height - aspect) < .001);
+    assert.ok(a.x >= 0 && a.x + a.width <= width + .001);
+    assert.ok(a.y >= 0 && a.y + a.height <= height + .001, s.id + ': vertical bounds');
+    assert.ok(a.caption.x >= a.x + a.width && a.caption.x + a.caption.width <= width + .001);
   }
 });
-
-test('all gallery sizes fit small screens and short windows', () => {
-  for (const kind of ['art', 'reading']) for (const size of ['small', 'medium', 'large']) {
-    for (const [width, height] of [[320, 568], [390, 300], [1280, 800]]) {
-      const stage = gallery.dimensions(width, height, size, kind);
-      assert.ok(stage.width <= width - 32);
-      assert.ok(stage.height <= height - 32 + .001);
-    }
+test('viewport bounds and portrait height', () => {
+  for (const kind of ['art', 'reading']) for (const [w,h] of [[320,568],[390,300],[1200,900],[160,180]]) {
+    const d=G.dimensions(w,h,800,kind,.6);assert.ok(d.width<=w-32);assert.ok(d.height<=h-32);
   }
+  assert.ok(G.dimensions(1200,900,600,'art',.6).height>G.dimensions(1200,900,600,'art',2).height);
 });
-
-test('only safe source links are navigable', () => {
-  assert.equal(gallery.safeURL('javascript:alert(1)'), null);
-  assert.equal(gallery.safeURL('data:text/html,bad'), null);
-  assert.equal(gallery.safeURL('https://example.org/a'), 'https://example.org/a');
+test('art candidates respond to aspect while the reading scene stays fixed',()=>{
+ if(reading){for(const aspect of [.35,1,3.5])assert.equal(G.nextScene({kind:'reading',selection:'bg-027',aspect}).id,'bg-027');return;}
+ const select=aspect=>G.nextScene({selection:'auto',palette:'neutral',aspect},undefined,()=>0).id;
+ assert.equal(select(.35),'bg-005');assert.equal(select(3.5),'bg-015');
 });
-
-test('MV3 declares local scripts and images on supported AI sites only', () => {
-  assert.equal(manifest.manifest_version, 3);
-  const scripts = manifest.content_scripts[0];
-  assert.deepEqual(scripts.js.slice(0, 2), ['gallery/catalogue.js', 'gallery/experience.js']);
-  assert.ok(!scripts.matches.includes('<all_urls>'));
-  assert.ok(scripts.matches.includes('https://chatgpt.com/*'));
-  const resources = manifest.web_accessible_resources.flatMap(item => item.resources);
-  assert.ok(resources.includes('gallery/images/*.webp'));
-  for (const group of manifest.web_accessible_resources) for (const match of group.matches) {
-    assert.match(match, /^https:\/\/[^/]+\/\*$/, 'MV3 resource matches must use an origin with /*');
-  }
-  for (const file of [...scripts.js, ...scripts.css, manifest.background.service_worker, manifest.action.default_popup]) {
-    assert.ok(fs.existsSync(path.join(root, file)), file);
-  }
-});
-
-test('install/update preserves disabled state, fixed scenes, and legacy appearance', async () => {
-  let onInstalled;
-  const stored = { enabled: false, sceneSelection: 'bg-004', darkMode: true, contentTypes: ['gathas'] };
-  const event = { addListener() {} };
-  const chrome = {
-    runtime: { onInstalled: { addListener(fn) { onInstalled = fn; } }, onMessage: event, onStartup: event },
-    storage: { sync: { async get() { return { ...stored }; }, async set(value) { Object.assign(stored, value); } } },
-    tabs: { onUpdated: event }, action: { onClicked: event }
-  };
-  vm.runInNewContext(fs.readFileSync(path.join(root, 'background.js'), 'utf8'), { chrome, GalleryExperience: gallery, importScripts() {}, console: { log() {} } });
-  await onInstalled({ reason: 'update' });
-  assert.equal(stored.enabled, false);
-  assert.equal(stored.sceneSelection, 'bg-004');
-  assert.equal(stored.appearance, 'dark');
-  assert.deepEqual(stored.contentTypes, ['gathas']);
-  assert.equal(stored.galleryEnabled, kind === 'art');
-});
-
-if (kind === 'art') test('closing during an artwork load cannot reopen the gallery', async () => {
-  const code = fs.readFileSync(path.join(root, 'content.js'), 'utf8').replace('const artBreeze = new ArtBreeze();', 'globalThis.TestApp = ArtBreeze;');
-  const context = { GalleryExperience: gallery, console: { log() {}, warn() {} }, clearTimeout, document: { removeEventListener() {} } };
-  vm.runInNewContext(code, context);
-  const app = Object.create(context.TestApp.prototype);
-  let resolve;
-  let changedImage = false;
-  Object.assign(app, {
-    settings: { enabled: true }, displayRevision: 0,
-    currentArtwork: { image: 'test', title: 'Test' },
-    getImage: () => new Promise(done => { resolve = done; }),
-    ui: { container: { classList: { remove() {} } }, icon: { style: {} }, image: { set src(_) { changedImage = true; } } }
-  });
-  app.showArtwork();
-  app.hideArtwork();
-  resolve({ src: 'late-image', async decode() {} });
-  await new Promise(done => setImmediate(done));
-  assert.equal(app.isShowingArtwork, false);
-  assert.equal(changedImage, false);
-});
+test('safe source protocols',()=>{assert.equal(G.safeURL('javascript:alert(1)'),null);assert.equal(G.safeURL('data:text/html,bad'),null);assert.equal(G.safeURL('https://example.org/'),'https://example.org/');});

@@ -12,9 +12,9 @@ root = Path(__file__).resolve().parents[1]
 
 class PreviewHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path.split('?', 1)[0] == '/tests/popup.html':
+        if self.path.split('?', 1)[0] in ('/tests/popup.html', '/tests/options.html'):
             # The production popup is unchanged; only this local response injects the test API shim.
-            html = (root / 'popup.html').read_text().replace('</title>', '</title><base href="/"><script src="tests/fixture-chrome.js"></script>')
+            html = (root / ('options.html' if self.path.split('?', 1)[0].endswith('options.html') else 'popup.html')).read_text().replace('</title>', '</title><base href="/"><script src="tests/fixture-chrome.js"></script>')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.end_headers()

@@ -1,0 +1,256 @@
+{
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.47",
+    "revision": "@1d17a2e2ee147bb7d6ae2ab6abdb3a2510c17775",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.19"
+  },
+  "mode": "Native MV3 extensions on a controlled HTTPS-origin host; no AI message was sent.",
+  "products": [
+    {
+      "kind": "art",
+      "id": "dadnkmmcjepeigenepmenmekoamokmml"
+    },
+    {
+      "kind": "reading",
+      "id": "jjdlppfgimfifkoegplcibkdhomgolmc"
+    }
+  ],
+  "checks": [
+    {
+      "pass": true,
+      "label": "art: real runtime messages and local storage"
+    },
+    {
+      "pass": true,
+      "label": "art: product-specific controls"
+    },
+    {
+      "pass": true,
+      "label": "art: 24 scenes or fixed reading background"
+    },
+    {
+      "pass": true,
+      "label": "reading: real runtime messages and local storage"
+    },
+    {
+      "pass": true,
+      "label": "reading: product-specific controls"
+    },
+    {
+      "pass": true,
+      "label": "reading: 24 scenes or fixed reading background"
+    },
+    {
+      "pass": true,
+      "label": "art: production content script initialized"
+    },
+    {
+      "pass": true,
+      "label": "reading: production content script initialized"
+    },
+    {
+      "pass": true,
+      "label": "art: new waiting cycle opens content"
+    },
+    {
+      "pass": true,
+      "label": "art: actual DOM visible"
+    },
+    {
+      "pass": true,
+      "label": "art: real provider content"
+    },
+    {
+      "pass": true,
+      "label": "art: display image is not the old 400px thumbnail"
+    },
+    {
+      "pass": true,
+      "label": "art: independent horizontal center"
+    },
+    {
+      "pass": true,
+      "label": "art: original has no night filter"
+    },
+    {
+      "pass": true,
+      "label": "art: opening does not steal composer focus"
+    },
+    {
+      "pass": true,
+      "label": "art: Escape collapses and restores entry focus"
+    },
+    {
+      "pass": true,
+      "label": "art: IME, repeated and newline Enter are ignored"
+    },
+    {
+      "pass": true,
+      "label": "art: original Enter handling remains intact"
+    },
+    {
+      "pass": true,
+      "label": "art: Enter, button and form notification merge into one cycle"
+    },
+    {
+      "pass": true,
+      "label": "art: favorite persisted through native runtime"
+    },
+    {
+      "pass": true,
+      "label": "art: theme does not change content or scene"
+    },
+    {
+      "pass": true,
+      "label": "art: reopening preserves content and scene"
+    },
+    {
+      "pass": true,
+      "label": "art: locked content survives a new wait"
+    },
+    {
+      "pass": true,
+      "label": "art: all 24 packaged backgrounds decode and are reachable"
+    },
+    {
+      "pass": true,
+      "label": "art: real backdrop pixels are available for caption contrast"
+    },
+    {
+      "pass": true,
+      "label": "art: next cycle changes scene with random content disabled"
+    },
+    {
+      "pass": true,
+      "label": "art: active reading pauses auto-hide"
+    },
+    {
+      "pass": true,
+      "label": "art: leaving starts the configured auto-hide"
+    },
+    {
+      "pass": true,
+      "label": "art: small viewport fits"
+    },
+    {
+      "pass": true,
+      "label": "art: native 200% tab zoom fits"
+    },
+    {
+      "pass": true,
+      "label": "art: narrow short viewport fits"
+    },
+    {
+      "pass": true,
+      "label": "art: reduced motion disables animation"
+    },
+    {
+      "pass": true,
+      "label": "art: failed backdrop retains a solid readable surface"
+    },
+    {
+      "pass": true,
+      "label": "art: disabling hides both panel and entry"
+    },
+    {
+      "pass": true,
+      "label": "reading: new waiting cycle opens content"
+    },
+    {
+      "pass": true,
+      "label": "reading: actual DOM visible"
+    },
+    {
+      "pass": true,
+      "label": "reading: real provider content"
+    },
+    {
+      "pass": true,
+      "label": "reading: opening does not steal composer focus"
+    },
+    {
+      "pass": true,
+      "label": "reading: Escape collapses and restores entry focus"
+    },
+    {
+      "pass": true,
+      "label": "reading: IME, repeated and newline Enter are ignored"
+    },
+    {
+      "pass": true,
+      "label": "reading: original Enter handling remains intact"
+    },
+    {
+      "pass": true,
+      "label": "reading: Enter, button and form notification merge into one cycle"
+    },
+    {
+      "pass": true,
+      "label": "reading: favorite persisted through native runtime"
+    },
+    {
+      "pass": true,
+      "label": "reading: theme does not change content or scene"
+    },
+    {
+      "pass": true,
+      "label": "reading: reopening preserves content and scene"
+    },
+    {
+      "pass": true,
+      "label": "reading: locked content survives a new wait"
+    },
+    {
+      "pass": true,
+      "label": "reading: one fixed reading scene"
+    },
+    {
+      "pass": true,
+      "label": "reading: text sits directly on the gallery without a white card"
+    },
+    {
+      "pass": true,
+      "label": "reading: scroll position restores after reopening"
+    },
+    {
+      "pass": true,
+      "label": "reading: active reading pauses auto-hide"
+    },
+    {
+      "pass": true,
+      "label": "reading: leaving starts the configured auto-hide"
+    },
+    {
+      "pass": true,
+      "label": "reading: small viewport fits"
+    },
+    {
+      "pass": true,
+      "label": "reading: native 200% tab zoom fits"
+    },
+    {
+      "pass": true,
+      "label": "reading: narrow short viewport fits"
+    },
+    {
+      "pass": true,
+      "label": "reading: reduced motion disables animation"
+    },
+    {
+      "pass": true,
+      "label": "reading: failed backdrop retains a solid readable surface"
+    },
+    {
+      "pass": true,
+      "label": "reading: disabling hides both panel and entry"
+    },
+    {
+      "pass": true,
+      "label": "no uncaught errors",
+      "detail": []
+    }
+  ],
+  "errors": []
+}

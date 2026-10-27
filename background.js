@@ -1,119 +1,60 @@
-// ArtBreeze Background Script
-// 艺息ArtBreeze - 后台服务
-
-importScripts('gallery/catalogue.js', 'gallery/experience.js');
-
-chrome.runtime.onInstalled.addListener(async () => {
-  console.log('ArtBreeze extension installed');
-  
-  // Upgrades only fill missing fields; existing choices are never reset.
+importScripts('gallery/catalogue.js', 'gallery/experience.js', 'gallery/reading-state.js', 'providers.js');
+const kind = chrome.runtime.getManifest().name.includes('WaitWiki') ? 'reading' : 'art';
+const providers = new ContentProviders.Providers({ kind, storage: chrome.storage.local, resourceURL: path => chrome.runtime.getURL(path) });
+let queue = Promise.resolve();
+const STATE_KEY = 'reading_state_v2';
+async function migrate() {
   const existing = await chrome.storage.sync.get(null);
-  const defaults = {
-    enabled: true,
-    artworkChangeInterval: 'auto', // auto, 30s, 1m, 5m
-    showArtworkInfo: true,
-    position: 'center', // center, top-left, top-right, bottom-left, bottom-right
-    opacity: 0.9,
-    autoHideDelay: 1000,
-    ...GalleryExperience.preferences(existing, 'art')
-  };
-  await chrome.storage.sync.set(Object.fromEntries(Object.entries(defaults).filter(([key]) => existing[key] === undefined)));
-});
-
-// 监听来自content script的消息
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'getSettings') {
-    chrome.storage.sync.get([
-      'enabled',
-      'artworkChangeInterval',
-      'showArtworkInfo',
-      'position',
-      'opacity',
-      'autoHideDelay',
-      ...GalleryExperience.KEYS
-    ], (result) => {
-      sendResponse(result);
-    });
-    return true;
-  }
-  
-  if (request.action === 'saveSettings') {
-    chrome.storage.sync.set(request.settings, () => {
-      sendResponse({ success: true });
-    });
-    return true;
-  }
-  
-  if (request.action === 'toggleExtension') {
-    chrome.storage.sync.get(['enabled'], (result) => {
-      const newState = !result.enabled;
-      chrome.storage.sync.set({ enabled: newState }, () => {
-        sendResponse({ enabled: newState });
-      });
-    });
-    return true;
-  }
-});
-
-// 监听标签页更新
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tab.url) {
-    // 检查是否是支持的AI平台
-    const supportedPlatforms = [
-      'chat.openai.com',
-      'claude.ai',
-      'bard.google.com',
-      'gemini.google.com',
-      'copilot.microsoft.com',
-      'bing.com',
-      'chat.deepseek.com',
-      'grok.x.ai',
-      'yuanbao.tencent.com',
-      'kimi.ai',
-      'kimi.moonshot.cn'
-    ];
-    
-    const isSupported = supportedPlatforms.some(platform => 
-      tab.url.includes(platform)
-    );
-    
-    if (isSupported) {
-      // 向content script发送消息
-      chrome.tabs.sendMessage(tabId, { 
-        action: 'platformDetected',
-        platform: tab.url 
-      }).catch(() => {
-        // 忽略错误，可能是页面还没有加载content script
-      });
+  await chrome.storage.sync.set(GalleryExperience.preferences(existing, kind));
+}
+chrome.runtime.onInstalled.addListener(() => { migrate().catch(() => {}); });
+function enqueue(task) { const next = queue.then(task); queue = next.catch(() => {}); return next; }
+async function reading(command, sender) {
+  return enqueue(async () => {
+    const saved = await chrome.storage.local.get(STATE_KEY);
+    let state = GalleryReading.normalize(saved[STATE_KEY]);
+    const key = sender.tab ? 'reading_tab_' + sender.tab.id : null;
+    if (command.operation === 'load') {
+      if (key && chrome.storage.session) {
+        const tab = await chrome.storage.session.get(key); if (tab[key]) state.current = GalleryReading.normalize({ current: tab[key] }).current;
+      }
+      return state;
     }
-  }
-});
-
-// 处理扩展图标点击
-chrome.action.onClicked.addListener((tab) => {
-  // 打开popup而不是执行动作
-  chrome.action.openPopup();
-});
-
-// 检查权限
-chrome.runtime.onStartup.addListener(() => {
-  chrome.permissions.contains({
-    origins: [
-      'https://chat.openai.com/*',
-      'https://claude.ai/*',
-      'https://bard.google.com/*',
-      'https://gemini.google.com/*',
-      'https://copilot.microsoft.com/*',
-      'https://www.bing.com/*',
-      'https://chat.deepseek.com/*',
-      'https://grok.x.ai/*',
-      'https://yuanbao.tencent.com/*',
-      'https://kimi.ai/*',
-      'https://kimi.moonshot.cn/*'
-    ]
-  }, (hasPermissions) => {
-    if (!hasPermissions) {
-      console.log('ArtBreeze: Missing required permissions');
+    if (!['record', 'favorite', 'progress', 'clear', 'select'].includes(command.operation)) throw new Error('Unknown state operation');
+    if (command.operation === 'select') {
+      const chosen = [...state.favorites, ...state.recent].find(x => x.id === command.id);
+      if (!chosen) throw new Error('Unknown content');
+      state = GalleryReading.reduce(state, { operation: 'record', item: chosen });
+    } else state = GalleryReading.reduce(state, command);
+    await chrome.storage.local.set({ [STATE_KEY]: state });
+    if (key && chrome.storage.session && command.operation === 'record') await chrome.storage.session.set({ [key]: state.current });
+    if (command.operation === 'clear') {
+      const all = await chrome.storage.local.get(null); await chrome.storage.local.remove(Object.keys(all));
+      if (chrome.storage.session) await chrome.storage.session.clear();
+      providers.artworks = null; providers.recentKnowledge?.clear();
     }
+    return state;
   });
+}
+async function dispatch(request, sender) {
+  if (!ContentProviders.allowedSender(sender, chrome.runtime.id)) throw new Error('Sender denied');
+  if (request.action === 'reading') return reading(request, sender);
+  if (request.action === 'openOptions') { await chrome.runtime.openOptionsPage(); return true; }
+  if (request.action === 'content') {
+    if (kind === 'art' && request.operation === 'catalogue') return providers.catalogue();
+    if (kind === 'art' && request.operation === 'image' && typeof request.id === 'string') return providers.image(request.id, request.pixels);
+    if (kind === 'reading' && request.operation === 'knowledge') {
+      const prefs = GalleryExperience.preferences(await chrome.storage.sync.get(null), kind);
+      if (!prefs.contentTypes.includes(request.type)) throw new Error('Content type disabled');
+      if (request.exclude !== undefined && (typeof request.exclude !== 'string' || !/^[a-z0-9]{1,32}$/.test(request.exclude))) throw new Error('Invalid content ID');
+      return providers.knowledge(request.type, prefs.language, request.exclude);
+    }
+  }
+  throw new Error('Unknown operation');
+}
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (!request || typeof request !== 'object') return false;
+  dispatch(request, sender).then(value => sendResponse({ ok: true, value }), error => sendResponse({ ok: false, error: error.message }));
+  return true;
 });
+chrome.tabs.onRemoved.addListener(tabId => { chrome.storage.session?.remove('reading_tab_' + tabId).catch(() => {}); });

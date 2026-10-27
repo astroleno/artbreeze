@@ -1,31 +1,16 @@
 {
   "manifest_version": 3,
   "name": "艺息ArtBreeze",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "在AI对话期间展示美丽的名画，为您的思考时光增添艺术气息",
   "permissions": [
-    "activeTab",
     "storage"
   ],
   "host_permissions": [
-    "https://chatgpt.com/*",
-    "https://chat.openai.com/*",
-    "https://claude.ai/*",
-    "https://bard.google.com/*",
-    "https://gemini.google.com/*",
-    "https://www.bing.com/*",
-    "https://copilot.microsoft.com/*",
-    "https://chat.deepseek.com/*",
-    "https://grok.x.ai/*",
-    "https://grok.com/*",
-    "https://x.ai/*",
-    "https://x.com/i/grok*",
-    "https://x.com/grok*",
-    "https://yuanbao.tencent.com/*",
-    "https://*.kimi.ai/*",
-    "https://kimi.moonshot.cn/*",
-    "https://*.doubao.com/*",
-    "https://*.volcengine.com/*"
+    "https://www.gstatic.com/*",
+    "https://lh3.ggpht.com/*",
+    "https://lh3.googleusercontent.com/*",
+    "https://upload.wikimedia.org/*"
   ],
   "content_scripts": [
     {
@@ -37,21 +22,28 @@
         "https://gemini.google.com/*",
         "https://www.bing.com/*",
         "https://copilot.microsoft.com/*",
+        "https://copilot.com/*",
         "https://chat.deepseek.com/*",
         "https://grok.x.ai/*",
         "https://grok.com/*",
         "https://x.ai/*",
-        "https://x.com/i/grok*",
-        "https://x.com/grok*",
         "https://yuanbao.tencent.com/*",
-        "https://*.kimi.ai/*",
+        "https://kimi.ai/*",
+        "https://www.kimi.ai/*",
         "https://kimi.moonshot.cn/*",
-        "https://*.doubao.com/*",
-        "https://*.volcengine.com/*"
+        "https://www.kimi.com/*",
+        "https://www.doubao.com/*",
+        "https://doubao.com/*",
+        "https://x.com/i/grok*",
+        "https://x.com/grok*"
       ],
       "js": [
         "gallery/catalogue.js",
         "gallery/experience.js",
+        "gallery/reading-state.js",
+        "gallery/session.js",
+        "providers.js",
+        "gallery/companion.js",
         "content.js"
       ],
       "css": [
@@ -63,7 +55,6 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "icons/*.png",
         "gallery/images/*.webp"
       ],
       "matches": [
@@ -74,16 +65,19 @@
         "https://gemini.google.com/*",
         "https://www.bing.com/*",
         "https://copilot.microsoft.com/*",
+        "https://copilot.com/*",
         "https://chat.deepseek.com/*",
         "https://grok.x.ai/*",
         "https://grok.com/*",
         "https://x.ai/*",
-        "https://x.com/*",
         "https://yuanbao.tencent.com/*",
-        "https://*.kimi.ai/*",
+        "https://kimi.ai/*",
+        "https://www.kimi.ai/*",
         "https://kimi.moonshot.cn/*",
-        "https://*.doubao.com/*",
-        "https://*.volcengine.com/*"
+        "https://www.kimi.com/*",
+        "https://www.doubao.com/*",
+        "https://doubao.com/*",
+        "https://x.com/*"
       ]
     }
   ],
@@ -104,5 +98,13 @@
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "minimum_chrome_version": "102",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "sourceCatalogue": "data/releases/2026-10-15-experience/background-scenes-01.json",
   "scenes": [
     {
@@ -675,5 +675,6 @@
         "sha256": "b16af762f1c04fc918fb26e892fcefbd3b4dc0a764baf11decbd8398f9488e54"
       }
     }
-  ]
+  ],
+  "product": "artbreeze"
 }

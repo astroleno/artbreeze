@@ -1,0 +1,445 @@
+{
+  "date": "2026-10-27",
+  "results": [
+    {
+      "requested": "https://chatgpt.com/",
+      "status": 200,
+      "origin": "https://chatgpt.com",
+      "path": "/",
+      "title": "请稍候…",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://chat.openai.com/",
+      "status": 200,
+      "origin": "https://chatgpt.com",
+      "path": "/",
+      "title": "请稍候…",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://claude.ai/",
+      "status": 200,
+      "origin": "https://claude.ai",
+      "path": "/",
+      "title": "请稍候…",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://bard.google.com/",
+      "status": 200,
+      "origin": "https://gemini.google.com",
+      "path": "/app",
+      "title": "Google Gemini",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://gemini.google.com/",
+      "status": 200,
+      "origin": "https://gemini.google.com",
+      "path": "/app",
+      "title": "Google Gemini",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://www.bing.com/",
+      "status": 200,
+      "origin": "https://www.bing.com",
+      "path": "/",
+      "title": "搜索 - Microsoft 必应",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://copilot.microsoft.com/",
+      "status": 200,
+      "origin": "https://copilot.com",
+      "path": "/",
+      "title": "Microsoft Copilot | Sign in",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://copilot.com/",
+      "status": 200,
+      "origin": "https://copilot.com",
+      "path": "/",
+      "title": "Microsoft Copilot | Sign in",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://chat.deepseek.com/",
+      "status": 200,
+      "origin": "https://chat.deepseek.com",
+      "path": "/sign_in",
+      "title": "DeepSeek - 探索未至之境",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://grok.x.ai/",
+      "status": 403,
+      "origin": "https://x.ai",
+      "path": "/",
+      "title": "Attention Required! | Cloudflare",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://grok.com/",
+      "status": 200,
+      "origin": "https://grok.com",
+      "path": "/",
+      "title": "Grok",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://x.ai/",
+      "status": 403,
+      "origin": "https://x.ai",
+      "path": "/",
+      "title": "Attention Required! | Cloudflare",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://yuanbao.tencent.com/",
+      "status": 200,
+      "origin": "https://yuanbao.tencent.com",
+      "path": "/chat/[redacted]",
+      "title": "元宝-腾讯旗下全能AI助手",
+      "entries": 2,
+      "composer": false,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://kimi.ai/",
+      "status": 200,
+      "origin": "https://www.kimi.ai",
+      "path": "/",
+      "title": "Kimi AI 官网：K3.1 Pro 上线，编程与智能体任务全面升级",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://www.kimi.ai/",
+      "status": 200,
+      "origin": "https://www.kimi.ai",
+      "path": "/",
+      "title": "Kimi AI 官网：K3.1 Pro 上线，编程与智能体任务全面升级",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://kimi.moonshot.cn/",
+      "status": 200,
+      "origin": "https://www.kimi.com",
+      "path": "/",
+      "title": "Kimi AI 官网：K3.1 Pro 上线，编程与智能体任务全面升级",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://www.kimi.com/",
+      "status": 200,
+      "origin": "https://www.kimi.com",
+      "path": "/",
+      "title": "Kimi AI 官网：K3.1 Pro 上线，编程与智能体任务全面升级",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://www.doubao.com/",
+      "status": 200,
+      "origin": "https://www.doubao.com",
+      "path": "/chat/",
+      "title": "豆包 - 字节跳动旗下 AI 智能助手",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://doubao.com/",
+      "status": 200,
+      "origin": "https://www.doubao.com",
+      "path": "/chat/",
+      "title": "豆包 - 字节跳动旗下 AI 智能助手",
+      "entries": 2,
+      "composer": true,
+      "apps": [
+        {
+          "kind": "art",
+          "ready": true,
+          "connected": true
+        },
+        {
+          "kind": "reading",
+          "ready": true,
+          "connected": true
+        }
+      ],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://x.com/i/grok",
+      "status": 403,
+      "origin": "null",
+      "path": "/",
+      "title": "x.com",
+      "entries": 0,
+      "composer": false,
+      "apps": [],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    },
+    {
+      "requested": "https://x.com/grok",
+      "status": 200,
+      "origin": "https://x.com",
+      "path": "/i/jf/onboarding/web",
+      "title": "X - 包罗万象的应用 / X",
+      "entries": 0,
+      "composer": false,
+      "apps": [],
+      "coverage": "Public-page load only; no authenticated send was tested."
+    }
+  ]
+}

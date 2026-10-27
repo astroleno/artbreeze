@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """Prepare the shared, offline gallery from a user-provided ArtDuo checkout.
 
-Requires cwebp and Pillow only when regenerating assets. Normal tests/builds
+Requires libwebp tools (cwebp/dwebp) and Pillow only when regenerating assets. Normal tests/builds
 use the committed assets and require neither ArtDuo nor these tools.
 """
 import argparse
 import hashlib
 import json
+import os
+import shutil
 import subprocess
+import tempfile
 from pathlib import Path
-from PIL import Image, ImageStat
+from PIL import Image, ImageStat, features
 
 SELECTED = [1, 2, 4, 5, 7, 9, 11, 12, 13, 14, 15, 16,
             21, 22, 23, 24, 27, 28, 30, 34, 39, 40, 43, 45]
@@ -33,26 +36,32 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--artduo", required=True, type=Path)
-    parser.add_argument("--out", type=Path, default=Path(__file__).resolve().parents[1] / "gallery")
-    args = parser.parse_args()
+def read_webp(path):
+    if features.check("webp"):
+        return Image.open(path)
+    # Some system Pillow builds omit WebP; use the decoder shipped with cwebp.
+    with tempfile.TemporaryDirectory(prefix="gallery-decode-") as temporary:
+        decoded = Path(temporary) / "scene.png"
+        subprocess.run(["dwebp", "-quiet", str(path), "-o", str(decoded)], check=True)
+        with Image.open(decoded) as image:
+            return image.copy()
+
+
+def prepare(artduo, out, product):
     relative_catalogue = "data/releases/2026-10-15-experience/background-scenes-01.json"
-    catalogue = json.loads((args.artduo / relative_catalogue).read_text())
+    catalogue = json.loads((artduo / relative_catalogue).read_text())
     by_id = {row["id"]: row for row in catalogue}
-    out = args.out
     (out / "images").mkdir(parents=True, exist_ok=True)
     scenes = []
-    for number in SELECTED:
+    for number in SELECTED if product == "artbreeze" else [27]:
         scene_id = f"bg-{number:03}"
         original = by_id[scene_id]
         source_path = "public" + original["asset"]["local_public_path"]
-        source = args.artduo / source_path
+        source = artduo / source_path
         target = out / "images" / f"{scene_id}.webp"
         subprocess.run(["cwebp", "-quiet", "-q", "82", "-m", "6", "-resize", "1280", "0",
                         str(source), "-o", str(target)], check=True)
-        with Image.open(target) as image:
+        with read_webp(target) as image:
             width, height = image.size
             caption_area = image.convert('L').crop((int(width * .75), int(height * .45), int(width * .87), int(height * .7)))
             caption_tone = 'light' if ImageStat.Stat(caption_area).mean[0] < 120 else 'dark'
@@ -71,7 +80,7 @@ def main():
                            "originalFilename": original["asset"]["original_filename"],
                            "sourceSha256": sha(source), "sha256": sha(target)}
         })
-    payload = {"version": 1, "sourceCatalogue": relative_catalogue, "scenes": scenes}
+    payload = {"version": 2, "product": product, "sourceCatalogue": relative_catalogue, "scenes": scenes}
     serialized = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     (out / "scenes.json").write_text(serialized)
     (out / "catalogue.js").write_text(
@@ -80,7 +89,40 @@ def main():
         "  root.GalleryCatalogue = catalogue;\n"
         "  if (typeof module === 'object' && module.exports) module.exports = catalogue;\n"
         "})(globalThis);\n")
+    (out / "SOURCES.md").write_text(
+        f"# Distributed gallery assets\n\n{product} distributes exactly {len(scenes)} imagined exhibition environment(s).\n\n"
+        "Source: the user-designated ArtDuo collection, " + relative_catalogue +
+        ". These are generated environments, not photographs of named museums. "
+        "Per-item original paths and source/distribution SHA-256 hashes are retained in scenes.json. "
+        "Third-party content rights remain subject to the original source terms.\n")
     print(f"Prepared {len(scenes)} rooms, {sum((out / 'images' / (s['id'] + '.webp')).stat().st_size for s in scenes):,} bytes")
+
+
+def main():
+    root = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--artduo", required=True, type=Path)
+    parser.add_argument("--out", type=Path, default=root / "gallery")
+    parser.add_argument("--product", choices=("artbreeze", "waitwiki"), default="waitwiki" if root.name.lower() == "waitwiki" else "artbreeze")
+    args = parser.parse_args()
+    target = args.out.resolve()
+    target.parent.mkdir(parents=True, exist_ok=True)
+    # Regeneration cannot leave a partial catalogue or stale rooms behind.
+    with tempfile.TemporaryDirectory(prefix=".gallery-prepare-", dir=target.parent) as temporary:
+        stage = Path(temporary) / "gallery"
+        if target.exists():
+            shutil.copytree(target, stage)
+            shutil.rmtree(stage / "images", ignore_errors=True)
+        prepare(args.artduo, stage, args.product)
+        backup = Path(temporary) / "previous"
+        if target.exists():
+            os.replace(target, backup)
+        try:
+            os.replace(stage, target)
+        except BaseException:
+            if backup.exists():
+                os.replace(backup, target)
+            raise
 
 
 if __name__ == "__main__":

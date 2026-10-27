@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-27",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.47",
+    "revision": "@1d17a2e2ee147bb7d6ae2ab6abdb3a2510c17775",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.19"
+  },
+  "results": [
+    {
+      "type": "wikipedia",
+      "pass": true,
+      "source": "NASA Space Place（本地概述）",
+      "notice": "来源暂不可用，当前为本地备用内容。",
+      "characters": 91
+    },
+    {
+      "type": "quotes",
+      "pass": true,
+      "source": "ZenQuotes",
+      "notice": "",
+      "characters": 100
+    },
+    {
+      "type": "facts",
+      "pass": true,
+      "source": "脑科学",
+      "notice": "来源暂不可用，当前为本地备用内容。",
+      "characters": 15
+    },
+    {
+      "type": "advice",
+      "pass": true,
+      "source": "Advice Slip",
+      "notice": "",
+      "characters": 23
+    },
+    {
+      "type": "catfacts",
+      "pass": true,
+      "source": "Cat Facts",
+      "notice": "",
+      "characters": 53
+    },
+    {
+      "type": "trivia",
+      "pass": true,
+      "source": "The Trivia API",
+      "notice": "",
+      "characters": 87
+    },
+    {
+      "type": "cocktails",
+      "pass": true,
+      "source": "TheCocktailDB",
+      "notice": "",
+      "characters": 188
+    },
+    {
+      "type": "datafacts",
+      "pass": true,
+      "source": "Based on free material from GAPMINDER.ORG, CC-BY",
+      "notice": "",
+      "characters": 42
+    },
+    {
+      "type": "gathas",
+      "pass": true,
+      "source": "宋代 黄庭坚《题子瞻墨竹诗》",
+      "notice": "",
+      "characters": 32
+    }
+  ],
+  "arbitraryFetchRejected": true,
+  "dataBoundary": true,
+  "requests": [
+    {
+      "url": "https://zh.wikipedia.org/api/rest_v1/page/random/summary",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "chrome-extension://jjdlppfgimfifkoegplcibkdhomgolmc/local-content.json",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "https://zenquotes.io/api/random",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "https://numbersapi.com/random/trivia",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "https://api.adviceslip.com/advice",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "https://catfact.ninja/fact",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "https://the-trivia-api.com/v2/questions?limit=1",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "https://www.thecocktaildb.com/api/json/v1/1/random.php",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "chrome-extension://jjdlppfgimfifkoegplcibkdhomgolmc/datafacts.csv",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    },
+    {
+      "url": "chrome-extension://jjdlppfgimfifkoegplcibkdhomgolmc/gathas.csv",
+      "method": "GET",
+      "referrer": "",
+      "hasPostData": false
+    }
+  ]
+}

@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>艺息 ArtBreeze · 设置</title>
-  <link rel="stylesheet" href="gallery/settings.css">
-</head>
-<body>
-  <header><h1>艺息 ArtBreeze</h1><p>等一段回答，看一幅画。</p></header>
-  <main>
-    <section aria-label="基础设置">
-      <label class="settings-row"><span>启用艺息</span><input type="checkbox" id="enableToggle" checked></label>
-      <label class="settings-row"><span>显示作品信息</span><input type="checkbox" id="showInfoToggle" checked></label>
-    </section>
-    <section id="gallery-settings" aria-label="空间与光线"></section>
-  </main>
-  <footer>ArtBreeze · <span id="version"></span></footer>
-  <script src="gallery/catalogue.js"></script>
-  <script src="gallery/experience.js"></script>
-  <script src="gallery/settings.js"></script>
-  <script src="popup.js"></script>
-</body>
-</html>
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>艺息 ArtBreeze · 设置</title><link rel="stylesheet" href="gallery/styles.css"><link rel="stylesheet" href="gallery/settings.css"></head><body><header><h1>艺息 ArtBreeze</h1><p>等一段回答，看一幅画。</p></header><main><section id="settings" aria-label="外观与阅读设置"></section></main><footer><button id="open-settings" type="button">完整设置、收藏与最近</button><a href="privacy.html" target="_blank">隐私说明</a><span id="version"></span><span id="save-status" role="status"></span></footer><script src="gallery/catalogue.js"></script>
+<script src="gallery/experience.js"></script>
+<script src="gallery/reading-state.js"></script><script src="gallery/settings.js"></script>
+<script src="popup.js"></script>
+</body></html>

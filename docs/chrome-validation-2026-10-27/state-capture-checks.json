@@ -1,0 +1,68 @@
+{
+  "checks": [
+    {
+      "pass": true,
+      "label": "art: native settings controls update both tabs"
+    },
+    {
+      "pass": true,
+      "label": "art: next-read library choice opens the selected item"
+    },
+    {
+      "pass": true,
+      "label": "art: library removes a favorite"
+    },
+    {
+      "pass": true,
+      "label": "art: first clear click does not delete data"
+    },
+    {
+      "pass": true,
+      "label": "art: confirmed clear removes local data and preserves settings"
+    },
+    {
+      "pass": true,
+      "label": "art: another tab cannot replace retained content"
+    },
+    {
+      "pass": true,
+      "label": "art: native tab reload restores its own snapshot"
+    },
+    {
+      "pass": true,
+      "label": "art: stopped service worker wakes and restores persisted content"
+    },
+    {
+      "pass": true,
+      "label": "reading: native settings controls update both tabs"
+    },
+    {
+      "pass": true,
+      "label": "reading: next-read library choice opens the selected item"
+    },
+    {
+      "pass": true,
+      "label": "reading: library removes a favorite"
+    },
+    {
+      "pass": true,
+      "label": "reading: first clear click does not delete data"
+    },
+    {
+      "pass": true,
+      "label": "reading: confirmed clear removes local data and preserves settings"
+    },
+    {
+      "pass": true,
+      "label": "reading: another tab cannot replace retained content"
+    },
+    {
+      "pass": true,
+      "label": "reading: native tab reload restores its own snapshot"
+    },
+    {
+      "pass": true,
+      "label": "reading: stopped service worker wakes and restores persisted content"
+    }
+  ]
+}

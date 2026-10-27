@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "kind": "art",
+      "page": "preview",
+      "pass": true,
+      "checks": "PASS 24 张背景全部解码\nPASS 内容显示\nPASS 昼夜不换内容或场景\nPASS 重开保持内容\nPASS 无未处理异常",
+      "errors": []
+    },
+    {
+      "kind": "art",
+      "page": "popup",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "kind": "art",
+      "page": "options",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "kind": "reading",
+      "page": "preview",
+      "pass": true,
+      "checks": "PASS 1 张背景全部解码\nPASS 内容显示\nPASS 昼夜不换内容或场景\nPASS 重开保持内容\nPASS 无未处理异常",
+      "errors": []
+    },
+    {
+      "kind": "reading",
+      "page": "popup",
+      "pass": true,
+      "errors": []
+    },
+    {
+      "kind": "reading",
+      "page": "options",
+      "pass": true,
+      "errors": []
+    }
+  ]
+}

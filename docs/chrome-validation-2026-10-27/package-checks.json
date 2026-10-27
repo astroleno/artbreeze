@@ -1,0 +1,24 @@
+[
+  {
+    "product": "artbreeze",
+    "version": "1.2.0",
+    "files": 49,
+    "bytes": 946364,
+    "sha256": "03edeeb81262d3215b29a3032a93b54f21d4a89f24aadc4282471a7febaee24e",
+    "mountedFilesMatch": true,
+    "sourceFilesMatch": true,
+    "CRC": true,
+    "images": 24
+  },
+  {
+    "product": "waitwiki",
+    "version": "1.4.0",
+    "files": 29,
+    "bytes": 120172,
+    "sha256": "f8ddc6e57f6e7da1a202525d191c146d62cab99bb97bd0454333abbc3556e0a7",
+    "mountedFilesMatch": true,
+    "sourceFilesMatch": true,
+    "CRC": true,
+    "images": 1
+  }
+]
