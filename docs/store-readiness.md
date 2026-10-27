@@ -1,6 +1,6 @@
 # 艺息 ArtBreeze 1.2.0 · Chrome Web Store 提交材料
 
-更新：2026-10-28。状态：源码与本地验证交付，**尚未提交商店，不能标作审核已通过或无条件上架就绪**。
+更新：2026-10-28。状态：**已提交 Chrome Web Store 审核，后台显示“待审核”**。自动发布已关闭，审核通过后手动发布；尚未获批或公开发布新版。详情见 [送审记录](store-submission-2026-10-28.md)。
 
 ## 单一目的与说明
 
@@ -31,7 +31,7 @@
 
 隐私政策已覆盖本地发送操作识别、Chrome 偏好同步、本机收藏/最近/滚动恢复、有限缓存、第三方普通网络信息及清除方式。用途仅限产品功能，不出售、广告追踪或人工读取本地记录。发布者仍需在后台按实际字段披露本地操作检测及阅读管理；不能因“不上传到开发者服务器”就直接声明完全不处理用户数据。后台、商店说明与公开隐私页应一致。[本地处理说明](https://developer.chrome.com/docs/webstore/program-policies/user-data-faq)、[隐私字段说明](https://developer.chrome.com/docs/webstore/cws-dashboard-privacy)。
 
-本地隐私页：[privacy.html](../privacy.html) / [privacy.md](../privacy.md)。公开 URL：[GitHub 隐私说明](https://github.com/astroleno/artbreeze/blob/main/privacy.md)。隐私页随本次源码更新一同推送；送审前核对公开页面显示 1.2.0，并与后台字段保持一致。
+本地隐私页：[privacy.html](../privacy.html) / [privacy.md](../privacy.md)。公开 URL：[GitHub 隐私说明](https://github.com/astroleno/artbreeze/blob/main/privacy.md)。隐私页已随源码推送，公开页面已核对为 1.2.0，并用于后台隐私链接。
 
 ## 来源与署名
 
@@ -54,9 +54,8 @@
 ## 送审核对
 
 - 2026-10-28 已登录后台核对原有条目 dknoefdahnmdaodahdlbfdfabhgaeoog，已发布版本为 1.0.9。本次上传 1.2.0，保留原条目与扩展 ID。
-- 推送当前公开隐私页后核对后台数据使用字段、说明和截图；最终送审状态以后台结果为准。
+- 公开隐私页、后台单一用途、storage 和主机权限理由、远程代码声明、数据使用、说明、截图与测试说明已更新并保存；送审后后台显示“该草稿尚待审核”。
 - 登录/验证受限的完整发送流程仍未覆盖；X 两个路径在本机受 403/登录跳转影响，不声明全面支持。公开页面及入口检查见 site-checks.json。
-- 当前网络下 Wikipedia、Numbers API 使用备用内容；发布时需接受并准确说明这种行为，不能声称这两项在线接口已恢复。
 - 素材按用户要求引用保留；本次没有独立权利证明，不能写“所有素材均已获授权”。
 
 本地结果、安装包及证据见 [同步验证](2026-10-27-extension-sync-verification.md)。用户已授权提交、推送与商店更新；送审选择审核通过后手动发布。
