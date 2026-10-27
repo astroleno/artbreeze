@@ -1,14 +1,14 @@
 {
   "name": "artbreeze",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "艺息ArtBreeze - 在AI对话期间展示美丽的名画，为您的思考时光增添艺术气息",
   "main": "content.js",
   "scripts": {
-    "build": "echo 'Building ArtBreeze extension...' && echo 'Build complete!'",
-    "dev": "echo 'Development mode for ArtBreeze'",
-    "test": "echo 'No tests specified'",
-    "lint": "echo 'Linting ArtBreeze code...'",
-    "package": "zip -r artbreeze-v1.0.0.zip . -x '*.git*' 'node_modules/*' 'package-lock.json' '*.zip'"
+    "check": "node scripts/check.js",
+    "test": "node --test tests/gallery.test.js",
+    "build": "node scripts/check.js && python3 scripts/package.py",
+    "package": "python3 scripts/package.py",
+    "preview": "python3 scripts/serve-preview.py"
   },
   "keywords": [
     "chrome-extension",
@@ -24,15 +24,15 @@
   ],
   "author": "2025LessLand",
   "license": "MIT",
-  "homepage": "https://github.com/2025LessLand/artbreeze",
+  "homepage": "https://github.com/astroleno/artbreeze",
   "repository": {
     "type": "git",
-    "url": "https://github.com/2025LessLand/artbreeze.git"
+    "url": "https://github.com/astroleno/artbreeze.git"
   },
   "bugs": {
-    "url": "https://github.com/2025LessLand/artbreeze/issues"
+    "url": "https://github.com/astroleno/artbreeze/issues"
   },
-  "devDependencies": {
-    "eslint": "^8.0.0"
+  "engines": {
+    "node": ">=18"
   }
 }

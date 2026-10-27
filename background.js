@@ -1,18 +1,23 @@
 // ArtBreeze Background Script
 // 艺息ArtBreeze - 后台服务
 
-chrome.runtime.onInstalled.addListener(() => {
+importScripts('gallery/catalogue.js', 'gallery/experience.js');
+
+chrome.runtime.onInstalled.addListener(async () => {
   console.log('ArtBreeze extension installed');
   
-  // 设置默认设置
-  chrome.storage.sync.set({
+  // Upgrades only fill missing fields; existing choices are never reset.
+  const existing = await chrome.storage.sync.get(null);
+  const defaults = {
     enabled: true,
     artworkChangeInterval: 'auto', // auto, 30s, 1m, 5m
     showArtworkInfo: true,
     position: 'center', // center, top-left, top-right, bottom-left, bottom-right
     opacity: 0.9,
-    autoHideDelay: 1000
-  });
+    autoHideDelay: 1000,
+    ...GalleryExperience.preferences(existing, 'art')
+  };
+  await chrome.storage.sync.set(Object.fromEntries(Object.entries(defaults).filter(([key]) => existing[key] === undefined)));
 });
 
 // 监听来自content script的消息
@@ -24,7 +29,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       'showArtworkInfo',
       'position',
       'opacity',
-      'autoHideDelay'
+      'autoHideDelay',
+      ...GalleryExperience.KEYS
     ], (result) => {
       sendResponse(result);
     });

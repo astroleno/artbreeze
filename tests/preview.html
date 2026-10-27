@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ArtBreeze · 离线开发预览</title>
+  <link rel="stylesheet" href="preview.css">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../gallery/styles.css">
+</head>
+<body>
+  <main class="preview-host">
+    <p class="eyebrow">本地开发夹具 · 不读取真实聊天</p>
+    <h1>在等待里，留一段空白。</h1>
+    <p>这里加载真实的扩展界面与 24 个随包场景。网络内容与 Chrome 接口由夹具提供。</p>
+    <label for="prompt-textarea">模拟 AI 输入框</label>
+    <textarea id="prompt-textarea" placeholder="输入任意文字，按 Enter 触发原有等待流程"></textarea>
+    <div class="preview-controls">
+      <button id="trigger" type="button">触发一次等待</button>
+      <button id="toggle-scene" type="button">切换纯色／展厅</button>
+      <button id="toggle-night" type="button">切换昼夜</button>
+      <button id="next-content" type="button">换内容</button>
+      <button id="verify" type="button">运行界面检查</button>
+      <a href="popup.html" target="_blank">打开真实设置面板</a>
+    </div>
+    <p id="preview-status" role="status">正在初始化…</p>
+    <pre id="verification-results" aria-live="polite"></pre>
+  </main>
+  <script src="fixture-chrome.js"></script>
+  <script src="../gallery/catalogue.js"></script>
+  <script src="../gallery/experience.js"></script>
+  <script src="../content.js"></script>
+  <script src="preview.js"></script>
+</body>
+</html>

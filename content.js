@@ -7,7 +7,9 @@ class ArtBreeze {
     this.conversationState = 'idle'; // 'idle' | 'generating'
     this.artworks = [];
     this.lastArtworkIndex = -1;
-    this.settings = { enabled: true, showArtworkInfo: true };
+    this.settings = { enabled: true, showArtworkInfo: true, ...GalleryExperience.preferences({}, 'art') };
+    this.displayRevision = 0;
+    this.hideTimer = null;
     this.activeSubObservers = new Set();
     this.ui = {}; // Will be populated by createUI
     
@@ -69,7 +71,7 @@ class ArtBreeze {
       },
     };
 
-    this.init();
+    this.ready = this.init();
   }
 
   async init() {
@@ -114,9 +116,10 @@ class ArtBreeze {
   }
 
   async loadSettings() {
-    const data = await chrome.storage.sync.get(['enabled', 'showArtworkInfo']);
+    const data = await chrome.storage.sync.get(['enabled', 'showArtworkInfo', ...GalleryExperience.KEYS]);
     this.settings.enabled = data.enabled !== false;
     this.settings.showArtworkInfo = data.showArtworkInfo !== false;
+    Object.assign(this.settings, GalleryExperience.preferences(data, 'art'));
   }
 
   // 加载全局缓存
@@ -322,7 +325,8 @@ class ArtBreeze {
     this.preloadOneMoreImage();
     
     // 20秒后自动隐藏
-    setTimeout(() => {
+    clearTimeout(this.hideTimer);
+    this.hideTimer = setTimeout(() => {
       console.log("ArtBreeze: Auto-hiding popup");
       this.onConversationEnd(null);
     }, 20000);
@@ -365,6 +369,7 @@ class ArtBreeze {
     // Image Container
     const imageContainer = document.createElement('div');
     imageContainer.className = 'artbreeze-artwork-image-container';
+    this.ui.imageContainer = imageContainer;
 
     // Loader
     const loader = document.createElement('div');
@@ -400,7 +405,9 @@ class ArtBreeze {
     document.body.appendChild(container);
 
     // Circular Icon
-    const icon = document.createElement('div');
+    const icon = document.createElement('button');
+    icon.type = 'button';
+    icon.setAttribute('aria-label', '打开艺息画廊');
     icon.id = 'artbreeze-circular-icon';
     const iconImg = document.createElement('img');
     iconImg.className = 'artbreeze-icon-image';
@@ -409,6 +416,9 @@ class ArtBreeze {
     icon.appendChild(iconImg);
     document.body.appendChild(icon);
     this.ui.icon = icon;
+    this.gallery = new GalleryExperience.Stage({ container, frame, imageContainer, image, caption: info,
+      kind: 'art', close: () => this.hideArtwork() });
+    window.addEventListener('pagehide', event => { if (!event.persisted) this.gallery.destroy(); });
   }
 
   setupEventListeners() {
@@ -424,7 +434,8 @@ class ArtBreeze {
     });
 
     // 监听存储变更
-    chrome.storage.onChanged.addListener((changes) => {
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area !== 'sync') return;
       Object.keys(changes).forEach(key => {
         if (this.settings.hasOwnProperty(key)) this.settings[key] = changes[key].newValue;
       });
@@ -442,13 +453,15 @@ class ArtBreeze {
   }
   
   applySettings() {
+    Object.assign(this.settings, GalleryExperience.preferences(this.settings, 'art'));
     if (!this.settings.enabled) {
       this.hideArtwork();
       this.hideCircularIcon();
     } else {
-      this.showCircularIcon();
+      if (!this.isShowingArtwork) this.showCircularIcon();
     }
     this.updateArtworkInfoVisibility();
+    this.gallery.apply(this.settings);
   }
 
   setupActionListeners(platform) {
@@ -625,17 +638,22 @@ class ArtBreeze {
       return;
     }
     
-    console.log(`ArtBreeze: Showing artwork: ${this.currentArtwork.title}`);
+    const artwork = this.currentArtwork;
+    const revision = ++this.displayRevision;
+    console.log(`ArtBreeze: Showing artwork: ${artwork.title}`);
     
     // 使用全局缓存池加载图片
-    this.getImage(this.currentArtwork.image).then((cachedImg) => {
+    this.getImage(artwork.image).then(async (cachedImg) => {
+      if (cachedImg.decode) await cachedImg.decode();
+      if (revision !== this.displayRevision || !this.settings.enabled) return;
       console.log('ArtBreeze: Image loaded, updating UI');
       // 图片加载完成，更新UI内容
       this.ui.image.src = cachedImg.src;
-      this.ui.title.innerHTML = this.currentArtwork.link ? 
-        `<a href="${this.currentArtwork.link}" target="_blank">${this.currentArtwork.title}</a>` : 
-        this.currentArtwork.title;
-      this.ui.artist.textContent = this.currentArtwork.artist;
+      await this.ui.image.decode();
+      if (revision !== this.displayRevision || !this.settings.enabled) return;
+      this.ui.image.alt = `${artwork.title} · ${artwork.artist}`;
+      this.updateArtworkDisplay();
+      this.gallery.updateContent(artwork, GalleryExperience.paletteFromImage(cachedImg));
       this.updateArtworkInfoVisibility();
       
       // 确保图片和文本都已设置，然后显示popup
@@ -647,7 +665,7 @@ class ArtBreeze {
       this.hideCircularIcon();
       this.ui.container.classList.add('artbreeze-show');
       console.log('ArtBreeze: Artwork display activated');
-      document.addEventListener('click', this.handleOutsideClick.bind(this), { once: true });
+      this.bindOutsideClickHandler();
     }).catch((error) => {
       console.warn('ArtBreeze: Failed to load artwork image:', error);
     });
@@ -655,7 +673,11 @@ class ArtBreeze {
 
   hideArtwork() {
     console.log('ArtBreeze: hideArtwork called');
+    this.displayRevision++;
+    clearTimeout(this.hideTimer);
+    this.conversationState = 'idle';
     this.isShowingArtwork = false;
+    document.removeEventListener('click', this.boundOutsideClickHandler);
     this.ui.container.classList.remove('artbreeze-show');
     if (this.settings.enabled) {
       console.log('ArtBreeze: Showing circular icon after hiding artwork');
@@ -665,10 +687,16 @@ class ArtBreeze {
 
   handleOutsideClick(event) {
     if (this.ui.container.contains(event.target) || this.ui.icon.contains(event.target)) {
-      setTimeout(() => document.addEventListener('click', this.handleOutsideClick.bind(this), { once: true }), 0);
+      if (this.isShowingArtwork) this.bindOutsideClickHandler();
       return;
     }
     this.hideArtwork();
+  }
+
+  bindOutsideClickHandler() {
+    document.removeEventListener('click', this.boundOutsideClickHandler);
+    this.boundOutsideClickHandler = this.handleOutsideClick.bind(this);
+    document.addEventListener('click', this.boundOutsideClickHandler, { once: true });
   }
 
   showCircularIcon() { 
@@ -848,27 +876,21 @@ class ArtBreeze {
     } while (this.artworks.length > 1 && newIndex === this.lastArtworkIndex);
     this.lastArtworkIndex = newIndex;
     this.currentArtwork = this.artworks[newIndex];
-    this.updateArtworkDisplay();
   }
 
   updateArtworkDisplay() {
     if (!this.currentArtwork) return;
-    this.ui.loader.style.opacity = '1';
-    this.ui.image.style.opacity = '0';
-    this.ui.image.src = "";
-
-    const preloader = new Image();
-    preloader.src = this.currentArtwork.image;
-
-    preloader.onload = () => {
-      this.ui.image.src = this.currentArtwork.image;
-      this.ui.title.innerHTML = this.currentArtwork.link ? `<a href="${this.currentArtwork.link}" target="_blank">${this.currentArtwork.title}</a>` : this.currentArtwork.title;
-      this.ui.artist.textContent = this.currentArtwork.artist;
-      this.updateArtworkInfoVisibility();
-      this.ui.loader.style.opacity = '0';
-      this.ui.image.style.opacity = '1';
-    };
-    preloader.onerror = () => this.hideArtwork();
+    this.ui.title.replaceChildren();
+    const url = GalleryExperience.safeURL(this.currentArtwork.link);
+    if (url) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = this.currentArtwork.title;
+      this.ui.title.append(link);
+    } else this.ui.title.textContent = this.currentArtwork.title;
+    this.ui.artist.textContent = this.currentArtwork.artist;
   }
   
   updateArtworkInfoVisibility() {
@@ -884,4 +906,4 @@ class ArtBreeze {
   }];
 }
 
-new ArtBreeze();
+const artBreeze = new ArtBreeze();

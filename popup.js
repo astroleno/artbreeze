@@ -1,45 +1,27 @@
-// ArtBreeze Popup Script
+let gallerySettings;
 
-// 加载设置
-function loadSettings() {
-  chrome.storage.sync.get([
-    'enabled',
-    'showArtworkInfo'
-  ], (result) => {
-    document.getElementById('enableToggle').checked = result.enabled !== false;
-    document.getElementById('showInfoToggle').checked = result.showArtworkInfo !== false;
-  });
+async function loadSettings() {
+  const result = await chrome.storage.sync.get(['enabled', 'showArtworkInfo', ...GalleryExperience.KEYS]);
+  document.getElementById('enableToggle').checked = result.enabled !== false;
+  document.getElementById('showInfoToggle').checked = result.showArtworkInfo !== false;
+  gallerySettings.load(result);
 }
 
-// 保存设置
-function saveSettings() {
+async function saveSettings() {
   const settings = {
     enabled: document.getElementById('enableToggle').checked,
-    showArtworkInfo: document.getElementById('showInfoToggle').checked
+    showArtworkInfo: document.getElementById('showInfoToggle').checked,
+    ...gallerySettings.values()
   };
-  
-  chrome.storage.sync.set(settings, () => {
-    console.log('Settings saved');
-    
-    // 通知所有标签页的设置变更
-    chrome.tabs.query({}, (tabs) => {
-      tabs.forEach(tab => {
-        chrome.tabs.sendMessage(tab.id, { 
-          action: 'settingsChanged', 
-          settings: settings 
-        }).catch(() => {
-          // 忽略错误，某些标签页可能没有content script
-        });
-      });
-    });
-  });
+  await chrome.storage.sync.set(settings);
+  const tabs = await chrome.tabs.query({});
+  await Promise.allSettled(tabs.map(tab => chrome.tabs.sendMessage(tab.id, { action: 'settingsChanged', settings })));
 }
 
-// 初始化
 document.addEventListener('DOMContentLoaded', () => {
+  gallerySettings = new GallerySettings(document.getElementById('gallery-settings'), 'art', saveSettings);
+  document.getElementById('version').textContent = chrome.runtime.getManifest().version;
   loadSettings();
-  
-  // 绑定事件
   document.getElementById('enableToggle').addEventListener('change', saveSettings);
   document.getElementById('showInfoToggle').addEventListener('change', saveSettings);
 });

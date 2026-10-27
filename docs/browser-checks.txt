@@ -1,0 +1,37 @@
+PASS 24 张本地 WebP 全部可解码
+PASS 原有内容显示路径可用
+PASS bg-001 可固定展示
+PASS bg-002 可固定展示
+PASS bg-004 可固定展示
+PASS bg-005 可固定展示
+PASS bg-007 可固定展示
+PASS bg-009 可固定展示
+PASS bg-011 可固定展示
+PASS bg-012 可固定展示
+PASS bg-013 可固定展示
+PASS bg-014 可固定展示
+PASS bg-015 可固定展示
+PASS bg-016 可固定展示
+PASS bg-021 可固定展示
+PASS bg-022 可固定展示
+PASS bg-023 可固定展示
+PASS bg-024 可固定展示
+PASS bg-027 可固定展示
+PASS bg-028 可固定展示
+PASS bg-030 可固定展示
+PASS bg-034 可固定展示
+PASS bg-039 可固定展示
+PASS bg-040 可固定展示
+PASS bg-043 可固定展示
+PASS bg-045 可固定展示
+PASS 夜间模式生效
+PASS 切换昼夜不换景
+PASS 光线变化不修改内容
+PASS 画作水平居中
+PASS 原画不受夜间滤镜影响
+PASS 原画比例完整
+PASS 背景失败保留素色可用界面
+PASS 收起按钮关闭内容
+PASS 纯色模式可用
+PASS 纯色界面保留原有尺寸且不溢出
+PASS 没有未处理异常（0）

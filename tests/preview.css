@@ -1,0 +1,11 @@
+body { margin: 0; background: #eeeee9; color: #333630; font: 15px/1.7 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+.preview-host { max-width: 460px; padding: 64px 32px; }
+.preview-host h1 { font-size: 30px; font-weight: 500; line-height: 1.5; margin: 10px 0; }
+.preview-host p { color: #63675c; }
+.eyebrow { font-size: 11px; letter-spacing: .08em; }
+.preview-host label { display: block; margin: 32px 0 8px; }
+.preview-host textarea { box-sizing: border-box; width: 100%; height: 100px; resize: vertical; padding: 12px; border: 1px solid #c9cbbf; border-radius: 6px; background: #fbfbf7; font: inherit; }
+.preview-controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+.preview-controls button, .preview-controls a { font: inherit; font-size: 12px; padding: 6px 9px; border: 1px solid #c9cbbf; border-radius: 4px; color: #34382c; background: #fafaf5; cursor: pointer; text-decoration: none; }
+#preview-status, #verification-results { font-size: 12px; white-space: pre-wrap; }
+@media (max-width: 700px) { .preview-host { padding-top: 400px; } }
