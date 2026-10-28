@@ -109,6 +109,7 @@
       const aspect = this.image?.naturalWidth / this.image?.naturalHeight || .8;
       const d = dimensions(innerWidth, innerHeight, this.settings.panelWidth, this.kind, aspect);
       this.container.style.width = d.width + 'px'; this.container.style.height = d.height + 'px';
+      this.container.style.setProperty('--companion-panel-height', d.height + 'px');
       if (this.kind === 'reading') {
         if (this.settings.galleryEnabled) {
           const mount = layoutArtwork(this.scene, d.width, d.height, 1, false).mount;

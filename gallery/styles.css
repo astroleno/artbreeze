@@ -44,6 +44,8 @@
 .companion-surface[data-gallery-kind="art"] .companion-notice { position: absolute; bottom: 8px; left: 16px; right: 16px; padding: 4px 8px; background: var(--paper); border-radius: 4px; }
 .companion-surface .companion-status { position: absolute; inset: 42% 24px auto; text-align: center; font: 14px/1.7 -apple-system, sans-serif; color: var(--ink); }
 .companion-surface .companion-status:empty { display: none; }
+.companion-surface .companion-update-status { position: absolute; bottom: 12px; right: 16px; width: max-content; max-width: calc(100% - 32px); margin: 0; padding: 8px 12px; border-radius: 8px; background: var(--paper); color: var(--ink); box-shadow: 0 1px 6px #0002; font: 12px/1.6 -apple-system, sans-serif; }
+.companion-surface .companion-update-status:empty { display: none; }
 .companion-surface .companion-tools { position: absolute; top: 8px; left: 12px; right: 12px; display: flex; gap: 6px; align-items: flex-start; opacity: 0; pointer-events: none; transition: opacity 150ms ease; }
 .companion-surface:is(:hover, :focus-within) .companion-tools { opacity: 1; pointer-events: auto; }
 .companion-surface .companion-tools > :first-child { margin-right: auto; }
@@ -52,7 +54,9 @@
 .companion-surface .companion-menu { position: absolute; top: 40px; right: 0; width: min(260px, calc(100vw - 64px)); padding: 8px; background: var(--paper); border: 1px solid #8886; border-radius: 10px; box-shadow: 0 8px 24px #0003; }
 .companion-surface .companion-menu button { display: block; width: 100%; height: auto; min-height: 36px; text-align: left; padding: 8px; border-radius: 4px; font: 13px/1.4 -apple-system, sans-serif; box-shadow: none; }
 .companion-surface .companion-menu button:hover { background: #8882; }
+.companion-surface .companion-menu { max-height: calc(var(--companion-panel-height, 340px) - 72px); overflow: auto; overscroll-behavior: contain; }
 .companion-surface .companion-rights { margin: 8px; color: var(--muted); white-space: pre-line; font: 11px/1.6 -apple-system, sans-serif; overflow-wrap: anywhere; max-height: 120px; overflow: auto; }
+.companion-surface .companion-metadata { margin: 4px 8px 12px; font: 13px/1.6 -apple-system, sans-serif; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 140px; overflow: auto; }
 .companion-surface :is(button, a, summary, [tabindex]):focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .companion-entry { position: fixed; bottom: 22px; right: 22px; z-index: 2147483645; width: 42px; height: 42px; border: 1px solid #aaa7; border-radius: 50%; background: #faf9f6; color: #252522; box-shadow: 0 3px 16px #0002; cursor: pointer; font-size: 16px; }
 .companion-entry:focus-visible { outline: 2px solid #333; outline-offset: 3px; }

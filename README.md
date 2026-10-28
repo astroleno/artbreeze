@@ -1,6 +1,8 @@
 # 艺息 ArtBreeze
 
-等一段回答，看一幅画。Chrome Manifest V3 扩展，当前版本 **1.2.0**，需要 Chrome 102+。
+等一段回答，看一幅画。Chrome Manifest V3 扩展，当前版本 **1.2.1**，需要 Chrome 102+。
+
+本次键盘、换内容反馈与收藏识别改进见 [UI 迭代与验证](docs/2026-10-28-ui-iteration.md)。
 
 ## 当前体验
 
@@ -14,7 +16,7 @@
 
 ## 安装与验证
 
-将 `dist/artbreeze-1.2.0.zip` 解压到独立目录，在 Chrome 扩展程序页面开启开发者模式，选择“加载已解压的扩展程序”。更新后重新加载扩展及 AI 网页。
+将 `dist/artbreeze-1.2.1.zip` 解压到独立目录，在 Chrome 扩展程序页面开启开发者模式，选择“加载已解压的扩展程序”。更新后重新加载扩展及 AI 网页。
 
 站点范围由 manifest 的具体 AI 域名限定，涵盖 ChatGPT、Claude、Gemini、Copilot/Bing、Kimi、Grok、DeepSeek、元宝及豆包。各站点的登录限制、网络状况和 DOM 变化仍会影响触发；不能把受控测试页面验证等同于所有在线站点联调通过。扩展识别网页中的发送操作，不读取模型回复，也不把展示定时器当作任务完成信号，不接入 macOS Hook。
 

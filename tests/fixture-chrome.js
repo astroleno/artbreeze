@@ -16,7 +16,7 @@
   window.chrome = {
     storage: { sync:area(sync,'sync'), local:area(local,'local'), session:area(session,'session'), onChanged:{ addListener:fn=>changes.push(fn) } },
     runtime:{
-      id:'local-fixture',getURL:p=>new URL(p,base).href,getManifest:()=>({name:kind==='art'?'ArtBreeze':'WaitWiki',version:kind==='art'?'1.2.0':'1.4.0'}),openOptionsPage:()=>window.open(new URL('tests/options.html',base)),
+      id:'local-fixture',getURL:p=>new URL(p,base).href,getManifest:()=>({name:kind==='art'?'ArtBreeze':'WaitWiki',version:kind==='art'?'1.2.1':'1.4.1'}),openOptionsPage:()=>window.open(new URL('tests/options.html',base)),
       async sendMessage(request) {
         try {
           if(request.action==='reading') {

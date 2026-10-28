@@ -33,6 +33,9 @@ legend { padding: 0; color: var(--muted); font-weight: 600; margin-bottom: 8px; 
 body[data-full="true"] { width: auto; max-width: 1000px; margin: auto; padding: 28px 24px; }
 body[data-full="true"] main { display: grid; grid-template-columns: minmax(320px, 1fr) minmax(260px, .8fr); gap: 50px; align-items: start; }
 .library-row { border-bottom: 1px solid var(--line); padding: 16px 0; }
+.library-row[data-selected="true"] { box-shadow: inset 3px 0 var(--ink); padding-left: 12px; }
+.library-excerpt { margin: 10px 0 0; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.library-row h3, .library-row .settings-hint { overflow-wrap: anywhere; }
 .library-row button, .library-row a { font-size: 12px; margin: 10px 8px 0 0; }
 #save-status, #library-status { color: var(--muted); font-size: 12px; min-height: 20px; }
 @media (max-width: 760px) { body[data-full="true"] main { display: block; } body[data-full="true"] { padding: 0; } }

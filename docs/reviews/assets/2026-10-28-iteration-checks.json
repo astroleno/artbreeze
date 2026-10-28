@@ -1,0 +1,501 @@
+{
+  "date": "2026-10-28",
+  "versions": {
+    "artbreeze": "1.2.1",
+    "waitwiki": "1.4.1"
+  },
+  "method": "Current iteration production UI code loaded by existing developer fixtures; Chrome API/content substitutes and in-memory controlled request/image failures. Keyboard/mouse entry, menu and next actions use browser input. No installed-extension or live AI-send run in this iteration.",
+  "sharedSourceSHA256": {
+    "gallery/companion.js": "ee3c679512017a55fb2db007e261c124345ef3011b91ce5057fedf3976b53d7f",
+    "gallery/session.js": "63776a8d5fb9711ddb3e867cc7c9962ec9684722a1bd641fe6efbcb4fc8a4b46",
+    "gallery/experience.js": "aeeba1748ef2c97e6c5cd91ef886ed30226e594d4312712595b7f11c00ec6be9",
+    "gallery/styles.css": "ef1767e31aeab58c08114e4174d973ec432dd3cf3f2b6e90f2b240dc5b645d1a",
+    "gallery/settings.js": "79716d3b735067058fd1d0f51dfc22b9d4326e5bd410b5c29f8710924d686058",
+    "gallery/settings.css": "ead486f5b9b0bc4f044dfa20bb7ac727a66e3ec409fe3ead76d0265a03f7a8a0",
+    "options.js": "7bbbba452a52f6eaae44c87082c46d65ef48462241e4477b5ce07c93a7bf4799",
+    "tests/companion-lifecycle.test.js": "28883a7c349ed6d0f7af3e09a319b39a4b1e3759a02c495d2fdc1c5a9aa50252",
+    "tests/session.test.js": "b744c037c0b021e2476e5fd1c0c6059d95c3bc958dbd845ab4803961bfc4f873"
+  },
+  "archives": [
+    {
+      "repo": "artbreeze",
+      "version": "1.2.1",
+      "files": 49,
+      "bytes": 947851,
+      "sha256": "cd4ef5d0526659e62a79bcd032476d2e51f701c9b313e7182da74aa667eada16",
+      "oldSubmittedZIPUnchanged": true,
+      "permissionsAndSitesUnchanged": true
+    },
+    {
+      "repo": "WaitWiki",
+      "version": "1.4.1",
+      "files": 29,
+      "bytes": 121658,
+      "sha256": "7b8c95e86c18038de27aa05921eae15f0dc835d8d4917ab759ee2b8a7f36115b",
+      "oldSubmittedZIPUnchanged": true,
+      "permissionsAndSitesUnchanged": true
+    }
+  ],
+  "summary": {
+    "validChecks": 49,
+    "passed": 49,
+    "invalidHarnessObservation": 1
+  },
+  "pages": [
+    {
+      "kind": "art",
+      "checks": [
+        {
+          "name": "keyboard-enter-focus",
+          "pass": true,
+          "activeTag": "BUTTON",
+          "activeLabel": "收藏当前内容"
+        },
+        {
+          "name": "keyboard-hold-after-default-timeout",
+          "pass": true
+        },
+        {
+          "name": "escape-restores-entry",
+          "pass": true
+        },
+        {
+          "name": "space-opens-with-focus",
+          "pass": true
+        },
+        {
+          "name": "close-button-restores-entry",
+          "pass": true
+        },
+        {
+          "name": "automatic-show-preserves-composer",
+          "pass": true
+        },
+        {
+          "name": "automatic-hide-preserves-composer",
+          "pass": true
+        },
+        {
+          "name": "stable-next-200ms",
+          "pass": true,
+          "delayMs": 200,
+          "oldID": "fixture-2",
+          "oldScene": "bg-040",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "fixture-2",
+          "beforeResponseScene": "bg-040",
+          "beforeResponseScroll": 0,
+          "busy": true,
+          "hiddenAttributeChanges": 0,
+          "newID": "fixture-0"
+        },
+        {
+          "name": "stable-next-1000ms",
+          "pass": true,
+          "delayMs": 1000,
+          "oldID": "fixture-0",
+          "oldScene": "bg-004",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "fixture-0",
+          "beforeResponseScene": "bg-004",
+          "beforeResponseScroll": 0,
+          "busy": true,
+          "hiddenAttributeChanges": 0,
+          "newID": "fixture-1"
+        },
+        {
+          "name": "stable-next-8000ms",
+          "pass": true,
+          "delayMs": 8000,
+          "oldID": "fixture-1",
+          "oldScene": "bg-001",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "fixture-1",
+          "beforeResponseScene": "bg-001",
+          "beforeResponseScroll": 0,
+          "busy": true,
+          "hiddenAttributeChanges": 0,
+          "newID": "fixture-0"
+        },
+        {
+          "name": "dismissed-pending-success-does-not-return",
+          "pass": true
+        },
+        {
+          "name": "request-failure-keeps-current-content",
+          "pass": true,
+          "message": "暂时无法换内容，已保留当前内容。可从更多操作重试。"
+        },
+        {
+          "name": "dismissed-pending-error-stays-silent",
+          "pass": true
+        },
+        {
+          "name": "image-failure-preserves-displayed-work",
+          "pass": true
+        },
+        {
+          "name": "retry-recovers-in-place",
+          "pass": true
+        },
+        {
+          "name": "locking-current-content-cancels-pending-replacement",
+          "pass": true
+        },
+        {
+          "name": "escape-closes-menu-before-surface",
+          "pass": true
+        },
+        {
+          "name": "background-off-removes-image-source",
+          "pass": true
+        },
+        {
+          "name": "theme-and-background-preserve-current-content",
+          "pass": true,
+          "sceneCount": 24
+        },
+        {
+          "name": "reduced-motion-has-no-animation",
+          "pass": true
+        },
+        {
+          "name": "full-artwork-metadata-is-keyboard-readable-at-360px",
+          "pass": true,
+          "panelWidth": 360,
+          "menuBottom": 301.984375,
+          "surfaceBottom": 356,
+          "metadataHeight": 62
+        },
+        {
+          "name": "narrow-dark-surface-bounds",
+          "pass": true,
+          "viewport": [
+            390,
+            740
+          ],
+          "surface": {
+            "left": 16,
+            "right": 374,
+            "bottom": 356
+          }
+        },
+        {
+          "name": "keyboard-can-open-and-read-full-artwork-metadata",
+          "pass": true
+        }
+      ],
+      "fixtureErrors": [],
+      "controlledDelayCases": [
+        {
+          "delayMs": 200,
+          "oldID": "fixture-2",
+          "oldScene": "bg-040",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "fixture-2",
+          "beforeResponseScene": "bg-040",
+          "beforeResponseScroll": 0,
+          "busy": true
+        },
+        {
+          "delayMs": 1000,
+          "oldID": "fixture-0",
+          "oldScene": "bg-004",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "fixture-0",
+          "beforeResponseScene": "bg-004",
+          "beforeResponseScroll": 0,
+          "busy": true
+        },
+        {
+          "delayMs": 8000,
+          "oldID": "fixture-1",
+          "oldScene": "bg-001",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "fixture-1",
+          "beforeResponseScene": "bg-001",
+          "beforeResponseScroll": 0,
+          "busy": true
+        },
+        {
+          "delayMs": 1000,
+          "oldID": "fixture-0",
+          "oldScene": "bg-022",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一幅画…",
+          "beforeResponseVisible": false,
+          "beforeResponseID": "fixture-0",
+          "beforeResponseScene": "bg-022",
+          "beforeResponseScroll": 0,
+          "busy": false
+        }
+      ]
+    },
+    {
+      "kind": "reading",
+      "checks": [
+        {
+          "name": "keyboard-enter-focus",
+          "pass": true,
+          "activeTag": "ARTICLE",
+          "activeLabel": "阅读正文"
+        },
+        {
+          "name": "keyboard-hold-after-default-timeout",
+          "pass": true
+        },
+        {
+          "name": "escape-restores-entry",
+          "pass": true
+        },
+        {
+          "name": "space-opens-with-focus",
+          "pass": true
+        },
+        {
+          "name": "close-button-restores-entry",
+          "pass": true
+        },
+        {
+          "name": "automatic-show-preserves-composer",
+          "pass": true
+        },
+        {
+          "name": "automatic-hide-preserves-composer",
+          "pass": true
+        },
+        {
+          "name": "stable-next-200ms",
+          "pass": true,
+          "delayMs": 200,
+          "oldID": "reading-fixture",
+          "oldScene": "bg-027",
+          "oldScroll": 130,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "reading-fixture",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 130,
+          "busy": true,
+          "hiddenAttributeChanges": 0,
+          "newID": "iteration-1"
+        },
+        {
+          "name": "stable-next-1000ms",
+          "pass": true,
+          "delayMs": 1000,
+          "oldID": "iteration-1",
+          "oldScene": "bg-027",
+          "oldScroll": 130,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "iteration-1",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 130,
+          "busy": true,
+          "hiddenAttributeChanges": 0,
+          "newID": "iteration-2"
+        },
+        {
+          "name": "stable-next-8000ms",
+          "pass": true,
+          "delayMs": 8000,
+          "oldID": "iteration-2",
+          "oldScene": "bg-027",
+          "oldScroll": 130,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "iteration-2",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 130,
+          "busy": true,
+          "hiddenAttributeChanges": 0,
+          "newID": "iteration-3"
+        },
+        {
+          "name": "dismissed-pending-success-does-not-return",
+          "pass": true
+        },
+        {
+          "name": "request-failure-keeps-current-content",
+          "pass": true,
+          "message": "暂时无法换内容，已保留当前内容。可从更多操作重试。"
+        },
+        {
+          "name": "dismissed-pending-error-stays-silent",
+          "pass": true
+        },
+        {
+          "name": "retry-recovers-in-place",
+          "pass": true
+        },
+        {
+          "name": "locking-current-content-cancels-pending-replacement",
+          "pass": true
+        },
+        {
+          "name": "escape-closes-menu-before-surface",
+          "pass": true
+        },
+        {
+          "name": "background-off-removes-image-source",
+          "pass": true
+        },
+        {
+          "name": "theme-and-background-preserve-current-content",
+          "pass": true,
+          "sceneCount": 1
+        },
+        {
+          "name": "reduced-motion-has-no-animation",
+          "pass": true
+        },
+        {
+          "name": "narrow-dark-surface-bounds",
+          "pass": true,
+          "viewport": [
+            390,
+            740
+          ],
+          "surface": {
+            "left": 16,
+            "right": 374,
+            "bottom": 316.71875
+          }
+        },
+        {
+          "name": "reading-background-stays-transparent",
+          "pass": true
+        }
+      ],
+      "fixtureErrors": [],
+      "controlledDelayCases": [
+        {
+          "delayMs": 200,
+          "oldID": "reading-fixture",
+          "oldScene": "bg-027",
+          "oldScroll": 130,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "reading-fixture",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 130,
+          "busy": true
+        },
+        {
+          "delayMs": 1000,
+          "oldID": "iteration-1",
+          "oldScene": "bg-027",
+          "oldScroll": 130,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "iteration-1",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 130,
+          "busy": true
+        },
+        {
+          "delayMs": 8000,
+          "oldID": "iteration-2",
+          "oldScene": "bg-027",
+          "oldScroll": 130,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": true,
+          "beforeResponseID": "iteration-2",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 130,
+          "busy": true
+        },
+        {
+          "delayMs": 1000,
+          "oldID": "iteration-3",
+          "oldScene": "bg-027",
+          "oldScroll": 0,
+          "startVisible": true,
+          "initialStatus": "正在准备下一条内容…",
+          "beforeResponseVisible": false,
+          "beforeResponseID": "iteration-3",
+          "beforeResponseScene": "bg-027",
+          "beforeResponseScroll": 0,
+          "busy": false
+        }
+      ]
+    }
+  ],
+  "wikiLibrary": {
+    "checks": [
+      {
+        "name": "same-title-favorites-have-distinct-excerpts",
+        "pass": true,
+        "snippets": [
+          "抬脚踏翻香水海，低头俯视四禅天；一个浑身无处著，请续一向。（宋代 无门慧开《无门关》第二十则",
+          "春有百花秋有月，夏有凉风冬有雪；若无闲事挂心头，便是人间好时节。（宋代 无门慧开《无门关》第十九则",
+          "了身何似了心休？了得心兮身不愁。若也身心俱了了，神仙何必更封侯！（宋代 无门慧开《无门关》第九则"
+        ]
+      },
+      {
+        "name": "selection-survives-older-asynchronous-library-load",
+        "pass": true,
+        "selectedID": "15bwxbo",
+        "queued": "15bwxbo"
+      },
+      {
+        "name": "keyboard-library-selection",
+        "pass": false,
+        "invalidTest": true,
+        "reason": "Harness assumed source order; favorites are prepended. Retested using the actual focused row ID."
+      },
+      {
+        "name": "keyboard-selects-the-focused-library-row",
+        "pass": true,
+        "rowID": "t5fzes",
+        "queuedID": "t5fzes"
+      }
+    ],
+    "fixtureErrors": []
+  },
+  "artLibrary": {
+    "checks": [
+      {
+        "name": "art-options-use-viewing-language",
+        "pass": true
+      },
+      {
+        "name": "art-library-does-not-add-reading-excerpts",
+        "pass": true
+      }
+    ],
+    "fixtureErrors": []
+  },
+  "limits": [
+    "No new native extension install, real AI sending, browser-zoom or screen-reader announcement verification.",
+    "Controlled delays are not live provider performance measurements.",
+    "The initial auto-hide control retained a hovering pointer; it was rerun after moving the pointer outside.",
+    "One library assertion assumed CSV order; actual favorites prepend entries. The invalid assertion is retained and tagged, then replaced with a focused-row-ID test."
+  ]
+}

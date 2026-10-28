@@ -1,0 +1,169 @@
+{
+  "date": "2026-10-28",
+  "method": "Local developer fixtures with unchanged production renderer in Ego Chromium; Chrome storage and public content substituted. No native dual-extension installation or live AI sending in this round.",
+  "sourceCommits": {
+    "artbreeze": "e9907f5",
+    "waitwiki": "f80ddb1"
+  },
+  "storeStatus": {
+    "artbreeze": {
+      "version": "1.2.0",
+      "extensionId": "dknoefdahnmdaodahdlbfdfabhgaeoog",
+      "status": "待审核"
+    },
+    "waitwiki": {
+      "version": "1.4.0",
+      "extensionId": "onkihipkkiipgfjjnpmhdimdhegpblio",
+      "status": "待审核"
+    },
+    "evidence": "Logged-in developer status pages both display 该草稿尚待审核; no publish/cancel/resubmit action performed."
+  },
+  "runtime": [
+    {
+      "kind": "art",
+      "viewport": {
+        "width": 1458,
+        "height": 796
+      },
+      "checks": [
+        {
+          "kind": "art",
+          "case": "keyboard-open",
+          "visible": true,
+          "focusTag": "BODY",
+          "focusId": "",
+          "focusInside": false,
+          "interacting": false,
+          "autoHideDelay": 2
+        },
+        {
+          "kind": "art",
+          "case": "keyboard-Escape-without-panel-focus",
+          "visible": true,
+          "focusTag": "BODY",
+          "focusId": ""
+        },
+        {
+          "kind": "art",
+          "case": "keyboard-open-auto-hidden",
+          "visible": false,
+          "focusTag": "BODY",
+          "focusId": ""
+        },
+        {
+          "case": "dual-renderer-entry-overlap",
+          "art": {
+            "x": 1394,
+            "y": 732,
+            "width": 42,
+            "height": 42,
+            "z": "2147483645"
+          },
+          "wiki": {
+            "x": 1394,
+            "y": 732,
+            "width": 42,
+            "height": 42,
+            "z": "2147483645"
+          },
+          "topEntry": "waitwiki-circular-icon"
+        },
+        {
+          "case": "dual-renderer-surface-overlap",
+          "artVisible": true,
+          "wikiVisible": true,
+          "art": {
+            "x": 842,
+            "y": 16,
+            "width": 600,
+            "height": 672,
+            "z": "2147483646"
+          },
+          "wiki": {
+            "x": 842,
+            "y": 16,
+            "width": 600,
+            "height": 504,
+            "z": "2147483646"
+          },
+          "overlapRatio": 0.75,
+          "topSurface": "waitwiki-card-container"
+        }
+      ]
+    },
+    {
+      "kind": "reading",
+      "viewport": {
+        "width": 1458,
+        "height": 796
+      },
+      "checks": [
+        {
+          "kind": "reading",
+          "case": "keyboard-open",
+          "visible": true,
+          "focusTag": "BODY",
+          "focusId": "",
+          "focusInside": false,
+          "interacting": false,
+          "autoHideDelay": 2
+        },
+        {
+          "kind": "reading",
+          "case": "keyboard-Escape-without-panel-focus",
+          "visible": true,
+          "focusTag": "BODY",
+          "focusId": ""
+        },
+        {
+          "kind": "reading",
+          "case": "keyboard-open-auto-hidden",
+          "visible": false,
+          "focusTag": "BODY",
+          "focusId": ""
+        },
+        {
+          "case": "long-reading-wall",
+          "kind": "reading",
+          "panel": {
+            "x": 842,
+            "y": 16,
+            "width": 600,
+            "height": 504
+          },
+          "reading": {
+            "x": 878,
+            "y": 106.71875,
+            "width": 528,
+            "height": 252
+          },
+          "scrollTop": 232,
+          "scrollHeight": 1502,
+          "clientHeight": 252,
+          "background": "rgba(0, 0, 0, 0)",
+          "boxShadow": "none"
+        },
+        {
+          "case": "next-content-pending",
+          "controlledSourceDelayMs": 2000,
+          "elapsedMs": 444,
+          "visible": false,
+          "containerHidden": true,
+          "entryHidden": false,
+          "focusTag": "BODY",
+          "focusId": "",
+          "interacting": false
+        },
+        {
+          "case": "next-content-returned",
+          "elapsedMs": 2506,
+          "visible": true,
+          "containerHidden": false,
+          "scrollTop": 0,
+          "focusTag": "BODY",
+          "interacting": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,519 @@
+{
+  "date": "2026-10-28",
+  "scope": "Severity and reproducibility follow-up; overlapping series surfaces accepted by the user and excluded from defects.",
+  "method": "Ego Chromium local developer fixtures using unchanged production UI/session/settings code; in-memory Chrome API and content substitutes. Real keyboard/mouse input for interaction paths. Controlled request delays are not real service latency. No native installed-extension or live AI-send verification.",
+  "sourceCommits": {
+    "artbreeze": "e9907f5",
+    "waitwiki": "f80ddb1"
+  },
+  "runtime": [
+    {
+      "kind": "art",
+      "viewport": {
+        "width": 1450,
+        "height": 713
+      },
+      "checks": [
+        {
+          "test": "keyboard-enter",
+          "kind": "art",
+          "time": 67884,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-escape-without-panel-focus",
+          "kind": "art",
+          "time": 68020,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-default-autohide",
+          "kind": "art",
+          "time": 69943,
+          "visible": false,
+          "containerHidden": true,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-enter-tab",
+          "kind": "art",
+          "time": 70211,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BUTTON",
+          "activeId": "open-side-panel",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-enter-shift-tab",
+          "kind": "art",
+          "time": 70365,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BUTTON",
+          "activeId": "",
+          "activeLabel": "收起",
+          "focusInside": true,
+          "interacting": true
+        },
+        {
+          "test": "escape-after-shift-tab",
+          "kind": "art",
+          "time": 70430,
+          "visible": false,
+          "containerHidden": true,
+          "activeTag": "BUTTON",
+          "activeId": "artbreeze-circular-icon",
+          "activeLabel": "打开艺息",
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "automatic-show-composer-focus",
+          "kind": "art",
+          "time": 113977,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "TEXTAREA",
+          "activeId": "prompt-textarea",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "pointer-hold-beyond-two-seconds",
+          "kind": "art",
+          "time": 117537,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": true
+        },
+        {
+          "test": "pending-next-reopen-and-dismiss",
+          "kind": "art",
+          "time": 396595,
+          "visible": false,
+          "containerHidden": true,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false,
+          "oldContentID": "fixture-2",
+          "currentID": "fixture-2",
+          "retained": true,
+          "requestFinished": true
+        },
+        {
+          "test": "keyboard-focus-hold-beyond-two-seconds",
+          "kind": "art",
+          "time": 399097,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BUTTON",
+          "activeId": "",
+          "activeLabel": "收起",
+          "focusInside": true,
+          "interacting": true
+        },
+        {
+          "test": "reduced-motion",
+          "kind": "art",
+          "animationName": "none",
+          "transitionProperty": "none",
+          "animationCount": 0
+        },
+        {
+          "test": "rapid-open-close",
+          "kind": "art",
+          "cycles": 6,
+          "correctFinalStates": 6,
+          "errors": []
+        }
+      ],
+      "nextContent": [
+        {
+          "test": "next-content-delay",
+          "kind": "art",
+          "delayMs": 0,
+          "pending": {
+            "hidden": false,
+            "entryVisible": false,
+            "elapsed": 464
+          },
+          "hiddenDurationMs": 3,
+          "renderDurationMs": 782,
+          "returned": true,
+          "errors": []
+        },
+        {
+          "test": "next-content-delay",
+          "kind": "art",
+          "delayMs": 200,
+          "pending": {
+            "hidden": true,
+            "entryVisible": true,
+            "elapsed": 211
+          },
+          "hiddenDurationMs": 202,
+          "renderDurationMs": 307,
+          "returned": true,
+          "errors": []
+        },
+        {
+          "test": "next-content-delay",
+          "kind": "art",
+          "delayMs": 1000,
+          "pending": {
+            "hidden": true,
+            "entryVisible": true,
+            "elapsed": 209
+          },
+          "hiddenDurationMs": 1003,
+          "renderDurationMs": 344,
+          "returned": true,
+          "errors": []
+        },
+        {
+          "test": "next-content-delay",
+          "kind": "art",
+          "delayMs": 8000,
+          "pending": {
+            "hidden": true,
+            "entryVisible": true,
+            "elapsed": 923
+          },
+          "hiddenDurationMs": 8005,
+          "renderDurationMs": 42,
+          "returned": true,
+          "errors": []
+        }
+      ],
+      "captions": [
+        {
+          "test": "long-caption",
+          "panelWidth": 360,
+          "actualPanelWidth": 360,
+          "title": {
+            "text": "长画名排版样本：午后的河岸、远山与慢慢散去的云",
+            "clientWidth": 58,
+            "scrollWidth": 276,
+            "overflow": "ellipsis",
+            "titleAttribute": null
+          },
+          "artist": {
+            "text": "作者姓名排版样本：名字较长的画家",
+            "clientWidth": 58,
+            "scrollWidth": 192,
+            "overflow": "ellipsis",
+            "titleAttribute": null
+          },
+          "imageAlt": "长画名排版样本：午后的河岸、远山与慢慢散去的云 · 作者姓名排版样本：名字较长的画家",
+          "titleHref": "https://example.org/"
+        },
+        {
+          "test": "long-caption",
+          "panelWidth": 600,
+          "actualPanelWidth": 600,
+          "title": {
+            "text": "长画名排版样本：午后的河岸、远山与慢慢散去的云",
+            "clientWidth": 96,
+            "scrollWidth": 276,
+            "overflow": "ellipsis",
+            "titleAttribute": null
+          },
+          "artist": {
+            "text": "作者姓名排版样本：名字较长的画家",
+            "clientWidth": 96,
+            "scrollWidth": 192,
+            "overflow": "ellipsis",
+            "titleAttribute": null
+          },
+          "imageAlt": "长画名排版样本：午后的河岸、远山与慢慢散去的云 · 作者姓名排版样本：名字较长的画家",
+          "titleHref": "https://example.org/"
+        },
+        {
+          "test": "long-caption",
+          "panelWidth": 800,
+          "actualPanelWidth": 800,
+          "title": {
+            "text": "长画名排版样本：午后的河岸、远山与慢慢散去的云",
+            "clientWidth": 100,
+            "scrollWidth": 276,
+            "overflow": "ellipsis",
+            "titleAttribute": null
+          },
+          "artist": {
+            "text": "作者姓名排版样本：名字较长的画家",
+            "clientWidth": 100,
+            "scrollWidth": 192,
+            "overflow": "ellipsis",
+            "titleAttribute": null
+          },
+          "imageAlt": "长画名排版样本：午后的河岸、远山与慢慢散去的云 · 作者姓名排版样本：名字较长的画家",
+          "titleHref": "https://example.org/"
+        }
+      ]
+    },
+    {
+      "kind": "reading",
+      "viewport": {
+        "width": 1458,
+        "height": 796
+      },
+      "checks": [
+        {
+          "test": "keyboard-enter",
+          "kind": "reading",
+          "time": 62757,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-escape-without-panel-focus",
+          "kind": "reading",
+          "time": 62817,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-default-autohide",
+          "kind": "reading",
+          "time": 64710,
+          "visible": false,
+          "containerHidden": true,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-enter-tab",
+          "kind": "reading",
+          "time": 64915,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BUTTON",
+          "activeId": "open-side-panel",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "keyboard-enter-shift-tab",
+          "kind": "reading",
+          "time": 65130,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BUTTON",
+          "activeId": "",
+          "activeLabel": "收起",
+          "focusInside": true,
+          "interacting": true
+        },
+        {
+          "test": "escape-after-shift-tab",
+          "kind": "reading",
+          "time": 65194,
+          "visible": false,
+          "containerHidden": true,
+          "activeTag": "BUTTON",
+          "activeId": "waitwiki-circular-icon",
+          "activeLabel": "打开知涟",
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "automatic-show-composer-focus",
+          "kind": "reading",
+          "time": 112039,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "TEXTAREA",
+          "activeId": "prompt-textarea",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false
+        },
+        {
+          "test": "pointer-hold-beyond-two-seconds",
+          "kind": "reading",
+          "time": 116580,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": true
+        },
+        {
+          "test": "pending-next-reopen-and-dismiss",
+          "kind": "reading",
+          "time": 394711,
+          "visible": false,
+          "containerHidden": true,
+          "activeTag": "BODY",
+          "activeId": "",
+          "activeLabel": null,
+          "focusInside": false,
+          "interacting": false,
+          "oldContentID": "recheck-8000-3",
+          "currentID": "recheck-8000-3",
+          "retained": true,
+          "requestFinished": true
+        },
+        {
+          "test": "keyboard-focus-hold-beyond-two-seconds",
+          "kind": "reading",
+          "time": 397170,
+          "visible": true,
+          "containerHidden": false,
+          "activeTag": "BUTTON",
+          "activeId": "",
+          "activeLabel": "收起",
+          "focusInside": true,
+          "interacting": true
+        },
+        {
+          "test": "reduced-motion",
+          "kind": "reading",
+          "animationName": "none",
+          "transitionProperty": "none",
+          "animationCount": 0
+        },
+        {
+          "test": "rapid-open-close",
+          "kind": "reading",
+          "cycles": 6,
+          "correctFinalStates": 6,
+          "errors": []
+        }
+      ],
+      "nextContent": [
+        {
+          "test": "next-content-delay",
+          "kind": "reading",
+          "delayMs": 0,
+          "pending": {
+            "hidden": false,
+            "entryVisible": false,
+            "elapsed": 198
+          },
+          "hiddenDurationMs": 2,
+          "renderDurationMs": 5,
+          "returned": true,
+          "errors": []
+        },
+        {
+          "test": "next-content-delay",
+          "kind": "reading",
+          "delayMs": 200,
+          "pending": {
+            "hidden": true,
+            "entryVisible": true,
+            "elapsed": 1006
+          },
+          "hiddenDurationMs": 202,
+          "renderDurationMs": 1,
+          "returned": true,
+          "errors": []
+        },
+        {
+          "test": "next-content-delay",
+          "kind": "reading",
+          "delayMs": 1000,
+          "pending": {
+            "hidden": true,
+            "entryVisible": true,
+            "elapsed": 946
+          },
+          "hiddenDurationMs": 1002,
+          "renderDurationMs": 1,
+          "returned": true,
+          "errors": []
+        },
+        {
+          "test": "next-content-delay",
+          "kind": "reading",
+          "delayMs": 8000,
+          "pending": {
+            "hidden": true,
+            "entryVisible": true,
+            "elapsed": 1011
+          },
+          "hiddenDurationMs": 8003,
+          "renderDurationMs": 3,
+          "returned": true,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "favorites": {
+    "test": "same-title-favorites",
+    "items": [
+      {
+        "id": "1xvv34o",
+        "title": "偈语",
+        "source": "禅宗偈语",
+        "content": "了身何似了心休？了得心兮身不愁。若也身心俱了了，神仙何必更封侯！（宋代 无门慧开《无门关》第九则"
+      },
+      {
+        "id": "15bwxbo",
+        "title": "偈语",
+        "source": "禅宗偈语",
+        "content": "春有百花秋有月，夏有凉风冬有雪；若无闲事挂心头，便是人间好时节。（宋代 无门慧开《无门关》第十九则"
+      },
+      {
+        "id": "t5fzes",
+        "title": "偈语",
+        "source": "禅宗偈语",
+        "content": "抬脚踏翻香水海，低头俯视四禅天；一个浑身无处著，请续一向。（宋代 无门慧开《无门关》第二十则"
+      }
+    ],
+    "visibleRows": [
+      "偈语\n\n禅宗偈语\n\n下次阅读取消收藏",
+      "偈语\n\n禅宗偈语\n\n下次阅读取消收藏",
+      "偈语\n\n禅宗偈语\n\n下次阅读取消收藏"
+    ]
+  },
+  "limits": [
+    "Forward Tab leaves the panel in this fixture; exact next focused host element depends on browser/host page.",
+    "Reduced-motion and rapid lifecycle final states tested; no FPS or subjective motion-smoothness measurement.",
+    "Long art strings deliberately injected as layout samples; scene/image remain developer fixtures."
+  ]
+}

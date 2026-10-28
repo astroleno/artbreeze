@@ -32,19 +32,25 @@
         u.frame.tabIndex = 0; u.frame.setAttribute('aria-label', '阅读正文'); u.frame.append(u.title, u.content, u.source);
       }
       u.notice = element('p', 'companion-notice'); u.status = element('p', 'companion-status'); u.status.setAttribute('role', 'status');
+      u.updateStatus = element('p', 'companion-update-status'); u.updateStatus.setAttribute('role', 'status');
       u.tools = element('div', 'companion-tools');
-      const button = (label, symbol, handler) => { const b = element('button', '', symbol); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; b.addEventListener('click', () => Promise.resolve(handler()).catch(e => this.error(e))); return b; };
+      const button = (label, symbol, handler) => { const b = element('button', '', symbol); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; b.addEventListener('click', event => Promise.resolve(handler(event)).catch(e => this.error(e))); return b; };
       u.favorite = button('收藏当前内容', '♡', () => this.favorite()); u.favorite.setAttribute('aria-pressed', 'false');
       const more = element('details', 'companion-more'), summary = element('summary', '', '⋯'); summary.setAttribute('aria-label', '更多操作');
       const menu = element('div', 'companion-menu');
-      u.lock = button('锁定当前内容', '锁定当前内容', () => { this.session.locked = !this.session.locked; this.persist(); this.updateTools(); });
-      const next = button('换一条', reading ? '换一条' : '换一幅', () => this.next());
+      u.lock = button('锁定当前内容', '锁定当前内容', () => {
+        this.session.locked = !this.session.locked;
+        if (this.session.locked && this.session.busy) { this.session.revision++; this.setLoading(false); u.updateStatus.textContent = '已保留当前内容。'; }
+        this.persist(); this.updateTools();
+      });
+      const next = button(reading ? '换一条' : '换一幅', reading ? '换一条' : '换一幅', () => this.next());
       const settings = button('打开完整设置', '设置与最近内容', () => message({ action: 'openOptions' }));
       u.info = element('p', 'companion-rights');
-      menu.append(next, u.lock, settings, u.info); more.append(summary, menu);
+      u.metadata = element('p', 'companion-metadata'); u.metadata.hidden = reading; if (!reading) u.metadata.tabIndex = 0;
+      menu.append(u.metadata, next, u.lock, settings, u.info); more.append(summary, menu);
       u.close = button('收起', '↑', () => this.session.close()); u.tools.append(u.favorite, more, u.close);
-      u.frame.append(u.notice); u.container.append(u.frame, u.status, u.tools);
-      u.icon = button(reading ? '打开知涟' : '打开艺息', reading ? '知' : '艺', () => this.open()); u.icon.id = prefix + '-circular-icon'; u.icon.className = 'companion-entry';
+      u.frame.append(u.notice); u.container.append(u.frame, u.status, u.tools, u.updateStatus);
+      u.icon = button(reading ? '打开知涟' : '打开艺息', reading ? '知' : '艺', event => this.open({ focus: event.detail === 0 })); u.icon.id = prefix + '-circular-icon'; u.icon.className = 'companion-entry';
       document.body.append(u.container, u.icon);
       this.gallery = new G.Stage({ container: u.container, frame: u.frame, image: u.image, imageContainer: u.imageContainer, caption: u.caption, kind: this.kind });
     }
@@ -55,7 +61,13 @@
       u.container.addEventListener('pointerleave', () => { this.session.interact('pointer', false); interaction(); });
       u.container.addEventListener('focusin', () => { this.session.interact('focus', true); interaction(); });
       u.container.addEventListener('focusout', () => queueMicrotask(() => { this.session.interact('focus', u.container.contains(document.activeElement)); interaction(); }));
-      u.container.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); this.session.close(); u.icon.focus({ preventScroll: true }); } });
+      u.container.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        e.preventDefault(); e.stopPropagation();
+        const details = u.container.querySelector('details');
+        if (details.open) { details.open = false; details.querySelector('summary').focus({ preventScroll: true }); }
+        else this.session.close();
+      });
       u.icon.addEventListener('pointerenter', () => { if (this.settings.hoverToOpen) this.hoverTimer = setTimeout(() => this.open().catch(e => this.error(e)), 200); });
       u.icon.addEventListener('pointerleave', () => clearTimeout(this.hoverTimer));
       u.frame.addEventListener('scroll', () => { if (!this.current || this.restoring) return; clearTimeout(this.scrollTimer); const id = this.current.id, offset = u.frame.scrollTop; this.scrollTimer = setTimeout(() => { this.state.positions[id] = offset; message({ action: 'reading', operation: 'progress', id, offset }).catch(() => {}); }, 180); }, { passive: true });
@@ -81,7 +93,7 @@
           this.applySettings();
         }
         if (area === 'local' && changes.reading_state_v2) {
-          if (!changes.reading_state_v2.newValue) { this.loadRevision++; this.current = null; this.state = GalleryReading.empty(); this.session.locked = false; this.session.close(); }
+          if (!changes.reading_state_v2.newValue) { this.loadRevision++; this.current = null; this.preparedArtwork = null; this.state = GalleryReading.empty(); this.session.locked = false; this.session.close(); }
           else { const current = this.state.current; this.state = GalleryReading.normalize(changes.reading_state_v2.newValue); this.state.current = current; this.updateTools(); }
         }
         if (area === 'local' && changes.reading_selection_v2?.newValue) this.pendingSelection = changes.reading_selection_v2.newValue.id;
@@ -109,28 +121,43 @@
       const old = this.current;
       const content = force || !old || this.settings.randomContentOnNewWait ? await this.requestContent() : old;
       if (revision !== this.loadRevision || sessionRevision !== this.session?.revision) return;
-      this.current = GalleryReading.item(content);
-      if (!this.current) throw new Error('内容暂不可用，请重试。');
+      const candidate = GalleryReading.item(content);
+      if (!candidate) throw new Error('内容暂不可用，请重试。');
+      // A replacement is ready before the displayed work and scroll position change.
+      const artwork = force && this.kind === 'art' ? await this.loadArtwork(candidate) : null;
+      if (revision !== this.loadRevision || sessionRevision !== this.session?.revision) return;
+      this.current = candidate;
+      if (artwork) this.preparedArtwork = artwork;
       const input = { kind: this.kind, selection: this.settings.sceneSelection, palette: this.palette || 'neutral', aspect: this.ui.image?.naturalWidth / this.ui.image?.naturalHeight || 1 };
       this.previousSceneID = this.sceneID;
       this.needsScene = this.settings.galleryEnabled;
       this.sceneID = this.settings.galleryEnabled ? G.nextScene(input, this.sceneID)?.id : this.sceneID;
       if (old?.id !== this.current.id) this.ui.frame.scrollTop = 0;
     }
+    async loadArtwork(item) {
+      const pixels = Math.ceil(this.settings.panelWidth * devicePixelRatio);
+      if (this.preparedArtwork?.id === item.id && this.preparedArtwork.pixels === pixels) return this.preparedArtwork;
+      const data = await message({ action: 'content', operation: 'image', id: item.id, pixels });
+      const image = new Image(); image.src = data; await image.decode();
+      return { id: item.id, pixels, data, image };
+    }
     async render() {
       const revision = this.session.revision;
       if (!this.current) await this.prepareCycle();
       if (revision !== this.session.revision || !this.session.visible) return;
       const u = this.ui, item = this.current;
-      u.container.hidden = false; u.icon.hidden = true; u.status.textContent = this.kind === 'art' ? '正在载入画作…' : ''; u.frame.style.visibility = this.kind === 'art' ? 'hidden' : '';
+      const prepared = this.preparedArtwork?.id === item.id;
+      u.container.hidden = false; u.icon.hidden = true; u.status.textContent = this.kind === 'art' && !prepared ? '正在载入画作…' : ''; u.frame.style.visibility = this.kind === 'art' && !prepared ? 'hidden' : '';
       u.title.textContent = item.title; u.notice.textContent = item.notice || ''; u.notice.hidden = !item.notice;
       const source = G.safeURL(item.url);
       if (this.kind === 'art') {
-        u.artist.textContent = item.artist; if (source) u.title.href = source; else u.title.removeAttribute('href');
+        u.artist.textContent = item.artist; u.title.title = item.title; u.artist.title = item.artist;
+        u.metadata.textContent = item.title + (item.artist ? '\n' + item.artist : '');
+        if (source) u.title.href = source; else u.title.removeAttribute('href');
         try {
-          const data = await message({ action: 'content', operation: 'image', id: item.id, pixels: Math.ceil(this.settings.panelWidth * devicePixelRatio) });
-          const image = new Image(); image.src = data; await image.decode();
+          const artwork = prepared ? this.preparedArtwork : await this.loadArtwork(item), { data, image } = artwork;
           if (revision !== this.session.revision || !this.session.visible || this.current?.id !== item.id) return;
+          this.preparedArtwork = artwork;
           u.image.src = data; await u.image.decode();
           if (revision !== this.session.revision || !this.session.visible || this.current?.id !== item.id) return;
           u.image.alt = item.title + ' · ' + item.artist;
@@ -155,7 +182,17 @@
       requestAnimationFrame(() => { if (this.current?.id === item.id) u.frame.scrollTop = this.state.positions[item.id] || 0; this.restoring = false; });
       this.updateTools(); await this.persist();
     }
-    hideUI() { this.ui.container.hidden = true; this.ui.icon.hidden = !this.settings.enabled || !this.settings.showIcon; const details = this.ui.container.querySelector('details'); if (details) details.open = false; }
+    setLoading(value) {
+      this.session.setBusy(value); this.ui.frame.setAttribute('aria-busy', String(value));
+      this.ui.container.dataset.loading = String(value);
+    }
+    hideUI() {
+      const u = this.ui, restoreFocus = u.container.contains(document.activeElement);
+      u.container.hidden = true; u.icon.hidden = !this.settings.enabled || !this.settings.showIcon;
+      this.setLoading(false); u.updateStatus.textContent = '';
+      const details = u.container.querySelector('details'); if (details) details.open = false;
+      if (restoreFocus && !u.icon.hidden) u.icon.focus({ preventScroll: true });
+    }
     applySettings() {
       this.session.configure(this.settings); this.gallery.apply(this.settings); this.gallery.updateContent(this.current || {}, this.palette, this.sceneID);
       if (!this.session.visible) this.ui.icon.hidden = !this.settings.enabled || !this.settings.showIcon;
@@ -169,20 +206,43 @@
       const favorite = this.state.favorites.some(x => x.id === this.current?.id);
       this.ui.favorite.textContent = favorite ? '♥' : '♡'; this.ui.favorite.setAttribute('aria-pressed', String(favorite));
       this.ui.lock.textContent = this.session.locked ? '解锁当前内容' : '锁定当前内容';
+      this.ui.lock.setAttribute('aria-label', this.ui.lock.textContent); this.ui.lock.title = this.ui.lock.textContent;
       this.ui.lock.setAttribute('aria-pressed', String(this.session.locked));
       this.ui.info.textContent = [this.current?.source, this.current?.license].filter(Boolean).join('\n');
     }
     requiresAttribution() { return ['Wikipedia', 'ZenQuotes'].includes(this.current?.source) || /gapminder/i.test(this.current?.source || ''); }
     async favorite() { if (this.current) { this.state = await message({ action: 'reading', operation: 'favorite', item: this.current }); this.updateTools(); } }
-    async open() {
+    async open({ focus = false } = {}) {
+      const initiator = document.activeElement;
       await this.ready;
+      if (this.session.busy) { this.session.revision++; this.setLoading(false); this.ui.updateStatus.textContent = ''; }
       if (this.pendingSelection) { const state = await message({ action: 'reading', operation: 'load' }); const item = [...state.recent, ...state.favorites].find(x => x.id === this.pendingSelection); if (item) { this.current = item; this.sceneID = null; } this.pendingSelection = null; }
-      await this.session.open();
+      const opening = this.session.open();
+      if (focus && this.session.visible && (document.activeElement === initiator || document.activeElement === document.body)) {
+        this.ui.container.hidden = false; this.ui.icon.hidden = true;
+        (this.kind === 'reading' ? this.ui.frame : this.ui.favorite).focus({ preventScroll: true });
+      }
+      await opening;
     }
     async next() {
-      this.session.locked = false; this.session.close(false); const revision = this.session.revision;
-      try { await this.prepareCycle(true); } catch (error) { if (revision !== this.session.revision) return; throw error; }
-      if (revision === this.session.revision && this.settings.enabled) await this.session.open();
+      if (!this.settings.enabled) return;
+      const revision = ++this.session.revision, u = this.ui;
+      this.session.locked = false; this.session.visible = true; this.setLoading(true);
+      u.container.hidden = false; u.icon.hidden = true;
+      u.updateStatus.textContent = this.kind === 'art' ? '正在准备下一幅画…' : '正在准备下一条内容…';
+      const details = u.container.querySelector('details'), moveFocus = details.contains(document.activeElement);
+      details.open = false;
+      if (moveFocus) details.querySelector('summary').focus({ preventScroll: true });
+      try {
+        await this.prepareCycle(true);
+        if (revision !== this.session.revision || !this.settings.enabled) return;
+        await this.render();
+        if (revision === this.session.revision) u.updateStatus.textContent = '';
+      } catch {
+        if (revision === this.session.revision) u.updateStatus.textContent = this.current ? '暂时无法换内容，已保留当前内容。可从更多操作重试。' : '内容暂不可用。可从更多操作重试。';
+      } finally {
+        if (revision === this.session.revision) { this.setLoading(false); this.updateTools(); }
+      }
     }
     error(error) { if (!this.settings.enabled || document.hidden) return; this.ui.container.hidden = false; this.ui.status.textContent = error.message || '暂时不可用，请重试。'; this.session.visible = true; this.session.arm(); }
     showPopup() { return this.session.begin(); }

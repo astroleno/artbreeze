@@ -31,7 +31,7 @@
         }
       }
       const note = document.createElement('p'); note.className = 'settings-hint';
-      note.textContent = kind === 'reading' ? '背景开启时固定使用混凝土展厅，文字直接显示在背景上。' : '阅读中、重开或切换昼夜时，当前画作与背景保持。'; host.append(note);
+      note.textContent = kind === 'reading' ? '背景开启时固定使用混凝土展厅，文字直接显示在背景上。' : '观看中、重开或切换昼夜时，当前画作与背景保持。'; host.append(note);
       this.buildPreview();
       host.addEventListener('change', () => { this.value = this.values(); this.update(); Promise.resolve(this.onChange(this.value)).catch(() => { note.textContent = '保存暂不可用，请重试。'; }); });
       host.addEventListener('input', () => this.updateOutputs());
