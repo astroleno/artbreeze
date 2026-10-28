@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-28",
+  "sourceCommits": {
+    "artbreeze": "ecc8fb6d31d988e7f837f3dda39f1ed090802cde",
+    "waitwiki": "79a11d923846289ae075faac4207929e23f05d2e"
+  },
+  "method": "Read-only review. Existing production options/Companion plus production background.js mounted in local developer pages with importScripts/runtime API adapters. Background reading dispatch writes Chrome-API-substitute storage and causes actual options DOM reconstruction. No native extension install or live AI sending.",
+  "options": [
+    {
+      "product": "artbreeze",
+      "observations": [
+        {
+          "test": "selection-focus-after-real-background-write",
+          "product": "artbreeze",
+          "targetID": "postreview1",
+          "activeTag": "BODY",
+          "activeLabel": null,
+          "activeText": "",
+          "oldButtonConnected": false,
+          "backgroundStorageWrites": 1,
+          "selectedID": "postreview1",
+          "selectedInStorage": null
+        },
+        {
+          "test": "next-tab-after-selection",
+          "product": "artbreeze",
+          "activeTag": "BUTTON",
+          "activeLabel": null,
+          "activeText": "下次看这幅",
+          "rowID": "postreview2"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "observations": [
+        {
+          "test": "selection-focus-after-real-background-write",
+          "product": "waitwiki",
+          "targetID": "postreview1",
+          "activeTag": "BODY",
+          "activeLabel": null,
+          "activeText": "",
+          "oldButtonConnected": false,
+          "backgroundStorageWrites": 1,
+          "selectedID": "postreview1",
+          "selectedInStorage": null
+        },
+        {
+          "test": "next-tab-after-selection",
+          "product": "waitwiki",
+          "activeTag": "BUTTON",
+          "activeLabel": null,
+          "activeText": "下次读这条",
+          "rowID": "postreview2"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "coldStart": [
+    {
+      "test": "cold-start-slow-content",
+      "kind": "reading",
+      "mode": "pointer",
+      "injectedDelayMs": 3000,
+      "elapsedMs": 1009,
+      "currentID": null,
+      "sessionVisible": true,
+      "containerHidden": true,
+      "entryHidden": false,
+      "status": "",
+      "updateStatus": "",
+      "activeTag": "BUTTON"
+    },
+    {
+      "test": "cold-start-slow-content",
+      "kind": "reading",
+      "mode": "keyboard",
+      "injectedDelayMs": 3000,
+      "elapsedMs": 1079,
+      "currentID": null,
+      "sessionVisible": true,
+      "containerHidden": false,
+      "entryHidden": true,
+      "status": "",
+      "updateStatus": "",
+      "activeTag": "ARTICLE"
+    },
+    {
+      "test": "cold-start-slow-content",
+      "kind": "art",
+      "mode": "pointer",
+      "injectedDelayMs": 3000,
+      "elapsedMs": 1103,
+      "currentID": null,
+      "sessionVisible": true,
+      "containerHidden": true,
+      "entryHidden": false,
+      "status": "",
+      "updateStatus": "",
+      "activeTag": "BUTTON"
+    },
+    {
+      "test": "cold-start-slow-content",
+      "kind": "art",
+      "mode": "keyboard",
+      "injectedDelayMs": 3000,
+      "elapsedMs": 1066,
+      "currentID": null,
+      "sessionVisible": true,
+      "containerHidden": false,
+      "entryHidden": true,
+      "status": "",
+      "updateStatus": "",
+      "activeTag": "BUTTON"
+    }
+  ],
+  "selectionMarker": {
+    "test": "selected-marker-after-consume-and-next",
+    "product": "waitwiki",
+    "displaySequence": [
+      "postreview1",
+      "1xvv34o",
+      "1xvv34o"
+    ],
+    "selectionA": "postreview1",
+    "persistentMarker": "postreview1",
+    "pendingSelection": null,
+    "currentTitle": "偈语",
+    "options": {
+      "selectedID": "postreview1",
+      "buttonText": "已选，下次打开"
+    }
+  },
+  "selectionMarkerLimits": "Wiki complete browser chain only; production providers used local gathas CSV. State/marker relayed between developer pages to emulate shared Chrome.local. Art complete selection-consumption chain not rerun; shared-code inference only.",
+  "storeStatus": {
+    "checkedDate": "2026-10-28",
+    "artbreeze": {
+      "approvedVersion": "1.2.0",
+      "publishedVersion": "1.0.9",
+      "status": "可以发布",
+      "message": "这份草稿已被接受，可于 2026年11月28日之前发布。"
+    },
+    "waitwiki": {
+      "approvedVersion": "1.4.0",
+      "publishedVersion": "1.0.1",
+      "status": "可以发布",
+      "message": "这份草稿已被接受，可于 2026年11月28日之前发布。"
+    },
+    "actions": "Status and package tabs read only. No upload, cancel, submit or publish."
+  },
+  "limits": [
+    "Injected cold delay is not live-service latency; hover opening disabled to isolate input mode.",
+    "Original lightweight fixture omitted reading-state storage-change notifications. The complete background path reproduces a verification gap in the prior 49 checks.",
+    "Body-focus loss is confirmed; exact subsequent Tab order may vary across browser/host versions.",
+    "No Google approval prediction for the newer 1.2.1/1.4.1 packages."
+  ]
+}
