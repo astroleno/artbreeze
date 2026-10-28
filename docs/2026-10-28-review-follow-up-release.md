@@ -47,10 +47,10 @@
 
 18:01（Asia/Shanghai）先完成两款原获批版本的手动发布，后台显示“已发布 - 公开发布”，文件包页确认公开版本分别为 1.2.0 / 1.4.0；随后才上传新的 ZIP 并提交审核。18:12 核对两款均显示“待审核”，并收到“已将您的扩展程序提交送审”的成功确认。
 
-| 产品 | 当前公开版本 | 新送审版本 | 状态 | 对应实现提交 |
+| 产品 | 前次公开版本 | 本轮公开版本 | 状态 | 对应实现提交 |
 | --- | --- | --- | --- | --- |
-| ArtBreeze | 1.2.0 | 1.2.2 | 待审核；关闭审核通过后自动发布 | [7208320](https://github.com/astroleno/artbreeze/commit/7208320fda748023e201929f32cde2a3ce0f88b5) |
-| WaitWiki | 1.4.0 | 1.4.2 | 待审核；关闭审核通过后自动发布 | [4cb959c](https://github.com/astroleno/WaitWiki/commit/4cb959ca8fc2fa4f5fee81b2b65cb7bb7f81adce) |
+| ArtBreeze | 1.2.0 | 1.2.2 | 已审核通过并手动公开发布 | [7208320](https://github.com/astroleno/artbreeze/commit/7208320fda748023e201929f32cde2a3ce0f88b5) |
+| WaitWiki | 1.4.0 | 1.4.2 | 已审核通过并手动公开发布 | [4cb959c](https://github.com/astroleno/WaitWiki/commit/4cb959ca8fc2fa4f5fee81b2b65cb7bb7f81adce) |
 
 测试说明分别保存为 379 / 374 字符，包含冷首载、键盘、历史选择及重选复现，重新打开后台已核对保存。原商品说明、真实站点截图、数据使用和权限披露继续沿用；隐私链接仍指向已推送的对应仓库文件。
 
@@ -58,4 +58,6 @@ Art 的送审资格曾临时返回“发生了内部错误”，保存草稿后�
 
 [后台操作与状态证据](reviews/assets/2026-10-28-release-store-actions.json) · [本仓新送审记录](store-submission-2026-10-28-ui-follow-up.md)。
 
-新包正在等待 Google 审核，通过后仍需手动发布。本轮没有建立自动监控或改变后续发布偏好。
+用户随后要求检查审核并发布新版。本轮先确认两份目标草稿均已获批且版本正确，再逐款手动发布。18:59:50 确认 ArtBreeze 1.2.2、18:59:56 确认 WaitWiki 1.4.2 已公开发布（Asia/Shanghai），文件包页的公开版本均与目标版本一致。
+
+后台未展示精确审批时间；[复核与发布证据](reviews/assets/2026-10-28-approved-publication.json) 记录本轮观察到通过及确认发布的时刻。两款目标新版已发布，本次跟进完成，无需继续定期检查。

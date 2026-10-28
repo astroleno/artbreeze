@@ -1,0 +1,58 @@
+{
+  "timezone": "Asia/Shanghai",
+  "approvalTimeNote": "The dashboard showed approval, but no exact approval timestamp. checkedAt records this verification time.",
+  "approvals": [
+    {
+      "product": "artbreeze",
+      "id": "dknoefdahnmdaodahdlbfdfabhgaeoog",
+      "version": "1.2.2",
+      "previous": "1.2.0",
+      "checkedAt": "2026-10-28 18:58:17",
+      "status": "可以发布",
+      "versions": [
+        "1.2.2",
+        "1.2.0"
+      ]
+    },
+    {
+      "product": "waitwiki",
+      "id": "onkihipkkiipgfjjnpmhdimdhegpblio",
+      "version": "1.4.2",
+      "previous": "1.4.0",
+      "checkedAt": "2026-10-28 18:58:21",
+      "status": "可以发布",
+      "versions": [
+        "1.4.2",
+        "1.4.0"
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "product": "artbreeze",
+      "version": "1.2.2",
+      "requestedAt": "2026-10-28 18:59:40",
+      "confirmation": "发布“艺息ArtBreeze”？\n\n网上应用店的用户将能够看到和安装“艺息ArtBreeze”\n\n取消\n发布",
+      "confirmedAt": "2026-10-28 18:59:50",
+      "status": "已发布 - 公开发布",
+      "versions": [
+        "1.2.2",
+        "1.2.2"
+      ],
+      "publishedVersion": "1.2.2"
+    },
+    {
+      "product": "waitwiki",
+      "version": "1.4.2",
+      "requestedAt": "2026-10-28 18:59:41",
+      "confirmation": "发布“知涟 WaitWiki”？\n\n网上应用店的用户将能够看到和安装“知涟 WaitWiki”\n\n取消\n发布",
+      "confirmedAt": "2026-10-28 18:59:56",
+      "status": "已发布 - 公开发布",
+      "versions": [
+        "1.4.2",
+        "1.4.2"
+      ],
+      "publishedVersion": "1.4.2"
+    }
+  ]
+}
