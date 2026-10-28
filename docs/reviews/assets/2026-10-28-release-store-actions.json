@@ -1,0 +1,192 @@
+{
+  "timezone": "Asia/Shanghai",
+  "actions": [
+    {
+      "product": "艺息ArtBreeze",
+      "version": "1.2.0",
+      "action": "publish-approved-version",
+      "at": "2026-10-28 18:01:07",
+      "confirmation": "发布“艺息ArtBreeze”？\n\n网上应用店的用户将能够看到和安装“艺息ArtBreeze”\n\n取消\n发布",
+      "observed": {
+        "status": "可以发布",
+        "alerts": [
+          "您可以随时在此处查看所需指南和提示。知道了"
+        ]
+      }
+    },
+    {
+      "product": "知涟 WaitWiki",
+      "version": "1.4.0",
+      "action": "publish-approved-version",
+      "at": "2026-10-28 18:01:07",
+      "confirmation": "发布“知涟 WaitWiki”？\n\n网上应用店的用户将能够看到和安装“知涟 WaitWiki”\n\n取消\n发布",
+      "observed": {
+        "status": "可以发布",
+        "alerts": [
+          "您可以随时在此处查看所需指南和提示。知道了"
+        ]
+      }
+    },
+    {
+      "product": "艺息ArtBreeze",
+      "action": "observe-publication-result",
+      "at": "2026-10-28 18:01:23",
+      "status": "已发布 - 公开发布",
+      "alerts": [
+        "您可以随时在此处查看所需指南和提示。知道了"
+      ]
+    },
+    {
+      "product": "知涟 WaitWiki",
+      "action": "observe-publication-result",
+      "at": "2026-10-28 18:01:23",
+      "status": "已发布 - 公开发布",
+      "alerts": [
+        "您可以随时在此处查看所需指南和提示。知道了"
+      ]
+    },
+    {
+      "product": "artbreeze",
+      "action": "verify-published-package-before-new-upload",
+      "version": "1.2.0",
+      "at": "2026-10-28 18:01:49",
+      "status": "已发布 - 公开发布",
+      "tables": [
+        {
+          "label": null,
+          "text": "版本\t1.2.0\n内容类型\t扩展程序\n权限\tstorage, host permission\nCRX 文件\tmain.crx\n公钥\t查看公钥\n\n经过验证的 CRX 上传公钥\ninfo_outline\n选择启用"
+        },
+        {
+          "label": null,
+          "text": "版本\t1.2.0\n内容类型\t扩展程序\n权限\tstorage, host permission\nCRX 文件\tmain.crx\n公钥\t查看公钥"
+        }
+      ],
+      "buttons": [
+        "回滚到以前那个版本",
+        "上传新的软件包",
+        "商品页面",
+        "info_outline",
+        "选择启用",
+        "知道了"
+      ]
+    },
+    {
+      "product": "waitwiki",
+      "action": "verify-published-package-before-new-upload",
+      "version": "1.4.0",
+      "at": "2026-10-28 18:01:51",
+      "status": "已发布 - 公开发布",
+      "tables": [
+        {
+          "label": null,
+          "text": "版本\t1.4.0\n内容类型\t扩展程序\n权限\tstorage, host permission\nCRX 文件\tmain.crx\n公钥\t查看公钥\n\n经过验证的 CRX 上传公钥\ninfo_outline\n选择启用"
+        },
+        {
+          "label": null,
+          "text": "版本\t1.4.0\n内容类型\t扩展程序\n权限\tstorage, host permission\nCRX 文件\tmain.crx\n公钥\t查看公钥"
+        }
+      ],
+      "buttons": [
+        "回滚到以前那个版本",
+        "上传新的软件包",
+        "商品页面",
+        "info_outline",
+        "选择启用",
+        "知道了"
+      ]
+    },
+    {
+      "product": "artbreeze",
+      "action": "verify-uploaded-new-package",
+      "draftVersion": "1.2.2",
+      "publishedVersion": "1.2.0",
+      "path": "/Users/aitoshuu/Documents/GitHub/artbreeze/dist/artbreeze-1.2.2.zip",
+      "sha256": "1ce306a26bae090529ea07828f23c73d6d5e787e80e1ee243b990a93e9ba19aa",
+      "checkedAt": "2026-10-28 18:04:13",
+      "note": "Upload completed by redirecting from package tab to item edit; then verified the package tab. Initial wait incorrectly expected a table on the redirected listing page."
+    },
+    {
+      "product": "waitwiki",
+      "action": "verify-uploaded-new-package",
+      "draftVersion": "1.4.2",
+      "publishedVersion": "1.4.0",
+      "path": "/Users/aitoshuu/Documents/GitHub/WaitWiki/dist/waitwiki-1.4.2.zip",
+      "sha256": "c7af5624d7c1e7b205299191fc7e90dfe949ce30db273089ca74173f24e71c7d",
+      "checkedAt": "2026-10-28 18:04:20"
+    },
+    {
+      "product": "artbreeze",
+      "action": "update-review-test-instructions",
+      "checkedAt": "2026-10-28 18:08:05",
+      "text": "送审版本 1.2.2。扩展本身无需账号。在 https://www.kimi.com 或清单内 AI 网页点击右下“艺”即可测试，无需发送聊天；部分站点自身需登录。\n首次用鼠标、Enter/空格打开均应有准备提示；加载中收起，迟到结果不再弹出。\n工具栏打开完整设置：24 个背景可自动/固定选择或关闭，关闭不加载背景图。检查换画、收藏、重开保留、锁定、昼夜、Esc 收起；悬停/聚焦保持，离开后按所设时间收起。\n用键盘选择收藏/最近内容后焦点保留，Tab 可到来源；删除后到相邻条目。标记“上次选择 · 再选一次”表示历史选择；打开 A、换 B、重开仍 B，再选 A 可打开 A。自动展示不移走 AI 输入焦点。\n所有代码随包提供，仅在线获取公开画作并标注来源/备用内容。不读取聊天正文、回复或聊天网址，不向开发者上传收藏；外部内容服务可收到普通请求 IP。",
+      "maxCharacters": 500
+    },
+    {
+      "product": "waitwiki",
+      "action": "update-review-test-instructions",
+      "checkedAt": "2026-10-28 18:08:06",
+      "text": "送审版本 1.4.2。扩展本身无需账号。在 https://www.kimi.com 或清单内 AI 网页点击右下“知”即可测试，无需发送聊天；部分站点自身需登录。\n阅读背景默认关闭，可开启唯一灰色混凝土展厅；正文直接上墙、无白色底板。检查九类内容、滚动、收藏、重开保留位置、锁定、昼夜；悬停/聚焦保持，Esc 收起。百科/数字接口在部分网络下使用明确标注的备用内容。\n首次用鼠标、Enter/空格打开均有准备提示；加载中收起，迟到结果不弹出。\n完整设置中用键盘选收藏/最近后焦点保留，Tab 到来源；删除后到相邻条目。“上次选择 · 再选一次”是历史标记；打开 A、换 B、重开仍 B，再选 A 可打开 A。自动展示不移走 AI 输入焦点。\n所有代码随包提供。不读取聊天正文、回复或聊天网址，不向开发者上传收藏；外部内容服务可收到普通请求 IP。",
+      "maxCharacters": 500
+    },
+    {
+      "product": "waitwiki",
+      "version": "1.4.2",
+      "action": "confirm-new-review-submission",
+      "automaticPublication": false,
+      "checkedAt": "2026-10-28 18:11:02",
+      "status": "待审核",
+      "dialogs": [
+        "已将您的扩展程序提交送审\n\n您可在开发者信息中心首页上查看状态。\n\n\n\n\n那些预定以后分阶段发布的内容会在通过审核 30 天后过期。\n\n确定"
+      ],
+      "alerts": [
+        "您可以随时在此处查看所需指南和提示。知道了"
+      ]
+    },
+    {
+      "product": "artbreeze",
+      "version": "1.2.2",
+      "action": "confirm-new-review-submission",
+      "automaticPublication": false,
+      "checkedAt": "2026-10-28 18:11:02",
+      "status": "已发布 - 公开发布",
+      "dialogs": [],
+      "alerts": [
+        "您可以随时在此处查看所需指南和提示。知道了"
+      ]
+    },
+    {
+      "product": "artbreeze",
+      "version": "1.2.2",
+      "action": "submission-accepted",
+      "automaticPublication": false,
+      "checkedAt": "2026-10-28 18:12:06",
+      "status": "待审核",
+      "confirmation": "已将您的扩展程序提交送审\n\n您可在开发者信息中心首页上查看状态。\n\n\n\n\n那些预定以后分阶段发布的内容会在通过审核 30 天后过期。\n\n确定"
+    },
+    {
+      "product": "waitwiki",
+      "version": "1.4.2",
+      "action": "submission-accepted",
+      "automaticPublication": false,
+      "checkedAt": "2026-10-28 18:12:07",
+      "status": "待审核",
+      "confirmation": "已将您的扩展程序提交送审\n\n您可在开发者信息中心首页上查看状态。\n\n\n\n\n那些预定以后分阶段发布的内容会在通过审核 30 天后过期。\n\n确定"
+    },
+    {
+      "product": "artbreeze",
+      "action": "verify-test-instructions-after-reload",
+      "characters": 379,
+      "checkedAt": "2026-10-28 18:12:13"
+    },
+    {
+      "product": "waitwiki",
+      "action": "verify-test-instructions-after-reload",
+      "characters": 374,
+      "checkedAt": "2026-10-28 18:12:16"
+    }
+  ],
+  "notes": [
+    "Art draft eligibility briefly showed an internal backend error. Saving the draft cleared it and enabled the normal submit button; no permissions or policy declarations were loosened.",
+    "Review test instructions have a 500-character limit. The initial append was truncated; replaced with complete 379/374-character instructions before submitting."
+  ]
+}
