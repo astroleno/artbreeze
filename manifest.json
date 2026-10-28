@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "艺息ArtBreeze",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "在AI对话期间展示美丽的名画，为您的思考时光增添艺术气息",
   "permissions": [
     "storage"

@@ -143,6 +143,17 @@
     }
     async render() {
       const revision = this.session.revision;
+      const cold = !this.current, u = this.ui;
+      if (cold) {
+        this.setLoading(true); u.container.hidden = false; u.icon.hidden = true;
+        u.status.textContent = this.kind === 'art' ? '正在准备画作…' : '正在准备阅读内容…';
+        u.frame.style.visibility = this.kind === 'art' ? 'hidden' : '';
+        this.updateTools();
+      }
+      try { await this.renderContent(revision); }
+      finally { if (cold && revision === this.session.revision) { this.setLoading(false); this.updateTools(); } }
+    }
+    async renderContent(revision) {
       if (!this.current) await this.prepareCycle();
       if (revision !== this.session.revision || !this.session.visible) return;
       const u = this.ui, item = this.current;
@@ -189,7 +200,7 @@
     hideUI() {
       const u = this.ui, restoreFocus = u.container.contains(document.activeElement);
       u.container.hidden = true; u.icon.hidden = !this.settings.enabled || !this.settings.showIcon;
-      this.setLoading(false); u.updateStatus.textContent = '';
+      this.setLoading(false); u.status.textContent = ''; u.updateStatus.textContent = '';
       const details = u.container.querySelector('details'); if (details) details.open = false;
       if (restoreFocus && !u.icon.hidden) u.icon.focus({ preventScroll: true });
     }
@@ -203,6 +214,7 @@
       try { const value = await message({ action: 'reading', operation: 'record', item: this.current, sceneID: this.sceneID, locked: this.session.locked }); this.state = value; } catch { this.ui.notice.textContent = '当前内容可继续阅读，本地保存暂不可用。'; this.ui.notice.hidden = false; }
     }
     updateTools() {
+      this.ui.favorite.disabled = !this.current; this.ui.lock.disabled = !this.current;
       const favorite = this.state.favorites.some(x => x.id === this.current?.id);
       this.ui.favorite.textContent = favorite ? '♥' : '♡'; this.ui.favorite.setAttribute('aria-pressed', String(favorite));
       this.ui.lock.textContent = this.session.locked ? '解锁当前内容' : '锁定当前内容';
@@ -220,7 +232,7 @@
       const opening = this.session.open();
       if (focus && this.session.visible && (document.activeElement === initiator || document.activeElement === document.body)) {
         this.ui.container.hidden = false; this.ui.icon.hidden = true;
-        (this.kind === 'reading' ? this.ui.frame : this.ui.favorite).focus({ preventScroll: true });
+        (this.kind === 'reading' ? this.ui.frame : this.current ? this.ui.favorite : this.ui.close).focus({ preventScroll: true });
       }
       await opening;
     }

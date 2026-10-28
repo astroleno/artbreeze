@@ -1,0 +1,408 @@
+{
+  "date": "2026-10-28",
+  "method": "Production UI and background reading dispatch with developer-only Chrome/content substitutes; no native install or real AI sending.",
+  "testAdjustment": "The first script expected DOM replacement on repeated selection of the same current item. Identical state emits no storage change; re-ran with a different existing item to exercise a real background state write. The first pointer menu script targeted controls before hovering the gallery. Confirmed they were intentionally hidden (pointer-events:none); used an actual hover before activating the menu.",
+  "checks": [
+    {
+      "product": "artbreeze",
+      "name": "favorite-enter-keeps-region-item-action",
+      "tag": "BUTTON",
+      "region": "favorites",
+      "id": "release1",
+      "action": "select",
+      "text": "上次选择 · 再选一次",
+      "writes": 7,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "next-tab-is-same-row-source",
+      "tag": "A",
+      "region": "favorites",
+      "id": "release1",
+      "action": "source",
+      "text": "来源",
+      "writes": 7,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "same-id-recent-space-keeps-own-region",
+      "tag": "BUTTON",
+      "region": "recent",
+      "id": "release2",
+      "action": "select",
+      "text": "上次选择 · 再选一次",
+      "writes": 8,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "background-progress-keeps-source-focus",
+      "tag": "A",
+      "region": "favorites",
+      "id": "release0",
+      "action": "source",
+      "text": "来源",
+      "writes": 9,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "removed-middle-favorite-focuses-adjacent-action",
+      "tag": "BUTTON",
+      "region": "favorites",
+      "id": "release0",
+      "action": "remove",
+      "text": "取消收藏",
+      "writes": 10,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "empty-favorites-focuses-section-heading",
+      "tag": "H2",
+      "text": "收藏",
+      "writes": 12,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "delayed-refresh-does-not-steal-moved-focus",
+      "tag": "BUTTON",
+      "text": "清除本地数据",
+      "writes": 13,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "favorite-enter-keeps-region-item-action",
+      "tag": "BUTTON",
+      "region": "favorites",
+      "id": "release1",
+      "action": "select",
+      "text": "上次选择 · 再选一次",
+      "writes": 7,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "next-tab-is-same-row-source",
+      "tag": "A",
+      "region": "favorites",
+      "id": "release1",
+      "action": "source",
+      "text": "来源",
+      "writes": 7,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "same-id-recent-space-keeps-own-region",
+      "tag": "BUTTON",
+      "region": "recent",
+      "id": "release2",
+      "action": "select",
+      "text": "上次选择 · 再选一次",
+      "writes": 8,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "background-progress-keeps-source-focus",
+      "tag": "A",
+      "region": "favorites",
+      "id": "release0",
+      "action": "source",
+      "text": "来源",
+      "writes": 9,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "removed-middle-favorite-focuses-adjacent-action",
+      "tag": "BUTTON",
+      "region": "favorites",
+      "id": "release0",
+      "action": "remove",
+      "text": "取消收藏",
+      "writes": 10,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "empty-favorites-focuses-section-heading",
+      "tag": "H2",
+      "text": "收藏",
+      "writes": 12,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "delayed-refresh-does-not-steal-moved-focus",
+      "tag": "BUTTON",
+      "text": "清除本地数据",
+      "writes": 13,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-pointer-immediate-feedback-and-hold-beyond-two-seconds",
+      "containerHidden": false,
+      "busy": true,
+      "status": "正在准备画作…",
+      "statusRole": "status",
+      "ariaBusy": "true",
+      "activeClass": "",
+      "favoriteDisabled": true,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-pointer-success-cleans-feedback",
+      "id": "fixture-0",
+      "status": "",
+      "ariaBusy": "false",
+      "frameVisibility": "",
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-keyboard-immediate-feedback-and-hold-beyond-two-seconds",
+      "containerHidden": false,
+      "busy": true,
+      "status": "正在准备画作…",
+      "statusRole": "status",
+      "ariaBusy": "true",
+      "activeClass": "",
+      "favoriteDisabled": true,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-keyboard-success-cleans-feedback",
+      "id": "fixture-1",
+      "status": "",
+      "ariaBusy": "false",
+      "frameVisibility": "",
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-pointer-immediate-feedback-and-hold-beyond-two-seconds",
+      "containerHidden": false,
+      "busy": true,
+      "status": "正在准备阅读内容…",
+      "statusRole": "status",
+      "ariaBusy": "true",
+      "activeClass": "",
+      "favoriteDisabled": true,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-pointer-success-cleans-feedback",
+      "id": "reading-fixture",
+      "status": "",
+      "ariaBusy": "false",
+      "frameVisibility": "",
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-keyboard-immediate-feedback-and-hold-beyond-two-seconds",
+      "containerHidden": false,
+      "busy": true,
+      "status": "正在准备阅读内容…",
+      "statusRole": "status",
+      "ariaBusy": "true",
+      "activeClass": "companion-paper",
+      "favoriteDisabled": true,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-keyboard-success-cleans-feedback",
+      "id": "reading-fixture",
+      "status": "",
+      "ariaBusy": "false",
+      "frameVisibility": "",
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-failure-recovers-through-real-more-menu",
+      "visible": true,
+      "status": "",
+      "current": "fixture-0",
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-success-after-dismissal-does-not-reopen",
+      "visible": false,
+      "hidden": true,
+      "current": null,
+      "status": "",
+      "busy": false,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-failure-after-dismissal-does-not-reopen",
+      "visible": false,
+      "hidden": true,
+      "current": null,
+      "status": "",
+      "busy": false,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "cold-disabled-after-dismissal-does-not-reopen",
+      "visible": false,
+      "hidden": true,
+      "current": null,
+      "status": "",
+      "busy": false,
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "automatic-first-display-keeps-composer-focus",
+      "activeID": "prompt-textarea",
+      "current": "fixture-1",
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-failure-recovers-through-real-more-menu",
+      "visible": true,
+      "status": "",
+      "current": "reading-fixture",
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-success-after-dismissal-does-not-reopen",
+      "visible": false,
+      "hidden": true,
+      "current": null,
+      "status": "",
+      "busy": false,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-failure-after-dismissal-does-not-reopen",
+      "visible": false,
+      "hidden": true,
+      "current": null,
+      "status": "",
+      "busy": false,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "cold-disabled-after-dismissal-does-not-reopen",
+      "visible": false,
+      "hidden": true,
+      "current": null,
+      "status": "",
+      "busy": false,
+      "errors": []
+    },
+    {
+      "product": "waitwiki",
+      "name": "automatic-first-display-keeps-composer-focus",
+      "activeID": "prompt-textarea",
+      "current": "reading-fixture",
+      "errors": []
+    },
+    {
+      "product": "artbreeze",
+      "name": "A-next-B-reopen-B-history-label-truthful-and-reselect-A",
+      "displaySequence": [
+        "fixture-0",
+        "fixture-1",
+        "fixture-1",
+        "fixture-0"
+      ],
+      "marker": {
+        "label": "上次选择 · 再选一次",
+        "selectedID": "fixture-0",
+        "errors": []
+      },
+      "pendingSelection": null,
+      "errors": [],
+      "limit": "Two developer-page storage areas relayed explicitly; production background, Options and Companion; substituted local content."
+    },
+    {
+      "product": "waitwiki",
+      "name": "A-next-B-reopen-B-history-label-truthful-and-reselect-A",
+      "displaySequence": [
+        "selection-a",
+        "reading-fixture",
+        "reading-fixture",
+        "selection-a"
+      ],
+      "marker": {
+        "label": "上次选择 · 再选一次",
+        "selectedID": "selection-a",
+        "errors": []
+      },
+      "pendingSelection": null,
+      "errors": [],
+      "limit": "Two developer-page storage areas relayed explicitly; production background, Options and Companion; substituted local content."
+    },
+    {
+      "product": "waitwiki",
+      "name": "390px-dark-reading-stays-transparent-and-bounded",
+      "viewport": 390,
+      "width": 358,
+      "right": 374,
+      "background": "rgba(0, 0, 0, 0)",
+      "boxShadow": "none",
+      "errors": []
+    }
+  ],
+  "unitBuildChecks": {
+    "artbreeze": {
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0
+    },
+    "waitwiki": {
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "sourceBeforeChanges": {
+    "artbreeze": "cc89b960dd7f9f52185dd4f378f45b3c7d93eb5a",
+    "waitwiki": "59ac963c4449e8f22eb6d714ab65d902bd27a694"
+  },
+  "runtimeHashes": {
+    "options.js": "5385af9939bbf5903a846ed698143cd57df7a019709613fe5a619cdbb8e4ecad",
+    "gallery/companion.js": "30fb329b5829a6caea5b25ef132f0b5703642367253c8c1680ee9b18c40124b9"
+  },
+  "packages": [
+    {
+      "product": "artbreeze",
+      "version": "1.2.2",
+      "archive": "/Users/aitoshuu/Documents/GitHub/artbreeze/dist/artbreeze-1.2.2.zip",
+      "bytes": 948419,
+      "scenes": 24,
+      "sha256": "1ce306a26bae090529ea07828f23c73d6d5e787e80e1ee243b990a93e9ba19aa"
+    },
+    {
+      "product": "waitwiki",
+      "version": "1.4.2",
+      "archive": "/Users/aitoshuu/Documents/GitHub/WaitWiki/dist/waitwiki-1.4.2.zip",
+      "bytes": 122225,
+      "scenes": 1,
+      "sha256": "c7af5624d7c1e7b205299191fc7e90dfe949ce30db273089ca74173f24e71c7d"
+    }
+  ],
+  "previousArchivesUnchanged": true
+}

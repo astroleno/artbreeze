@@ -15,6 +15,8 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         if self.path.split('?', 1)[0] in ('/tests/popup.html', '/tests/options.html'):
             # The production popup is unchanged; only this local response injects the test API shim.
             html = (root / ('options.html' if self.path.split('?', 1)[0].endswith('options.html') else 'popup.html')).read_text().replace('</title>', '</title><base href="/"><script src="tests/fixture-chrome.js"></script>')
+            if self.path.split('?', 1)[0].endswith('options.html'):
+                html = html.replace('<script src="options.js"></script>', '<script src="providers.js"></script><script src="background.js"></script><script src="options.js"></script>')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.end_headers()
